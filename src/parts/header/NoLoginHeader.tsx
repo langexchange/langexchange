@@ -1,6 +1,6 @@
 import Logo from "../../assets/images/logo.svg";
 import { Button, Dropdown, Image, Layout, Menu, Space, message } from "antd";
-import { DownOutlined, GlobalOutlined, HomeOutlined } from "@ant-design/icons";
+import { DownOutlined, GlobalOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
 const { Header } = Layout;
@@ -59,6 +59,10 @@ export const NoLoginHeader = () => {
         alignItems: "center",
         justifyContent: "space-between",
         borderBottom: "1px solid rgba(5, 5, 5, 0.06)",
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
+        width: "100%",
       }}
     >
       <div className="logo">
