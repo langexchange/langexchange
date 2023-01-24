@@ -5,7 +5,7 @@ import { blue, red } from "@ant-design/colors";
 
 const { Title, Text } = Typography;
 
-export const Banner = () => {
+const Banner = () => {
   return (
     <Row style={{ backgroundColor: "white" }} align="middle">
       <Col span={12} style={{ display: "flex", justifyContent: "center" }}>
@@ -31,3 +31,5 @@ export const Banner = () => {
     </Row>
   );
 };
+
+export default Banner;

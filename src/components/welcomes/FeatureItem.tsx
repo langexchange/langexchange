@@ -8,11 +8,7 @@ interface FeatureItemProps {
   descriptions: string;
 }
 
-export const FeatureItem = ({
-  image,
-  title,
-  descriptions,
-}: FeatureItemProps) => {
+const FeatureItem = ({ image, title, descriptions }: FeatureItemProps) => {
   return (
     <Space direction="vertical" align="center" style={{ padding: "0 48px" }}>
       <Space direction="vertical" align="center">
@@ -25,3 +21,5 @@ export const FeatureItem = ({
     </Space>
   );
 };
+
+export default FeatureItem;
