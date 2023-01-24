@@ -3,7 +3,7 @@ import MakeFriendIcon from "../../assets/images/make_friend.svg";
 import StoryIcon from "../../assets/images/story.svg";
 import ChattingIcon from "../../assets/images/chatting.svg";
 import LanguageIcon from "../../assets/images/language.svg";
-import { FeatureItem } from "./FeatureItem";
+import FeatureItem from "./FeatureItem";
 
 const { Title, Text } = Typography;
 
@@ -34,7 +34,7 @@ const featuresItems = [
   },
 ];
 
-export const FeaturesOverview = () => {
+const FeaturesOverview = () => {
   return (
     <Space
       direction="vertical"
@@ -63,3 +63,5 @@ export const FeaturesOverview = () => {
     </Space>
   );
 };
+
+export default FeaturesOverview;

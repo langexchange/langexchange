@@ -1,13 +1,13 @@
 import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { Banner } from "../../components/welcomes/Banner";
-import { FeatureDetails } from "../../components/welcomes/FeatureDetails";
-import { FeaturesOverview } from "../../components/welcomes/FeaturesOverview";
+import Banner from "../../components/welcomes/Banner";
+import FeatureDetails from "../../components/welcomes/FeatureDetails";
+import FeaturesOverview from "../../components/welcomes/FeaturesOverview";
 import Feedbacks from "../../components/welcomes/Feedbacks";
 import PageFooter from "../../parts/footers/PageFooter";
-import { NoLoginHeader } from "../../parts/header/NoLoginHeader";
+import NoLoginHeader from "../../parts/header/NoLoginHeader";
 
-export const WelcomePage = () => {
+const WelcomePage = () => {
   return (
     <>
       <Layout>
@@ -23,3 +23,5 @@ export const WelcomePage = () => {
     </>
   );
 };
+
+export default WelcomePage;

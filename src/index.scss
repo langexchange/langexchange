@@ -17,3 +17,43 @@
 .text-300 {
   font-weight: 300;
 }
+
+.bg-white {
+  background-color: #fff;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1677ff;
+
+  &:hover {
+    background-color: #4096ff !important;
+  }
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #52c41a;
+
+  &:hover {
+    background-color: #73d13d !important;
+  }
+}
+
+.btn-warning {
+  color: #fff;
+  background-color: #faad14;
+
+  &:hover {
+    background-color: #ffc53d !important;
+  }
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #ff4d4f;
+
+  &:hover {
+    background-color: #ff7875 !important;
+  }
+}
