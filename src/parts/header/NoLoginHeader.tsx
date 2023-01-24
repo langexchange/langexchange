@@ -2,6 +2,7 @@ import Logo from "../../assets/images/logo.svg";
 import { Button, Dropdown, Image, Layout, Menu, Space, message } from "antd";
 import { DownOutlined, GlobalOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
+import { NavLink, useMatch } from "react-router-dom";
 
 const { Header } = Layout;
 
@@ -44,7 +45,7 @@ const menuProps = {
 
 const items: MenuProps["items"] = [
   {
-    label: "About",
+    label: <NavLink to="/abouts">About</NavLink>,
     key: "about",
   },
 ];
@@ -66,10 +67,22 @@ const NoLoginHeader = () => {
       }}
     >
       <div className="logo">
-        <Image src={Logo} alt="LangExchange Logo" width={161} />
+        <NavLink to="/">
+          <Image
+            src={Logo}
+            alt="LangExchange Logo"
+            width={161}
+            preview={false}
+          />
+        </NavLink>
       </div>
       <Space className="toolbars" align="center">
-        <Menu theme="light" mode="horizontal" items={items} />
+        <Menu
+          theme="light"
+          mode="horizontal"
+          items={items}
+          selectedKeys={(useMatch("/abouts") && ["about"]) || []}
+        />
         <Dropdown menu={menuProps}>
           <Button type="text">
             <Space>
