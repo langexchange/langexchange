@@ -31,7 +31,7 @@ const featureDetailItems = [
   },
 ];
 
-export const FeatureDetails = () => {
+const FeatureDetails = () => {
   return (
     <div>
       {featureDetailItems.map((item, index) => (
@@ -40,3 +40,4 @@ export const FeatureDetails = () => {
     </div>
   );
 };
+export default FeatureDetails;

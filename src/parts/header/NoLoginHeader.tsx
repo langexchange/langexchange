@@ -49,7 +49,7 @@ const items: MenuProps["items"] = [
   },
 ];
 
-export const NoLoginHeader = () => {
+const NoLoginHeader = () => {
   return (
     <Header
       className="header"
@@ -87,3 +87,4 @@ export const NoLoginHeader = () => {
     </Header>
   );
 };
+export default NoLoginHeader;

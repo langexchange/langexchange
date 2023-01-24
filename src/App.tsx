@@ -1,9 +1,10 @@
-import { WelcomePage } from "./pages/welcomes/WelcomePage";
+import AboutPage from "./pages/abouts/AboutPage";
+import WelcomePage from "./pages/welcomes/WelcomePage";
 
 function App() {
   return (
     <div className="App">
-      <WelcomePage />
+      <AboutPage />
     </div>
   );
 }
