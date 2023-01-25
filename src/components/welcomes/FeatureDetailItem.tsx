@@ -15,7 +15,7 @@ export const FeatureDetailItem = ({
   image,
   index,
 }: FeatureDetailItemProps) => {
-  const contentLeft: boolean = index % 2 == 0;
+  const contentLeft: boolean = index % 2 === 0;
   return (
     <div
       style={{

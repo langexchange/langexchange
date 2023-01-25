@@ -2,7 +2,7 @@ import Logo from "../../assets/images/logo.svg";
 import { Button, Dropdown, Image, Layout, Menu, Space, message } from "antd";
 import { DownOutlined, GlobalOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { NavLink, useMatch } from "react-router-dom";
+import { Link, NavLink, useMatch } from "react-router-dom";
 
 const { Header } = Layout;
 
@@ -93,8 +93,12 @@ const NoLoginHeader = () => {
           </Button>
         </Dropdown>
         <Space>
-          <Button type="primary">Sign in</Button>
-          <Button>Sign up</Button>
+          <Link to="/sign-in">
+            <Button type="primary">Sign in</Button>
+          </Link>
+          <Link to="/sign-up">
+            <Button>Sign up</Button>
+          </Link>
         </Space>
       </Space>
     </Header>
