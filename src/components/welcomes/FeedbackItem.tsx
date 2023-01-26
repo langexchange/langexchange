@@ -12,8 +12,8 @@ interface FeedbackItemProps {
 
 const FeedbackItem = ({ star, content, owner }: FeedbackItemProps) => {
   return (
-    <Card style={{ width: "100%" }}>
-      <Space align="center" direction="vertical" style={{ width: "100%" }}>
+    <Card className="width-full">
+      <Space align="center" direction="vertical" className="width-full">
         <Space align="center">
           {[...new Array(star)].map((_, index) => (
             <StarFilled key={index} style={{ color: gold[5] }} />

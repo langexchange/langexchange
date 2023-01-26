@@ -15,7 +15,7 @@ const FeatureItem = ({ image, title, descriptions }: FeatureItemProps) => {
         <Image src={image} alt="LangExchange feature" />
         <Title level={4}>{title}</Title>
       </Space>
-      <Paragraph type="secondary" style={{ textAlign: "center" }}>
+      <Paragraph type="secondary" className="text-center">
         {descriptions}
       </Paragraph>
     </Space>
