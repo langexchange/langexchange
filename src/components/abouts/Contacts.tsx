@@ -3,7 +3,6 @@ import MailSupportIcon from "../../assets/images/mail_support.svg";
 import ChatSupportIcon from "../../assets/images/chat_support.svg";
 import HandshakeIcon from "../../assets/images/handshake.svg";
 import ContactItem from "./ContactItem";
-import { blue, red } from "@ant-design/colors";
 
 const { Title } = Typography;
 
@@ -43,9 +42,9 @@ const Contacts = () => {
       size={48}
       className="bg-white"
     >
-      <Title level={2} style={{ margin: "0" }}>
-        Contact to <span style={{ color: blue[4] }}>Lang</span>
-        <span style={{ color: red[7] }}>Exchange</span>
+      <Title level={2} className="m-0">
+        Contact to <span className="color-blue-logo">Lang</span>
+        <span className="color-red-logo">Exchange</span>
       </Title>
       <div>
         <Row align="middle" gutter={[24, 48]}>

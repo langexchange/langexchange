@@ -16,8 +16,8 @@ const SubcribeForm = () => {
     <div
       style={{
         padding: "48px 98px",
-        backgroundColor: "white",
       }}
+      className="bg-white"
     >
       <Row align="middle">
         <Col span={12} className="d-flex justify-center">

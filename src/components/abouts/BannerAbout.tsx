@@ -1,16 +1,12 @@
 import { Col, Image, Row, Space, Typography } from "antd";
-import { blue, red } from "@ant-design/colors";
 import MemeberImage from "../../assets/images/members.png";
 
 const { Title, Paragraph } = Typography;
 
 const BannerAbout = () => {
   return (
-    <Row
-      style={{ backgroundColor: "white", padding: "48px 50px" }}
-      align="middle"
-    >
-      <Col span={12} style={{ display: "flex", justifyContent: "center" }}>
+    <Row className="bg-white" style={{ padding: "48px 50px" }} align="middle">
+      <Col span={12} className="d-flex justify-center">
         <Space
           direction="vertical"
           size={16}
@@ -18,11 +14,11 @@ const BannerAbout = () => {
           style={{ maxWidth: "80%" }}
         >
           <Space direction="vertical" size={0} align="center">
-            <Title level={2} style={{ margin: 0 }}>
-              <span style={{ color: blue[4] }}>Lang</span>
-              <span style={{ color: red[7] }}>Exchange</span> develop team
+            <Title level={2} className="m-0">
+              <span className="color-blue-logo">Lang</span>
+              <span className="color-red-logo">Exchange</span> develop team
             </Title>
-            <Paragraph style={{ fontSize: "20px", textAlign: "center" }}>
+            <Paragraph className="text-center fz-20">
               We are a group of software development students working on a
               project at Ho Chi Minh city University of Technology
             </Paragraph>
@@ -34,7 +30,7 @@ const BannerAbout = () => {
           </Paragraph>
         </Space>
       </Col>
-      <Col span={12} style={{ display: "flex", justifyContent: "center" }}>
+      <Col span={12} className="d-flex justify-center">
         <Image src={MemeberImage} alt="Team's memebers" />
       </Col>
     </Row>

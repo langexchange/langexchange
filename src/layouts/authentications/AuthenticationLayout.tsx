@@ -1,9 +1,9 @@
-import { Button, Image, Space, Tabs, Typography } from "antd";
-import AuthenBackgroundImage from "../../assets/images/authen_bg.png";
 import Logo from "../../assets/images/logo.svg";
+import AuthenBackgroundImage from "../../assets/images/authen_bg.png";
+import { Button, Image, Space, Tabs, Typography } from "antd";
 import { RollbackOutlined } from "@ant-design/icons";
-import type { TabsProps } from "antd";
 import { Outlet, Link, useMatch } from "react-router-dom";
+import type { TabsProps } from "antd";
 
 const items: TabsProps["items"] = [
   {
@@ -31,6 +31,7 @@ const backToHome = (
     </Button>
   </Link>
 );
+
 const AuthenticationLayout = () => {
   const matchSignin = useMatch("/sign-in");
   const matchSignup = useMatch("/sign-up");

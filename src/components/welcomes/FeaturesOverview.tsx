@@ -43,7 +43,7 @@ const FeaturesOverview = () => {
       size={48}
     >
       <Space direction="vertical" align="center">
-        <Title level={2} style={{ margin: "0" }}>
+        <Title level={2} className="m-0">
           The language exchange community
         </Title>
         <Text type="secondary">

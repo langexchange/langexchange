@@ -4,7 +4,6 @@ import BookIcon from "../../assets/images/books.svg";
 import NoteIcon from "../../assets/images/note.svg";
 import LanguageIcon from "../../assets/images/language.svg";
 import MissonItem from "../welcomes/FeatureItem";
-import { blue, red } from "@ant-design/colors";
 
 const { Title } = Typography;
 
@@ -43,9 +42,9 @@ const Missons = () => {
       align="center"
       size={48}
     >
-      <Title level={2} style={{ margin: "0" }}>
-        <span style={{ color: blue[4] }}>Lang</span>
-        <span style={{ color: red[7] }}>Exchange</span> missons
+      <Title level={2} className="m-0">
+        <span className="color-blue-logo">Lang</span>
+        <span className="color-red-logo">Exchange</span> missons
       </Title>
       <div>
         <Row align="middle" gutter={[24, 48]}>

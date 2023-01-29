@@ -52,7 +52,7 @@ const Feedbacks = () => {
         size={48}
       >
         <Space direction="vertical" align="center">
-          <Title level={2} style={{ margin: "0" }}>
+          <Title level={2} className="m-0">
             What feeling are saying
           </Title>
           <Text type="secondary">

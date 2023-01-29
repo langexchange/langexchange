@@ -24,7 +24,7 @@ const ContactItem = ({
           <Image src={image} alt="LangExchange Support" />
           <Title level={4}>{title}</Title>
         </Space>
-        <Paragraph type="secondary" style={{ textAlign: "justify" }}>
+        <Paragraph type="secondary" className="text-justify">
           {descriptions}
         </Paragraph>
         <Button className={`btn-${type}`} type="primary" size="large">
