@@ -1,5 +1,15 @@
 import Logo from "../../assets/images/logo.svg";
-import { Avatar, Badge, Button, Image, Layout, Menu, Space } from "antd";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Col,
+  Image,
+  Layout,
+  Menu,
+  Row,
+  Space,
+} from "antd";
 import {
   HomeOutlined,
   GroupOutlined,
@@ -10,6 +20,7 @@ import {
   BellOutlined,
   TranslationOutlined,
 } from "@ant-design/icons";
+import { Link, NavLink, useMatch } from "react-router-dom";
 import type { MenuProps } from "antd";
 const { Header } = Layout;
 
@@ -46,7 +57,7 @@ const items: MenuProps["items"] = [
   },
 ];
 
-export const PageHeader = () => {
+const PageHeader = () => {
   return (
     <Header
       className="header"
@@ -56,42 +67,64 @@ export const PageHeader = () => {
         alignItems: "center",
         justifyContent: "space-between",
         borderBottom: "1px solid rgba(5, 5, 5, 0.06)",
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
+        width: "100%",
       }}
     >
-      <div className="logo">
-        <Image src={Logo} alt="LangExchange Logo" width={161} />
-      </div>
-      <Menu
-        theme="light"
-        mode="horizontal"
-        defaultSelectedKeys={["community"]}
-        items={items}
-      />
-      <Space className="toolbars" align="center">
-        <Button type="text" style={{ display: "flex", alignItems: "center" }}>
-          <Badge count={99} overflowCount={10} size="small">
-            <div
-              style={{
-                height: "24px",
-                width: "24px",
-                display: "flex",
-                alignItems: "center",
-              }}
+      <Row className="width-full d-flex align-items-center">
+        <Col span={6}>
+          <div className="logo">
+            <NavLink to="/">
+              <Image
+                src={Logo}
+                alt="LangExchange Logo"
+                width={161}
+                preview={false}
+              />
+            </NavLink>
+          </div>
+        </Col>
+        <Col span={12} className="text-center">
+          <Menu
+            theme="light"
+            mode="horizontal"
+            defaultSelectedKeys={["community"]}
+            items={items}
+            className="d-block"
+          />
+        </Col>
+        <Col span={6} className="d-flex justify-end align-items-center">
+          <Space className="toolbars" align="center">
+            <Button type="text" className="d-flex align-items-center">
+              <Badge count={99} overflowCount={10} size="small">
+                <div
+                  className="d-flex align-items-center"
+                  style={{
+                    height: "24px",
+                    width: "24px",
+                  }}
+                >
+                  <BellOutlined style={{ fontSize: "16px" }} />
+                </div>
+              </Badge>
+            </Button>
+            <Button
+              type="text"
+              className="d-flex align-items-center"
+              size="large"
             >
-              <BellOutlined style={{ fontSize: "16px" }} />
-            </div>
-          </Badge>
-        </Button>
-        <Button type="text" style={{ display: "flex", alignItems: "center" }}>
-          <Space className="avatar" align="center">
-            <Avatar size="small">T</Avatar>
-            <span className="fullname">Dinh Nhu Tan</span>
+              <Avatar size={36}>T</Avatar>
+            </Button>
+            <Button type="text" className="d-flex align-items-center">
+              <TranslationOutlined style={{ fontSize: "16px" }} />
+            </Button>
           </Space>
-        </Button>
-        <Button type="text" style={{ display: "flex", alignItems: "center" }}>
-          <TranslationOutlined style={{ fontSize: "16px" }} />
-        </Button>
-      </Space>
+        </Col>
+      </Row>
     </Header>
   );
 };
+
+export default PageHeader;

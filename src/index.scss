@@ -5,6 +5,11 @@ $success-color: #52c41a;
 $warning-color: #faad14;
 $danger-color: #ff4d4f;
 $secondary-color: #8c8c8c;
+$background-color: #f0f2f5;
+
+.has-background-color {
+  background-color: $background-color;
+}
 
 .color-red-logo {
   color: $logo-red-color;
@@ -12,6 +17,26 @@ $secondary-color: #8c8c8c;
 
 .color-blue-logo {
   color: $logo-blue-color;
+}
+
+.color-primary {
+  color: $primary-color;
+}
+
+.color-success {
+  color: $success-color;
+}
+
+.color-warning {
+  color: $warning-color;
+}
+
+.color-secondary {
+  color: $secondary-color;
+}
+
+.color-danger {
+  color: $danger-color;
 }
 
 .d-flex {
@@ -22,8 +47,16 @@ $secondary-color: #8c8c8c;
   justify-content: space-between;
 }
 
+.justify-space-around {
+  justify-content: space-around;
+}
+
 .justify-center {
   justify-content: center;
+}
+
+.justify-end {
+  justify-content: end;
 }
 
 .align-items-center {
@@ -47,6 +80,15 @@ $secondary-color: #8c8c8c;
   }
 }
 
+.btn-text-success {
+  color: $primary-color;
+
+  &:hover {
+    color: #4096ff !important;
+    background-color: #e6f4ff !important;
+  }
+}
+
 .btn-success {
   color: #fff;
   background-color: $success-color;
@@ -56,12 +98,30 @@ $secondary-color: #8c8c8c;
   }
 }
 
+.btn-text-success {
+  color: $success-color;
+
+  &:hover {
+    color: #73d13d !important;
+    background-color: #f6ffed !important;
+  }
+}
+
 .btn-warning {
   color: #fff;
   background-color: $warning-color;
 
   &:hover {
     background-color: #ffc53d !important;
+  }
+}
+
+.btn-text-warning {
+  color: $warning-color;
+
+  &:hover {
+    color: #ffc53d !important;
+    background-color: #fffbe6 !important;
   }
 }
 
@@ -95,7 +155,7 @@ $secondary-color: #8c8c8c;
 }
 
 .m-0 {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .fade-enter {
@@ -112,10 +172,30 @@ $secondary-color: #8c8c8c;
   text-align: center;
 }
 
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
 .text-justify {
   text-align: justify;
 }
 
 .fz-20 {
   font-size: 20px;
+}
+
+.fz-24 {
+  font-size: 24px;
+}
+
+.pos-fixed {
+  position: fixed;
+}
+
+.bottom-0 {
+  bottom: 0;
 }

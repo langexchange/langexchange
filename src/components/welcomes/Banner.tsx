@@ -22,7 +22,7 @@ const Banner = () => {
           <Text type="secondary">
             Everyone can together share, exchange stories, and improve skills
           </Text>
-          <Button type="primary" icon={<ArrowRightOutlined />}>
+          <Button size="large" type="primary" icon={<ArrowRightOutlined />}>
             Let's get started
           </Button>
         </Space>
