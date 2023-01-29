@@ -6,10 +6,14 @@ import {
 } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Space } from "antd";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SigninForm = () => {
+  const navigate = useNavigate();
+
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
+    navigate("/community");
   };
 
   return (
