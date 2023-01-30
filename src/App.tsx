@@ -8,6 +8,7 @@ import SigninPage from "./pages/authentications/SigninPage";
 import SignupPage from "./pages/authentications/SignupPage";
 import CommunityPage from "./pages/communitys/CommunityPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import StudySpaceExplorePage from "./pages/studySpaces/StudySpaceExplorePage";
 import WelcomePage from "./pages/welcomes/WelcomePage";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         </Route>
         <Route element={<AppSignedInLayout />}>
           <Route path="/community" element={<CommunityPage />} />
+          <Route path="/study-space" element={<StudySpaceExplorePage />} />
         </Route>
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
