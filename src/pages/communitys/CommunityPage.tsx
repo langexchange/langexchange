@@ -1,10 +1,7 @@
-import { Col, Layout, Row, Space } from "antd";
-import { Content } from "antd/es/layout/layout";
-import Sider from "antd/es/layout/Sider";
+import { Col, Row } from "antd";
 import PostList from "../../components/community/PostList";
 import RightSidebar from "../../components/community/RightSidebar";
 import Sidebar from "../../components/community/Sidebar";
-import PostCard from "../../components/PostCard";
 import PostInput from "../../components/PostInput";
 
 const CommunityPage = () => {

@@ -39,9 +39,9 @@ const PostCard = ({
 }: PostProps) => {
   return (
     <Card
-      className="width-full"
+      className="width-full post-card"
       hoverable
-      type="inner"
+      // type="inner"
       title={
         <Space>
           <Avatar
@@ -86,6 +86,12 @@ const PostCard = ({
           block={true}
         />,
       ]}
+      headStyle={{
+        backgroundColor: "white",
+        border: "none",
+        paddingTop: "12px",
+        paddingBottom: "12px",
+      }}
     >
       <Typography.Paragraph>{contents}</Typography.Paragraph>
       <Space>

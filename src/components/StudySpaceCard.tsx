@@ -1,0 +1,117 @@
+import { Button, Card, Image, Space, Tag, Typography } from "antd";
+import {
+  DeleteOutlined,
+  UsergroupAddOutlined,
+  MoreOutlined,
+  TagOutlined,
+  TranslationOutlined,
+  TeamOutlined,
+  FormOutlined,
+  MessageOutlined,
+} from "@ant-design/icons";
+
+interface StudySpaceProps {
+  name: string;
+  languages: string[];
+  tags: string[];
+  descriptions: string;
+  members: number;
+  posts: number;
+  commentsPerDay: number;
+  image: string;
+}
+
+const StudySpaceCard = ({
+  name,
+  languages,
+  tags,
+  descriptions,
+  members,
+  posts,
+  commentsPerDay,
+  image,
+}: StudySpaceProps) => {
+  return (
+    <Card
+      hoverable
+      // style={{ width: 240 }}
+      cover={<Image src={image} />}
+      actions={[
+        <Button type="text" icon={<DeleteOutlined />} danger />,
+        <Button
+          type="text"
+          icon={<UsergroupAddOutlined />}
+          className="btn-text-success"
+        />,
+        <Button type="text" icon={<MoreOutlined />} />,
+      ]}
+      style={{ height: "100%", flexDirection: "column" }}
+      bodyStyle={{ flex: 1 }}
+      className="d-flex"
+    >
+      <div
+        className="d-flex justify-space-between"
+        style={{ flexDirection: "column", height: "100%" }}
+      >
+        <Space direction="vertical">
+          <Typography.Title level={5} className="m-0">
+            {name}
+          </Typography.Title>
+          <Space size={4} wrap>
+            {languages.map((item, index) => (
+              <Tag
+                color="green"
+                key={index}
+                icon={<TranslationOutlined />}
+                className="m-0"
+              >
+                {item}
+              </Tag>
+            ))}
+          </Space>
+          <Space size={4} wrap>
+            {tags.map((item, index) => (
+              <Tag
+                color="blue"
+                key={index}
+                icon={<TagOutlined />}
+                className="m-0"
+              >
+                {item}
+              </Tag>
+            ))}
+          </Space>
+          <Typography.Paragraph
+            ellipsis={{ rows: 3, expandable: false, symbol: "more" }}
+            className="m-0"
+          >
+            {descriptions}
+          </Typography.Paragraph>
+        </Space>
+        <div
+          className="d-flex align-items-center justify-space-around"
+          style={{ marginTop: "8px" }}
+        >
+          <Space direction="vertical" size={0} align="center">
+            <TeamOutlined className="color-secondary" />
+            <Typography.Text type="secondary">
+              {members} memebers
+            </Typography.Text>
+          </Space>
+          <Space direction="vertical" size={0} align="center">
+            <FormOutlined className="color-secondary" />
+            <Typography.Text type="secondary">{posts} posts</Typography.Text>
+          </Space>
+          <Space direction="vertical" size={0} align="center">
+            <MessageOutlined className="color-secondary" />
+            <Typography.Text type="secondary">
+              {commentsPerDay} discs/day
+            </Typography.Text>
+          </Space>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+export default StudySpaceCard;
