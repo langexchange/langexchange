@@ -199,3 +199,11 @@ $background-color: #f0f2f5;
 .bottom-0 {
   bottom: 0;
 }
+
+.post-card {
+  .ant-card-actions {
+    li {
+      margin: 8px 0 !important;
+    }
+  }
+}
