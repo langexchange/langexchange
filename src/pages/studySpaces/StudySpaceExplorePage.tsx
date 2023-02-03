@@ -1,4 +1,4 @@
-import { Breadcrumb, Col, Row } from "antd";
+import { Breadcrumb, Col, Row, Typography } from "antd";
 import { GroupOutlined } from "@ant-design/icons";
 import Sidebar from "../../components/studySpaces/Sidebar";
 import StudySpaceList from "../../components/studySpaces/StudySpaceList";
@@ -31,6 +31,7 @@ const StudySpaceExplorePage = () => {
             </Breadcrumb.Item>
             <Breadcrumb.Item>Explores</Breadcrumb.Item>
           </Breadcrumb>
+          <Typography.Title level={3}>Recommends for you</Typography.Title>
           <StudySpaceList />
         </Col>
       </Row>

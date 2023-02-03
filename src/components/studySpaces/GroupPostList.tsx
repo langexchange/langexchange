@@ -3,6 +3,10 @@ import { Col, Row } from "antd";
 import PostCard from "../PostCard";
 
 interface PostProps {
+  group: {
+    name: string;
+    image: string;
+  };
   owner: {
     fullname: string;
     color: string;
@@ -20,6 +24,10 @@ const items: PostProps[] = [];
 
 for (let i = 0; i < 10; i++) {
   const itemProps: PostProps = {
+    group: {
+      name: faker.random.words(4),
+      image: faker.image.abstract(),
+    },
     owner: {
       fullname: faker.name.fullName(),
       image: faker.image.abstract(),
@@ -39,7 +47,7 @@ for (let i = 0; i < 10; i++) {
 
   items.push(itemProps);
 }
-const PostList = () => {
+const GroupPostList = () => {
   return (
     <Row gutter={[0, 24]}>
       {items.map((item, index) => (
@@ -51,4 +59,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default GroupPostList;

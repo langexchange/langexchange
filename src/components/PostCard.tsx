@@ -15,6 +15,10 @@ import {
 } from "@ant-design/icons";
 
 interface PostProps {
+  group?: {
+    name: string;
+    image: string;
+  };
   owner: {
     fullname: string;
     color: string;
@@ -29,6 +33,7 @@ interface PostProps {
 }
 
 const PostCard = ({
+  group,
   owner,
   images,
   contents,
@@ -53,8 +58,24 @@ const PostCard = ({
             src={<Image src={owner.image} />}
           />
           <Space size={0} direction="vertical">
-            <Typography.Text strong={true}>{owner.fullname}</Typography.Text>
-            <Typography.Text type="secondary">{time}</Typography.Text>
+            <Typography.Title level={5} className="m-0">
+              {group ? group.name : owner.fullname}
+            </Typography.Title>
+            {group ? (
+              <Space>
+                <Typography.Text type="secondary">
+                  {owner.fullname}
+                </Typography.Text>
+                <Typography.Text type="secondary">-</Typography.Text>
+                <Typography.Text type="secondary" className="text-400">
+                  {time}
+                </Typography.Text>
+              </Space>
+            ) : (
+              <Typography.Text type="secondary" className="text-400">
+                {time}
+              </Typography.Text>
+            )}
           </Space>
         </Space>
       }

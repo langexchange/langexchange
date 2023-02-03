@@ -9,6 +9,8 @@ import SignupPage from "./pages/authentications/SignupPage";
 import CommunityPage from "./pages/communitys/CommunityPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import StudySpaceExplorePage from "./pages/studySpaces/StudySpaceExplorePage";
+import StudySpaceOwnPage from "./pages/studySpaces/StudySpaceOwnPage";
+import StudySpacePage from "./pages/studySpaces/StudySpacePage";
 import WelcomePage from "./pages/welcomes/WelcomePage";
 
 function App() {
@@ -28,7 +30,12 @@ function App() {
         </Route>
         <Route element={<AppSignedInLayout />}>
           <Route path="/community" element={<CommunityPage />} />
-          <Route path="/study-space" element={<StudySpaceExplorePage />} />
+          <Route path="/study-spaces">
+            <Route index element={<StudySpacePage />} />
+            <Route path="explores" element={<StudySpaceExplorePage />} />
+            <Route path="own" element={<StudySpaceOwnPage />} />
+            <Route path="joined" element={<StudySpaceOwnPage />} />
+          </Route>
         </Route>
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
