@@ -1,37 +1,20 @@
-import { Col, Row } from "antd";
+import { Col } from "antd";
 import StudySpaceTabs from "../../components/community/StudySpaceTabs";
-import PostSearchCard from "../../components/PostSearchCard";
-import GroupPostList from "../../components/studySpaces/GroupPostList";
-import MainSidebar from "../../components/studySpaces/MainSidebar";
 
 const StudySpaceOwnPage = () => {
   return (
-    <div>
-      <Row
+    <>
+      <Col
+        span={18}
         style={{
-          height: "calc(100vh - 64px)",
-          padding: "24px 50px",
+          overflowY: "scroll",
+          height: "100%",
+          padding: "0 24px 48px 24px",
         }}
-        justify="space-between"
       >
-        <Col span={6}>
-          <MainSidebar />
-        </Col>
-        <Col
-          span={12}
-          style={{
-            overflowY: "scroll",
-            height: "100%",
-            padding: "0 24px 48px 24px",
-          }}
-        >
-          <StudySpaceTabs />
-        </Col>
-        <Col span={6}>
-          <PostSearchCard />
-        </Col>
-      </Row>
-    </div>
+        <StudySpaceTabs />
+      </Col>
+    </>
   );
 };
 

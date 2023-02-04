@@ -1,7 +1,8 @@
-import { Breadcrumb, Col, Row, Typography } from "antd";
+import { Breadcrumb, Col, Row, Space, Typography } from "antd";
 import { GroupOutlined } from "@ant-design/icons";
 import Sidebar from "../../components/studySpaces/Sidebar";
 import StudySpaceList from "../../components/studySpaces/StudySpaceList";
+import { Link } from "react-router-dom";
 
 const StudySpaceExplorePage = () => {
   return (
@@ -25,9 +26,13 @@ const StudySpaceExplorePage = () => {
           }}
         >
           <Breadcrumb style={{ marginBottom: "4px" }}>
-            <Breadcrumb.Item href="">
-              <GroupOutlined />
-              <span>Study space</span>
+            <Breadcrumb.Item>
+              <Link to="/study-spaces">
+                <Space size={4}>
+                  <GroupOutlined />
+                  <span>Study space</span>
+                </Space>
+              </Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>Explores</Breadcrumb.Item>
           </Breadcrumb>

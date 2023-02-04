@@ -1,6 +1,8 @@
-import { Tabs } from "antd";
+import { Tabs, Input } from "antd";
 import type { TabsProps } from "antd";
 import StudySpaceList from "../studySpaces/StudySpaceList";
+
+const { Search } = Input;
 
 const onChange = (key: string) => {
   console.log(key);
@@ -10,19 +12,21 @@ const items: TabsProps["items"] = [
   {
     key: "1",
     label: `All study spaces`,
-    children: <StudySpaceList colSpan={12} isJoined={true} />,
+    children: <StudySpaceList colSpan={6} isJoined={true} />,
   },
   {
     key: "2",
     label: `Academic study spaces`,
-    children: <StudySpaceList colSpan={12} isJoined={true} />,
+    children: <StudySpaceList colSpan={6} isJoined={true} />,
   },
   {
     key: "3",
     label: `Intersting study spaces`,
-    children: <StudySpaceList colSpan={12} isJoined={true} />,
+    children: <StudySpaceList colSpan={6} isJoined={true} />,
   },
 ];
+
+const onSearch = (value: string) => console.log(value);
 
 const StudySpaceTabs = () => {
   return (
@@ -32,6 +36,13 @@ const StudySpaceTabs = () => {
         defaultActiveKey="1"
         items={items}
         onChange={onChange}
+        tabBarExtraContent={
+          <Search
+            placeholder="input search text"
+            onSearch={onSearch}
+            style={{ width: 400 }}
+          />
+        }
       />
     </div>
   );

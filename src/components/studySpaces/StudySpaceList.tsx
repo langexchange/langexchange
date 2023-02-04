@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { Col, Row, Typography } from "antd";
+import { Col, Row } from "antd";
 import StudySpaceCard from "../StudySpaceCard";
 
 interface StudySpaceProps {

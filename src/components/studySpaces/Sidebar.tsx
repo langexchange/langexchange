@@ -16,6 +16,7 @@ import {
   ArrowLeftOutlined,
 } from "@ant-design/icons";
 import type { SelectProps } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const options: SelectProps["options"] = [
   {
@@ -73,10 +74,17 @@ const handleChange = (value: string | string[]) => {
 };
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <Space align="center">
-        <Button type="text" shape="circle" icon={<ArrowLeftOutlined />} />
+        <Button
+          type="text"
+          shape="circle"
+          icon={<ArrowLeftOutlined />}
+          onClick={() => navigate(-1)}
+        />
         <Typography.Title level={3} className="m-0">
           Explores
         </Typography.Title>

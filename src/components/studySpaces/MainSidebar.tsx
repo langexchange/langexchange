@@ -5,32 +5,49 @@ import {
   CompassOutlined,
   TeamOutlined,
   GroupOutlined,
+  AppstoreOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
+import { NavLink } from "react-router-dom";
 
 const items: MenuProps["items"] = [
   {
-    label: "Recent",
+    label: <NavLink to="recent">Recent</NavLink>,
     key: "recent",
     icon: <HistoryOutlined />,
   },
   {
-    label: "Explore",
-    key: "explore",
-    icon: <CompassOutlined />,
-  },
-  {
-    label: "You've joined",
-    key: "joined",
+    label: "Study spaces",
+    key: "study-space",
     icon: <TeamOutlined />,
+    children: [
+      {
+        label: <NavLink to="all">All study spaces</NavLink>,
+        key: "all",
+        icon: <AppstoreOutlined />,
+      },
+      {
+        label: <NavLink to="own">You own</NavLink>,
+        key: "own",
+        icon: <GroupOutlined />,
+      },
+      {
+        label: <NavLink to="joined">You've joined</NavLink>,
+        key: "joined",
+        icon: <CheckCircleOutlined />,
+      },
+    ],
   },
   {
-    label: "You own",
-    key: "owned",
-    icon: <GroupOutlined />,
+    label: <NavLink to="explores">Explore more space</NavLink>,
+    key: "explores",
+    icon: <CompassOutlined />,
   },
 ];
 
 const MainSidebar = () => {
+  let activeKey: string = window.location.pathname.split("/")[2] || "recent";
+
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
   };
@@ -49,9 +66,10 @@ const MainSidebar = () => {
         </Button>
         <Menu
           onClick={onClick}
-          mode="vertical"
+          mode="inline"
           items={items}
           style={{ border: "none" }}
+          selectedKeys={[activeKey]}
         />
       </Space>
     </div>
