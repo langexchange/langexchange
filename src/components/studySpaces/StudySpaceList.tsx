@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { Col, Row, Typography } from "antd";
+import { Col, Row } from "antd";
 import StudySpaceCard from "../StudySpaceCard";
 
 interface StudySpaceProps {
@@ -11,6 +11,11 @@ interface StudySpaceProps {
   posts: number;
   commentsPerDay: number;
   image: string;
+}
+
+interface StudySpaceListProps {
+  colSpan?: number;
+  isJoined?: boolean;
 }
 
 const items: StudySpaceProps[] = [];
@@ -28,14 +33,16 @@ for (let i = 0; i < 10; i++) {
   });
 }
 
-const StudySpaceList = () => {
+const StudySpaceList = ({
+  colSpan = 6,
+  isJoined = false,
+}: StudySpaceListProps) => {
   return (
     <div>
-      <Typography.Title level={3}>Recommends for you</Typography.Title>
       <Row gutter={[24, 24]}>
         {items.map((item, index) => (
-          <Col span={6} key={index}>
-            <StudySpaceCard {...item} />
+          <Col span={colSpan} key={index}>
+            <StudySpaceCard {...item} isJoined={isJoined} />
           </Col>
         ))}
       </Row>

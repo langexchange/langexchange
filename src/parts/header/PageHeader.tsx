@@ -20,44 +20,46 @@ import {
   BellOutlined,
   TranslationOutlined,
 } from "@ant-design/icons";
-import { Link, NavLink, useMatch } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import type { MenuProps } from "antd";
 const { Header } = Layout;
 
 const items: MenuProps["items"] = [
   {
-    label: "Community",
+    label: <NavLink to="/community">Community</NavLink>,
     key: "community",
     icon: <HomeOutlined />,
   },
   {
-    label: "Study space",
-    key: "study_space",
+    label: <NavLink to="/study-spaces">Study space</NavLink>,
+    key: "study-spaces",
     icon: <GroupOutlined />,
   },
   {
-    label: "Partner",
-    key: "partner",
+    label: <NavLink to="/partners">Partner</NavLink>,
+    key: "partners",
     icon: <TeamOutlined />,
   },
   {
-    label: "Chat",
+    label: <NavLink to="chat">Chat</NavLink>,
     key: "chat",
     icon: <MessageOutlined />,
   },
   {
-    label: "Vocabulary",
-    key: "vocabulary",
+    label: <NavLink to="vocabularies">Vocabulary</NavLink>,
+    key: "vocabularies",
     icon: <FileTextOutlined />,
   },
   {
-    label: "Live class",
-    key: "live_class",
+    label: <NavLink to="live-classes">Live class</NavLink>,
+    key: "live-classes",
     icon: <GlobalOutlined />,
   },
 ];
 
 const PageHeader = () => {
+  const activeKey: string = window.location.pathname.split("/")[1];
+
   return (
     <Header
       className="header"
@@ -90,7 +92,8 @@ const PageHeader = () => {
           <Menu
             theme="light"
             mode="horizontal"
-            defaultSelectedKeys={["community"]}
+            // defaultSelectedKeys={["community"]}
+            selectedKeys={[activeKey]}
             items={items}
             className="d-block"
           />
