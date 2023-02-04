@@ -8,6 +8,8 @@ import {
   TeamOutlined,
   FormOutlined,
   MessageOutlined,
+  UsergroupDeleteOutlined,
+  ArrowRightOutlined,
 } from "@ant-design/icons";
 
 interface StudySpaceProps {
@@ -19,6 +21,7 @@ interface StudySpaceProps {
   posts: number;
   commentsPerDay: number;
   image: string;
+  isJoined?: boolean;
 }
 
 const StudySpaceCard = ({
@@ -30,21 +33,36 @@ const StudySpaceCard = ({
   posts,
   commentsPerDay,
   image,
+  isJoined = false,
 }: StudySpaceProps) => {
+  let actions;
+  if (isJoined) {
+    actions = [
+      <Button type="text" icon={<UsergroupDeleteOutlined />} danger />,
+      <Button
+        type="text"
+        icon={<ArrowRightOutlined />}
+        className="btn-text-success"
+      />,
+    ];
+  } else {
+    actions = [
+      <Button type="text" icon={<DeleteOutlined />} danger />,
+      <Button
+        type="text"
+        icon={<UsergroupAddOutlined />}
+        className="btn-text-success"
+      />,
+      <Button type="text" icon={<MoreOutlined />} />,
+    ];
+  }
+
   return (
     <Card
       hoverable
       // style={{ width: 240 }}
       cover={<Image src={image} />}
-      actions={[
-        <Button type="text" icon={<DeleteOutlined />} danger />,
-        <Button
-          type="text"
-          icon={<UsergroupAddOutlined />}
-          className="btn-text-success"
-        />,
-        <Button type="text" icon={<MoreOutlined />} />,
-      ]}
+      actions={actions}
       style={{ height: "100%", flexDirection: "column" }}
       bodyStyle={{ flex: 1 }}
       className="d-flex"

@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, Row, Space } from "antd";
 import PostList from "../../components/community/PostList";
 import RightSidebar from "../../components/community/RightSidebar";
 import Sidebar from "../../components/community/Sidebar";
@@ -25,7 +25,9 @@ const CommunityPage = () => {
             padding: "0 24px 48px 24px",
           }}
         >
-          <PostInput />
+          <div style={{ marginBottom: "24px" }}>
+            <PostInput />
+          </div>
           <PostList />
         </Col>
         <Col span={6}>
