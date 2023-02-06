@@ -2,6 +2,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import AppSignedInLayout from "./layouts/AppSignedInLayout";
 import AuthenticationLayout from "./layouts/authentications/AuthenticationLayout";
 import NoSignedInLayout from "./layouts/NoSignedInLayout";
+import PartnerLayout from "./layouts/partners/PartnerLayout";
 import StudySpaceLayout from "./layouts/studySpace/StudySpaceLayout";
 import AboutPage from "./pages/abouts/AboutPage";
 import ForgotPasswordPage from "./pages/authentications/ForgotPasswordPage";
@@ -9,6 +10,9 @@ import SigninPage from "./pages/authentications/SigninPage";
 import SignupPage from "./pages/authentications/SignupPage";
 import CommunityPage from "./pages/communitys/CommunityPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import PartnerExplorePage from "./pages/partners/PartnerExplorePage";
+import PartnerRequestsPage from "./pages/partners/PartnerRequestsPage";
+import YourPartnersPage from "./pages/partners/YourPartnersPage";
 import StudySpaceExplorePage from "./pages/studySpaces/StudySpaceExplorePage";
 import StudySpaceOwnPage from "./pages/studySpaces/StudySpaceOwnPage";
 import StudySpacePage from "./pages/studySpaces/StudySpacePage";
@@ -40,6 +44,14 @@ function App() {
               <Route path="joined" element={<StudySpaceOwnPage />} />
             </Route>
             <Route path="explores" element={<StudySpaceExplorePage />} />
+          </Route>
+          <Route path="/partners">
+            <Route element={<PartnerLayout />}>
+              <Route index element={<PartnerExplorePage />} />
+              <Route path="explores" element={<PartnerExplorePage />} />
+              <Route path="requests" element={<PartnerRequestsPage />} />
+            </Route>
+            <Route path="all" element={<YourPartnersPage />} />
           </Route>
         </Route>
         <Route path="/*" element={<NotFoundPage />} />
