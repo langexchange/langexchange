@@ -204,6 +204,10 @@ $background-color: #f0f2f5;
   position: fixed;
 }
 
+.pos-relative {
+  position: relative;
+}
+
 .bottom-0 {
   bottom: 0;
 }
@@ -230,5 +234,11 @@ $background-color: #f0f2f5;
 .ant-menu.item-height-max-content {
   .ant-menu-item {
     height: max-content !important;
+  }
+}
+
+.ant-tabs.tab-bar-with-content-scroll {
+  .ant-tabs-content-holder {
+    overflow-y: scroll;
   }
 }

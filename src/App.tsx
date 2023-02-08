@@ -3,6 +3,7 @@ import AppSignedInLayout from "./layouts/AppSignedInLayout";
 import AuthenticationLayout from "./layouts/authentications/AuthenticationLayout";
 import NoSignedInLayout from "./layouts/NoSignedInLayout";
 import PartnerLayout from "./layouts/partners/PartnerLayout";
+import YourPartnerLayout from "./layouts/partners/YourPartnerLayout";
 import StudySpaceLayout from "./layouts/studySpace/StudySpaceLayout";
 import AboutPage from "./pages/abouts/AboutPage";
 import ForgotPasswordPage from "./pages/authentications/ForgotPasswordPage";
@@ -10,6 +11,7 @@ import SigninPage from "./pages/authentications/SigninPage";
 import SignupPage from "./pages/authentications/SignupPage";
 import CommunityPage from "./pages/communitys/CommunityPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import PartnerDetailPage from "./pages/partners/PartnerDetailPage";
 import PartnerExplorePage from "./pages/partners/PartnerExplorePage";
 import PartnerRequestsPage from "./pages/partners/PartnerRequestsPage";
 import YourPartnersPage from "./pages/partners/YourPartnersPage";
@@ -51,7 +53,10 @@ function App() {
               <Route path="explores" element={<PartnerExplorePage />} />
               <Route path="requests" element={<PartnerRequestsPage />} />
             </Route>
-            <Route path="all" element={<YourPartnersPage />} />
+            <Route element={<YourPartnerLayout />}>
+              <Route path="all" element={<YourPartnersPage />} />
+              <Route path="detail" element={<PartnerDetailPage />} />
+            </Route>
           </Route>
         </Route>
         <Route path="/*" element={<NotFoundPage />} />

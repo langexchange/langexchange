@@ -1,8 +1,8 @@
-import { Avatar, Button, Card, Menu, Space, Typography } from "antd";
+import { Menu } from "antd";
 import UserItem from "../UserItem";
-import { MoreOutlined } from "@ant-design/icons";
 import { faker } from "@faker-js/faker";
 import type { MenuProps } from "antd";
+import { Link } from "react-router-dom";
 
 interface UserItemProps {
   fullname: string;
@@ -35,7 +35,11 @@ const items: MenuProps["items"] = [];
 let i = 0;
 for (let item of userItems) {
   items.push({
-    label: <UserItem {...item} direction="left" badge={false} />,
+    label: (
+      <Link to="detail">
+        <UserItem {...item} direction="left" badge={false} />
+      </Link>
+    ),
     key: i.toString(),
   });
   i++;
@@ -52,7 +56,7 @@ const MenuUserList = () => {
       // selectedKeys={[current]}
       mode="vertical"
       items={items}
-      className="item-height-max-content height-full"
+      className="item-height-max-content"
     />
   );
 };
