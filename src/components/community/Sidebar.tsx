@@ -3,7 +3,6 @@ import UserItem from "../UserItem";
 import { MoreOutlined } from "@ant-design/icons";
 import { faker } from "@faker-js/faker";
 import type { MenuProps } from "antd";
-import Link from "antd/es/typography/Link";
 
 interface UserItemProps {
   fullname: string;

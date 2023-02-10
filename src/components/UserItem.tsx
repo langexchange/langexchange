@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Image, Menu, Space, Typography } from "antd";
+import { Avatar, Badge, Image, Space, Typography } from "antd";
 
 interface UserItemProps {
   fullname: string;
@@ -8,6 +8,8 @@ interface UserItemProps {
   image: string;
   isStrong: boolean;
   direction: string;
+  description?: string;
+  badge?: boolean;
 }
 
 const UserItem = ({
@@ -18,30 +20,53 @@ const UserItem = ({
   image,
   isStrong,
   direction,
+  description,
+  badge,
 }: UserItemProps) => {
   return (
     <Space>
       {direction === "right" ? (
         <>
           <Typography.Text strong={isStrong}>{fullname}</Typography.Text>
-          <Badge count={number}>
+          {badge ? (
+            <Badge count={number}>
+              <Avatar
+                style={{ verticalAlign: "middle", backgroundColor: color }}
+                size={size}
+                src={<Image src={image} style={{ width: 32 }} />}
+              />
+            </Badge>
+          ) : (
             <Avatar
               style={{ verticalAlign: "middle", backgroundColor: color }}
               size={size}
               src={<Image src={image} style={{ width: 32 }} />}
             />
-          </Badge>
+          )}
         </>
       ) : (
         <>
-          <Badge count={number}>
+          {badge ? (
+            <Badge count={number}>
+              <Avatar
+                style={{ verticalAlign: "middle", backgroundColor: color }}
+                size={size}
+                src={<Image src={image} style={{ width: 32 }} />}
+              />
+            </Badge>
+          ) : (
             <Avatar
               style={{ verticalAlign: "middle", backgroundColor: color }}
               size={size}
               src={<Image src={image} style={{ width: 32 }} />}
             />
-          </Badge>
-          <Typography.Text strong={isStrong}>{fullname}</Typography.Text>
+          )}
+          <Space.Compact direction="vertical">
+            <Typography.Text strong={isStrong}>{fullname}</Typography.Text>
+            {description ? (
+              <Typography.Text type="secondary">{description}</Typography.Text>
+            ) : null}
+          </Space.Compact>
         </>
       )}
     </Space>

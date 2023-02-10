@@ -12,17 +12,17 @@ const items: TabsProps["items"] = [
   {
     key: "1",
     label: `All study spaces`,
-    children: <StudySpaceList colSpan={6} isJoined={true} />,
+    children: <StudySpaceList colSpan={8} isJoined={true} />,
   },
   {
     key: "2",
     label: `Academic study spaces`,
-    children: <StudySpaceList colSpan={6} isJoined={true} />,
+    children: <StudySpaceList colSpan={8} isJoined={true} />,
   },
   {
     key: "3",
     label: `Intersting study spaces`,
-    children: <StudySpaceList colSpan={6} isJoined={true} />,
+    children: <StudySpaceList colSpan={8} isJoined={true} />,
   },
 ];
 
