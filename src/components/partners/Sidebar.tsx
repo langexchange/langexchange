@@ -39,9 +39,9 @@ const Sidebar = () => {
         padding: "12px 0",
         borderRadius: "8px",
       }}
-      className="height-full"
+    // className="height-full"
     >
-      <Space className="width-full height-full" direction="vertical">
+      <Space className="width-full" direction="vertical">
         <Menu
           onClick={onClick}
           mode="inline"

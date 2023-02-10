@@ -1,6 +1,7 @@
 import { Col, Row, Tabs } from "antd";
 import ProfileCard from "./ProfileCard";
 import PostList from "../../components/community/PostList";
+import VocabularyList from "../../components/partners/VocabularyList";
 
 const onChange = (key: string) => {
   console.log(key);
@@ -35,7 +36,7 @@ const PartnerDetailPage = () => {
               {
                 label: `Vocabularies`,
                 key: "vocabularies",
-                children: `Content of Tab Pane `,
+                children: <VocabularyList colSpan={12} editable={false} />,
               },
             ]}
           />
