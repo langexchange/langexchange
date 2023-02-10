@@ -37,7 +37,7 @@ const StudySpaceExplorePage = () => {
             <Breadcrumb.Item>Explores</Breadcrumb.Item>
           </Breadcrumb>
           <Typography.Title level={3}>Recommends for you</Typography.Title>
-          <StudySpaceList />
+          <StudySpaceList colSpan={8} />
         </Col>
       </Row>
     </div>
