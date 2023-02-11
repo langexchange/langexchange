@@ -39,12 +39,28 @@ for (let i = 0; i < 10; i++) {
 
   items.push(itemProps);
 }
-const PostList = () => {
+
+interface PostListProps {
+  setPost?: (val: PostProps) => void;
+  showModal?: () => void;
+}
+
+const PostList = ({ setPost, showModal }: PostListProps) => {
+  const onClick = (item: PostProps) => {
+    setPost && setPost(item);
+    showModal && showModal();
+  };
+
   return (
     <Row gutter={[0, 24]}>
       {items.map((item, index) => (
         <Col span={24} key={index}>
-          <PostCard {...item} />
+          <PostCard
+            {...item}
+            onClick={(item) => {
+              onClick(item);
+            }}
+          />
         </Col>
       ))}
     </Row>

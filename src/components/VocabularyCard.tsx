@@ -1,12 +1,17 @@
 import { Button, Card, Space, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
-interface VocabularyCardProps {
+interface Vocabulary {
   title: string;
   descriptions: string;
   termLanguage: string;
   defineLanguage: string;
+}
+
+interface VocabularyCardProps extends Vocabulary {
   editable?: boolean;
+  setVocabularySet?: (val: Vocabulary) => void;
+  showModal?: () => void;
 }
 
 const VocabularyCard = ({
@@ -15,7 +20,19 @@ const VocabularyCard = ({
   termLanguage,
   defineLanguage,
   editable = false,
+  setVocabularySet,
+  showModal,
 }: VocabularyCardProps) => {
+  const onClick = () => {
+    showModal && showModal();
+    setVocabularySet &&
+      setVocabularySet({
+        title,
+        descriptions,
+        termLanguage,
+        defineLanguage,
+      });
+  };
   return (
     <Card
       hoverable
@@ -24,6 +41,7 @@ const VocabularyCard = ({
         padding: "12px",
         height: "100%",
       }}
+      onClick={onClick}
     >
       <div className="d-flex height-full" style={{ flexDirection: "column" }}>
         <Space direction="vertical" style={{ flex: 1 }}>
