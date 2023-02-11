@@ -3,7 +3,9 @@ import {
   Button,
   Card,
   Carousel,
+  Dropdown,
   Image,
+  MenuProps,
   Space,
   Tag,
   Typography,
@@ -14,7 +16,7 @@ import {
   CommentOutlined,
 } from "@ant-design/icons";
 
-interface PostProps {
+interface Post {
   group?: {
     name: string;
     image: string;
@@ -32,6 +34,47 @@ interface PostProps {
   time: string;
 }
 
+interface PostProps extends Post {
+  onClick?: (item: Post) => void;
+  hoverable?: boolean;
+  bordered?: boolean;
+  boxShadow?: boolean;
+}
+const items: MenuProps["items"] = [
+  {
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.antgroup.com"
+      >
+        1st menu item
+      </a>
+    ),
+    key: "0",
+  },
+  {
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.aliyun.com"
+      >
+        2nd menu item
+      </a>
+    ),
+    key: "1",
+  },
+  {
+    type: "divider",
+  },
+  {
+    label: "3rd menu item（disabled）",
+    key: "3",
+    disabled: true,
+  },
+];
+
 const PostCard = ({
   group,
   owner,
@@ -41,12 +84,22 @@ const PostCard = ({
   emotions,
   comments,
   time,
+  onClick,
+  hoverable = true,
+  bordered = true,
+  boxShadow = true,
 }: PostProps) => {
   return (
     <Card
+      bordered={bordered}
       className="width-full post-card"
-      hoverable
-      // type="inner"
+      hoverable={hoverable}
+      style={
+        (!boxShadow && {
+          boxShadow: "none",
+        }) ||
+        {}
+      }
       title={
         <Space>
           <Avatar
@@ -79,7 +132,7 @@ const PostCard = ({
           </Space>
         </Space>
       }
-      extra={<Button shape="circle" icon={<MoreOutlined />} />}
+      // extra={<Button shape="circle" icon={<MoreOutlined />} />}
       cover={
         <Carousel>
           {images.map((item, index) => (
@@ -100,12 +153,14 @@ const PostCard = ({
             <CommentOutlined /> {comments}
           </Space>
         </Button>,
-        <Button
-          type="text"
-          icon={<MoreOutlined />}
-          className="btn-text-warning width-full"
-          block={true}
-        />,
+        <Dropdown menu={{ items }}>
+          <Button
+            type="text"
+            icon={<MoreOutlined rotate={90} />}
+            className="btn-text-warning width-full"
+            block={true}
+          />
+        </Dropdown>,
       ]}
       headStyle={{
         backgroundColor: "white",
@@ -113,6 +168,19 @@ const PostCard = ({
         paddingTop: "12px",
         paddingBottom: "12px",
       }}
+      onClick={() =>
+        onClick &&
+        onClick({
+          group,
+          owner,
+          images,
+          contents,
+          languages,
+          emotions,
+          comments,
+          time,
+        })
+      }
     >
       <Typography.Paragraph>{contents}</Typography.Paragraph>
       <Space>

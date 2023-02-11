@@ -5,6 +5,8 @@ import VocabularyCard from "../VocabularyCard";
 interface ListProps {
   colSpan?: number;
   editable?: boolean;
+  setVocabularySet?: (val: Vocabulary) => void;
+  showModal?: () => void;
 }
 
 interface Vocabulary {
@@ -12,7 +14,6 @@ interface Vocabulary {
   descriptions: string;
   termLanguage: string;
   defineLanguage: string;
-  image: string;
 }
 
 const items: Vocabulary[] = [];
@@ -23,12 +24,16 @@ for (let i = 0; i < 10; i++) {
     descriptions: faker.random.words(15),
     termLanguage: faker.random.words(1),
     defineLanguage: faker.random.words(1),
-    image: faker.image.abstract(),
   };
   items.push(item);
 }
 
-const VocabularyList = ({ colSpan = 6, editable = false }: ListProps) => {
+const VocabularyList = ({
+  showModal,
+  setVocabularySet,
+  colSpan = 6,
+  editable = false,
+}: ListProps) => {
   return (
     <div>
       <Row gutter={[12, 12]}>
@@ -40,7 +45,12 @@ const VocabularyList = ({ colSpan = 6, editable = false }: ListProps) => {
               height: "auto",
             }}
           >
-            <VocabularyCard {...item} editable={editable} />
+            <VocabularyCard
+              {...item}
+              editable={editable}
+              showModal={showModal}
+              setVocabularySet={setVocabularySet}
+            />
           </Col>
         ))}
       </Row>

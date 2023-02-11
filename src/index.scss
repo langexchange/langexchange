@@ -43,6 +43,10 @@ $background-color: #f0f2f5;
   display: flex;
 }
 
+.flex-column {
+  flex-direction: column;
+}
+
 .justify-space-between {
   justify-content: space-between;
 }
@@ -240,5 +244,26 @@ $background-color: #f0f2f5;
 .ant-tabs.tab-bar-with-content-scroll {
   .ant-tabs-content-holder {
     overflow-y: scroll;
+  }
+}
+
+.pt-32 {
+  padding-top: 32px;
+}
+
+.pb-32 {
+  padding-bottom: 32px;
+}
+
+.pv-32 {
+  padding-bottom: 32px;
+  padding-top: 32px;
+}
+
+.ant-modal.modal-with-content-scroll {
+  .ant-modal-content {
+    max-height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
   }
 }

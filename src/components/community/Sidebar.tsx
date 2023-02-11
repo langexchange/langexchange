@@ -71,7 +71,7 @@ const Sidebar = () => {
               // type="text"
               size="small"
               shape="circle"
-              icon={<MoreOutlined />}
+              icon={<MoreOutlined rotate={90} />}
             />
           </Space>
           <Menu
@@ -98,7 +98,7 @@ const Sidebar = () => {
               // type="text"
               size="small"
               shape="circle"
-              icon={<MoreOutlined />}
+              icon={<MoreOutlined rotate={90} />}
             />
           </Space>
           <Menu
