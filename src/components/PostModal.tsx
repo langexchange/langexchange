@@ -43,9 +43,6 @@ const PostModal = ({ post, isModalOpen, setIsModalOpen }: any) => {
               onChange={onTextInputChange}
               placeholder="Write your comment..."
               allowClear
-              style={{
-                borderRadius: "12px",
-              }}
             />
           </Col>
           <Col flex="none">
