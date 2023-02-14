@@ -1,6 +1,7 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import AppSignedInLayout from "./layouts/AppSignedInLayout";
 import AuthenticationLayout from "./layouts/authentications/AuthenticationLayout";
+import ChatLayout from "./layouts/chats/ChatLayout";
 import NoSignedInLayout from "./layouts/NoSignedInLayout";
 import PartnerLayout from "./layouts/partners/PartnerLayout";
 import YourPartnerLayout from "./layouts/partners/YourPartnerLayout";
@@ -9,6 +10,7 @@ import AboutPage from "./pages/abouts/AboutPage";
 import ForgotPasswordPage from "./pages/authentications/ForgotPasswordPage";
 import SigninPage from "./pages/authentications/SigninPage";
 import SignupPage from "./pages/authentications/SignupPage";
+import ChatPage from "./pages/chats/ChatPage";
 import CommunityPage from "./pages/communitys/CommunityPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PartnerDetailPage from "./pages/partners/PartnerDetailPage";
@@ -57,6 +59,9 @@ function App() {
               <Route path="all" element={<YourPartnersPage />} />
               <Route path="detail" element={<PartnerDetailPage />} />
             </Route>
+          </Route>
+          <Route path="/chat" element={<ChatLayout />}>
+            <Route index element={<ChatPage />} />
           </Route>
         </Route>
         <Route path="/*" element={<NotFoundPage />} />
