@@ -1,7 +1,13 @@
 import { Button, Card, Space, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import UserItem from "./UserItem";
 
 interface Vocabulary {
+  owner?: {
+    fullname: string;
+    color?: string;
+    image: string;
+  };
   title: string;
   descriptions: string;
   termLanguage: string;
@@ -15,6 +21,7 @@ interface VocabularyCardProps extends Vocabulary {
 }
 
 const VocabularyCard = ({
+  owner,
   title,
   descriptions,
   termLanguage,
@@ -59,6 +66,13 @@ const VocabularyCard = ({
               <Tag color="green">{defineLanguage}</Tag>
             </Space>
           </Space>
+          {owner ? (
+            <UserItem
+              fullname={owner.fullname}
+              size="small"
+              image={owner.image}
+            />
+          ) : null}
         </Space>
         {editable ? (
           <Space style={{ justifyContent: "end" }}>

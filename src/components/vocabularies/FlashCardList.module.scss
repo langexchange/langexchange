@@ -1,0 +1,26 @@
+.container {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+
+  .index {
+    position: absolute;
+    bottom: 10px;
+    right: 8px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #8c8c8c;
+  }
+
+  .navigation {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .button {
+      color: #8c8c8c;
+      width: 200px;
+    }
+  }
+}

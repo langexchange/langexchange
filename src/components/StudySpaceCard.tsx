@@ -60,7 +60,6 @@ const StudySpaceCard = ({
   return (
     <Card
       hoverable
-      // style={{ width: 240 }}
       cover={<Image src={image} />}
       actions={actions}
       style={{ height: "100%", flexDirection: "column" }}
