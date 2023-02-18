@@ -11,6 +11,10 @@ $background-color: #f0f2f5;
   background-color: $background-color;
 }
 
+.white-background {
+  background-color: #fff !important;
+}
+
 .color-red-logo {
   color: $logo-red-color;
 }
@@ -115,6 +119,16 @@ $background-color: #f0f2f5;
   }
 }
 
+.btn-outlined-success {
+  color: $success-color;
+  background-color: "#fff";
+  border-color: $success-color;
+  &:hover {
+    color: #73d13d !important;
+    border-color: #73d13d !important;
+  }
+}
+
 .btn-warning {
   color: #fff;
   background-color: $warning-color;
@@ -212,6 +226,10 @@ $background-color: #f0f2f5;
   position: relative;
 }
 
+.pos-absolute {
+  position: absolute;
+}
+
 .bottom-0 {
   bottom: 0;
 }
@@ -265,5 +283,18 @@ $background-color: #f0f2f5;
     max-height: calc(100vh - 64px);
     display: flex;
     flex-direction: column;
+  }
+}
+
+.sider-with-content-scroll {
+  .ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.firt-div-child-full-width {
+  div:first-child {
+    width: 100%;
   }
 }

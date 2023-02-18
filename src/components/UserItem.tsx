@@ -2,12 +2,12 @@ import { Avatar, Badge, Image, Space, Typography } from "antd";
 
 interface UserItemProps {
   fullname: string;
-  size: any;
-  number: any;
-  color: string;
+  size?: any;
+  number?: any;
+  color?: string;
   image: string;
-  isStrong: boolean;
-  direction: string;
+  isStrong?: boolean;
+  direction?: string;
   description?: string;
   badge?: boolean;
 }
