@@ -16,7 +16,29 @@ for (let i = 0; i < 10; i++) {
   items.push(item);
 }
 
-const VocabularyList = () => {
+type VocabType = "hard" | "known";
+interface Props {
+  type?: VocabType;
+}
+
+const VocabularyList = ({ type }: Props) => {
+  let badge: any;
+  switch (type) {
+    case "hard":
+      badge = {
+        text: "Hard",
+        color: "red",
+      };
+      break;
+    case "known":
+      badge = {
+        text: "Known",
+        color: "green",
+      };
+      break;
+    default:
+      break;
+  }
   return (
     <List
       itemLayout="horizontal"
@@ -24,7 +46,7 @@ const VocabularyList = () => {
       split={false}
       renderItem={(item) => (
         <List.Item>
-          <VocabularyItem {...item} />
+          <VocabularyItem {...item} badge={badge} />
         </List.Item>
       )}
     />

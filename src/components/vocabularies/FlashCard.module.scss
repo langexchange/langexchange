@@ -1,0 +1,78 @@
+.card {
+  // margin: 10px auto;
+  background: white;
+  min-height: 300px;
+  min-width: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1f1f1f;
+  font-size: 24px;
+  font-weight: 400;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.1),
+    0px 8px 16px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+  cursor: pointer;
+  transition: 250ms;
+  transform-style: preserve-3d;
+  border-radius: 8px;
+  padding: 50px 50px 90px;
+  box-sizing: content-box;
+}
+
+/* when card is clicked adding .side class */
+.side {
+  transform: rotateY(-180deg);
+}
+
+/* card content */
+.card {
+  .front,
+  .back {
+    position: absolute;
+    padding: 1rem;
+    backface-visibility: hidden;
+    font-size: 48px;
+    font-weight: 300;
+    text-align: center;
+  }
+}
+
+.card {
+  .front {
+    transform: rotateY(0deg);
+  }
+}
+.card.side {
+  .front {
+    opacity: 0;
+    display: none;
+  }
+}
+
+.card {
+  .back {
+    transform: rotateY(180deg);
+  }
+}
+
+.card {
+  .title {
+    opacity: 0.7;
+    font-size: 14px;
+    position: absolute;
+    top: 24px;
+  }
+}
+.card.side {
+  .title {
+    transform: rotateY(180deg);
+  }
+}
+
+.loading {
+  color: white;
+  width: 350px;
+  text-align: center;
+  margin: 20px auto;
+}

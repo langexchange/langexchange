@@ -73,6 +73,8 @@ const PageHeader = () => {
         top: 0,
         zIndex: 1,
         width: "100%",
+        lineHeight: "48px",
+        height: "48px",
       }}
     >
       <Row className="width-full d-flex align-items-center">
