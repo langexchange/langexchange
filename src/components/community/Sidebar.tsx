@@ -13,7 +13,7 @@ interface UserItemProps {
   isStrong: boolean;
 }
 
-const items: UserItemProps[] = [];
+const userItems: UserItemProps[] = [];
 
 for (let i = 0; i < 10; i++) {
   const itemProps: UserItemProps = {
@@ -25,7 +25,18 @@ for (let i = 0; i < 10; i++) {
     isStrong: false,
   };
 
-  items.push(itemProps);
+  userItems.push(itemProps);
+}
+
+const items: MenuProps["items"] = [];
+
+let i = 0;
+for (let item of userItems) {
+  items.push({
+    label: <UserItem {...item} direction="right" badge={false} />,
+    key: i.toString(),
+  });
+  i++;
 }
 
 const onClick: MenuProps["onClick"] = (e) => {
@@ -78,16 +89,9 @@ const Sidebar = () => {
             onClick={onClick}
             mode="vertical"
             style={{ background: "none", border: "none" }}
-          >
-            {items.slice(0, 4).map((item, index) => (
-              <Menu.Item
-                key={index}
-                style={{ height: "54px", lineHeight: "54px" }}
-              >
-                <UserItem {...item} direction="right" />
-              </Menu.Item>
-            ))}
-          </Menu>
+            className="item-height-max-content item-no-padding"
+            items={items.slice(0, 4)}
+          />
         </Space>
         <Space direction="vertical">
           <Space align="center">
@@ -104,17 +108,10 @@ const Sidebar = () => {
           <Menu
             onClick={onClick}
             mode="vertical"
+            className="item-height-max-content item-no-padding"
             style={{ background: "none", border: "none" }}
-          >
-            {items.slice(0, 4).map((item, index) => (
-              <Menu.Item
-                key={index}
-                style={{ height: "50px", lineHeight: "50px" }}
-              >
-                <UserItem {...item} direction="right" />
-              </Menu.Item>
-            ))}
-          </Menu>
+            items={items.slice(5, 10)}
+          />
         </Space>
       </Space>
     </div>

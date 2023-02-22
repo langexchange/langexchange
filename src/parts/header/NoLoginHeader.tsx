@@ -1,4 +1,4 @@
-import Logo from "../../assets/images/logo.svg";
+import Logo from "../../assets/images/logo.png";
 import { Button, Dropdown, Image, Layout, Menu, Space, message } from "antd";
 import { DownOutlined, GlobalOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
@@ -55,10 +55,7 @@ const NoLoginHeader = () => {
     <Header
       className="header"
       style={{
-        display: "flex",
         backgroundColor: "white",
-        alignItems: "center",
-        justifyContent: "space-between",
         borderBottom: "1px solid rgba(5, 5, 5, 0.06)",
         position: "sticky",
         top: 0,
@@ -66,41 +63,50 @@ const NoLoginHeader = () => {
         width: "100%",
       }}
     >
-      <div className="logo">
-        <NavLink to="/">
-          <Image
-            src={Logo}
-            alt="LangExchange Logo"
-            width={161}
-            preview={false}
+      <div
+        className="container"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="logo">
+          <NavLink to="/">
+            <Image
+              src={Logo}
+              alt="LangExchange Logo"
+              width={161}
+              preview={false}
+            />
+          </NavLink>
+        </div>
+        <Space className="toolbars" align="center">
+          <Menu
+            theme="light"
+            mode="horizontal"
+            items={items}
+            selectedKeys={(useMatch("/abouts") && ["about"]) || []}
           />
-        </NavLink>
-      </div>
-      <Space className="toolbars" align="center">
-        <Menu
-          theme="light"
-          mode="horizontal"
-          items={items}
-          selectedKeys={(useMatch("/abouts") && ["about"]) || []}
-        />
-        <Dropdown menu={menuProps}>
-          <Button type="text">
-            <Space>
-              <GlobalOutlined />
-              English (UK)
-              <DownOutlined />
-            </Space>
-          </Button>
-        </Dropdown>
-        <Space>
-          <Link to="/sign-in">
-            <Button type="primary">Sign in</Button>
-          </Link>
-          <Link to="/sign-up">
-            <Button>Sign up</Button>
-          </Link>
+          <Dropdown menu={menuProps}>
+            <Button type="text">
+              <Space>
+                <GlobalOutlined />
+                English (UK)
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+          <Space>
+            <Link to="/sign-in">
+              <Button type="primary">Sign in</Button>
+            </Link>
+            <Link to="/sign-up">
+              <Button>Sign up</Button>
+            </Link>
+          </Space>
         </Space>
-      </Space>
+      </div>
     </Header>
   );
 };

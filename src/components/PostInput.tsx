@@ -1,50 +1,148 @@
-import {
-  FileImageOutlined,
-  FileTextOutlined,
-  AudioOutlined,
-} from "@ant-design/icons";
-import { Avatar, Button, Card, Divider, Input, Space, Typography } from "antd";
+import { SmileOutlined } from "@ant-design/icons";
+import { Avatar, Button, Card, Col, Input, Modal, Popover, Row } from "antd";
+import { useRef, useState } from "react";
+import SeclectLanguageInput from "./SeclectLanguageInput";
+import TagsInput from "./TagsInput";
+import UploadAudio from "./UploadAudio";
+import UploadImage from "./UploadImage";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import type { InputRef } from "antd";
+import { faker } from "@faker-js/faker";
 
 const PostInput = () => {
+  const inputRef = useRef<InputRef>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const initialTags: string[] = [];
+  const [tags, setTags] = useState(initialTags);
+  const [open, setOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+    setTimeout(() => {
+      inputRef.current!.focus({
+        cursor: "start",
+      });
+    }, 300);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const hide = () => {
+    setOpen(false);
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+  };
+
   return (
-    <Card bodyStyle={{ padding: "12px 24px" }}>
-      <div className="d-flex align-items-center justify-space-between">
-        <Avatar style={{ marginRight: "8px" }} size="large">
-          T
-        </Avatar>
-        <Input
+    <>
+      <Card hoverable size="small" onClick={showModal}>
+        <div className="d-flex justify-space-between align-items-center py-1">
+          <div className="me-2">
+            <Avatar size={44} src={faker.image.abstract()} />
+          </div>
+          <Button
+            block
+            size="large"
+            className="text-left has-background-color"
+            type="text"
+            shape="round"
+          >
+            <span className="text-300 color-secondary">
+              Let's share something to practice together...
+            </span>
+          </Button>
+        </div>
+      </Card>
+      <Modal
+        title={
+          <Row align="middle" gutter={8}>
+            <Col flex="none">New post</Col>
+            <Col flex="none">
+              <SeclectLanguageInput
+                bordered={false}
+                showArrow={true}
+                showSearch={true}
+                size="small"
+                mode="multiple"
+                placeholder={
+                  <span className="text-300 fz-14" style={{ color: "#bfbfbf" }}>
+                    Languages
+                  </span>
+                }
+                width="100%"
+                style={{ minWidth: "110px" }}
+                className="select-with-no-padding-y"
+              />
+            </Col>
+            <Col flex="auto" className="d-flex align-items-center">
+              <TagsInput
+                tags={tags}
+                setTags={setTags}
+                tagColor="green"
+                placeholder="Add topic"
+                borderStyle="none"
+                placeholderStyle={{
+                  fontSize: "14px",
+                  fontWeight: 300,
+                  color: "#bfbfbf",
+                }}
+              />
+            </Col>
+          </Row>
+        }
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        width={700}
+        footer={[]}
+      >
+        <Input.TextArea
+          allowClear
+          bordered={false}
+          placeholder="Share something here..."
+          autoSize={{ minRows: 4, maxRows: 20 }}
           size="large"
-          placeholder="Let's share something to practice together..."
+          className="mb-3 input-font-large-placeholder"
+          ref={inputRef}
         />
-      </div>
-      <Divider style={{ margin: "12px 0" }} />
-      <div className="d-flex align-items-center justify-space-around">
-        <Button type="text">
-          <Space>
-            <FileImageOutlined className="fz-20 color-danger" />
-            <Typography.Text type="secondary" strong={true}>
-              Pictures/Videos
-            </Typography.Text>
-          </Space>
+        <div className="pos-relative text-left mb-3">
+          <UploadAudio />
+          <Popover
+            content={
+              <div>
+                <Picker data={data} onEmojiSelect={console.log} theme="light" />
+              </div>
+            }
+            title="Title"
+            trigger="click"
+            open={open}
+            onOpenChange={handleOpenChange}
+            className="pos-absolute"
+          >
+            <Button
+              type="text"
+              shape="circle"
+              style={{ top: 0, left: "40px", zIndex: 2 }}
+              className="btn-text-warning"
+              icon={<SmileOutlined style={{ fontSize: "24px" }} />}
+            />
+          </Popover>
+        </div>
+        <UploadImage />
+        <Button size="large" block type="primary">
+          Create new posts
         </Button>
-        <Button type="text">
-          <Space>
-            <FileTextOutlined className="fz-20 color-warning" />
-            <Typography.Text type="secondary" strong={true}>
-              Templates
-            </Typography.Text>
-          </Space>
-        </Button>
-        <Button type="text">
-          <Space>
-            <AudioOutlined className="fz-20 color-success" />
-            <Typography.Text type="secondary" strong={true}>
-              Audio records
-            </Typography.Text>
-          </Space>
-        </Button>
-      </div>
-    </Card>
+      </Modal>
+    </>
   );
 };
 

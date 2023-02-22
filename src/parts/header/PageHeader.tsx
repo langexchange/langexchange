@@ -1,4 +1,4 @@
-import Logo from "../../assets/images/logo.svg";
+import Logo from "../../assets/images/logo.png";
 import {
   Avatar,
   Badge,
@@ -30,11 +30,11 @@ const items: MenuProps["items"] = [
     key: "community",
     icon: <HomeOutlined />,
   },
-  {
-    label: <NavLink to="/study-spaces">Study space</NavLink>,
-    key: "study-spaces",
-    icon: <GroupOutlined />,
-  },
+  // {
+  //   label: <NavLink to="/study-spaces">Study space</NavLink>,
+  //   key: "study-spaces",
+  //   icon: <GroupOutlined />,
+  // },
   {
     label: <NavLink to="/partners">Partner</NavLink>,
     key: "partners",
@@ -50,11 +50,11 @@ const items: MenuProps["items"] = [
     key: "vocabularies",
     icon: <FileTextOutlined />,
   },
-  {
-    label: <NavLink to="live-classes">Live class</NavLink>,
-    key: "live-classes",
-    icon: <GlobalOutlined />,
-  },
+  // {
+  //   label: <NavLink to="live-classes">Live class</NavLink>,
+  //   key: "live-classes",
+  //   icon: <GlobalOutlined />,
+  // },
 ];
 
 const PageHeader = () => {
@@ -77,57 +77,59 @@ const PageHeader = () => {
         height: "48px",
       }}
     >
-      <Row className="width-full d-flex align-items-center">
-        <Col span={6}>
-          <div className="logo">
-            <NavLink to="/">
-              <Image
-                src={Logo}
-                alt="LangExchange Logo"
-                width={161}
-                preview={false}
-              />
-            </NavLink>
-          </div>
-        </Col>
-        <Col span={12} className="text-center">
-          <Menu
-            theme="light"
-            mode="horizontal"
-            // defaultSelectedKeys={["community"]}
-            selectedKeys={[activeKey]}
-            items={items}
-            className="d-block"
-          />
-        </Col>
-        <Col span={6} className="d-flex justify-end align-items-center">
-          <Space className="toolbars" align="center">
-            <Button type="text" className="d-flex align-items-center">
-              <Badge count={99} overflowCount={10} size="small">
-                <div
-                  className="d-flex align-items-center"
-                  style={{
-                    height: "24px",
-                    width: "24px",
-                  }}
-                >
-                  <BellOutlined style={{ fontSize: "16px" }} />
-                </div>
-              </Badge>
-            </Button>
-            <Button
-              type="text"
-              className="d-flex align-items-center"
-              size="large"
-            >
-              <Avatar size={36}>T</Avatar>
-            </Button>
-            <Button type="text" className="d-flex align-items-center">
-              <TranslationOutlined style={{ fontSize: "16px" }} />
-            </Button>
-          </Space>
-        </Col>
-      </Row>
+      <div className="container">
+        <Row className="width-full d-flex align-items-center">
+          <Col span={6}>
+            <div className="logo">
+              <NavLink to="/">
+                <Image
+                  src={Logo}
+                  alt="LangExchange Logo"
+                  width={161}
+                  preview={false}
+                />
+              </NavLink>
+            </div>
+          </Col>
+          <Col span={12} className="text-center">
+            <Menu
+              theme="light"
+              mode="horizontal"
+              // defaultSelectedKeys={["community"]}
+              selectedKeys={[activeKey]}
+              items={items}
+              className="d-block"
+            />
+          </Col>
+          <Col span={6} className="d-flex justify-end align-items-center">
+            <Space className="toolbars" align="center">
+              <Button type="text" className="d-flex align-items-center">
+                <Badge count={99} overflowCount={10} size="small">
+                  <div
+                    className="d-flex align-items-center"
+                    style={{
+                      height: "24px",
+                      width: "24px",
+                    }}
+                  >
+                    <BellOutlined style={{ fontSize: "16px" }} />
+                  </div>
+                </Badge>
+              </Button>
+              <Button
+                type="text"
+                className="d-flex align-items-center"
+                size="large"
+              >
+                <Avatar size={36}>T</Avatar>
+              </Button>
+              <Button type="text" className="d-flex align-items-center">
+                <TranslationOutlined style={{ fontSize: "16px" }} />
+              </Button>
+            </Space>
+          </Col>
+        </Row>
+      </div>
     </Header>
   );
 };

@@ -9,7 +9,7 @@ const StudySpaceExplorePage = () => {
     <div>
       <Row
         style={{
-          height: "calc(100vh - 64px)",
+          height: "calc(100vh - 48px)",
           padding: "24px 50px",
         }}
         justify="space-between"

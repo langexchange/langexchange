@@ -4,20 +4,16 @@ import Sidebar from "../../components/partners/Sidebar";
 
 const PartnerLayout = () => {
   return (
-    <div>
-      <Row
-        style={{
-          height: "calc(100vh - 64px)",
-          padding: "24px 50px",
-        }}
-        justify="space-between"
-      >
-        <Col span={6}>
-          <Sidebar />
-        </Col>
-        <Outlet />
-      </Row>
-    </div>
+    <Row
+      gutter={12}
+      className="full-height-minus-header py-3"
+      justify="space-between"
+    >
+      <Col span={6}>
+        <Sidebar />
+      </Col>
+      <Outlet />
+    </Row>
   );
 };
 

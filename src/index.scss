@@ -119,6 +119,13 @@ $background-color: #f0f2f5;
   }
 }
 
+.btn-link-success {
+  color: $success-color;
+  &:hover {
+    color: #73d13d !important;
+  }
+}
+
 .btn-outlined-success {
   color: $success-color;
   background-color: "#fff";
@@ -135,6 +142,23 @@ $background-color: #f0f2f5;
 
   &:hover {
     background-color: #ffc53d !important;
+  }
+}
+
+.btn-outlined-warning {
+  color: $warning-color;
+  background-color: "#fff";
+  border-color: $warning-color;
+  &:hover {
+    color: #ffc53d !important;
+    border-color: #ffc53d !important;
+  }
+}
+
+.btn-link-warning {
+  color: $warning-color;
+  &:hover {
+    color: #ffc53d !important;
   }
 }
 
@@ -210,6 +234,22 @@ $background-color: #f0f2f5;
   text-align: justify;
 }
 
+.fz-12 {
+  font-size: 12px;
+}
+
+.fz-14 {
+  font-size: 14px;
+}
+
+.fz-16 {
+  font-size: 16px;
+}
+
+.fz-18 {
+  font-size: 18px;
+}
+
 .fz-20 {
   font-size: 20px;
 }
@@ -259,6 +299,12 @@ $background-color: #f0f2f5;
   }
 }
 
+.ant-menu.item-no-padding {
+  .ant-menu-item {
+    padding: 0 !important;
+  }
+}
+
 .ant-tabs.tab-bar-with-content-scroll {
   .ant-tabs-content-holder {
     overflow-y: scroll;
@@ -280,7 +326,7 @@ $background-color: #f0f2f5;
 
 .ant-modal.modal-with-content-scroll {
   .ant-modal-content {
-    max-height: calc(100vh - 64px);
+    max-height: calc(100vh - 48px);
     display: flex;
     flex-direction: column;
   }
@@ -296,5 +342,54 @@ $background-color: #f0f2f5;
 .firt-div-child-full-width {
   div:first-child {
     width: 100%;
+  }
+}
+
+.input-font-large-placeholder::placeholder {
+  font: 24px sans-serif;
+  font-weight: 300;
+}
+
+.select-with-no-padding-y {
+  .ant-select-selector {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border: none !important;
+  }
+}
+
+.input-button {
+  cursor: pointer;
+  background-color: #f0f2f5;
+  border: none;
+
+  &:hover {
+    background-color: #e6e9f0;
+    border: none;
+  }
+}
+
+.full-height-minus-header {
+  height: calc(100vh - 48px);
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.input-no-background {
+  background-color: transparent !important;
+  input,
+  button,
+  .ant-select-selector {
+    background-color: transparent !important;
   }
 }

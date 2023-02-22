@@ -30,7 +30,7 @@ const VocabularySetMenuItem = ({
 }: Props) => {
   return (
     <div className="d-flex align-items-center justify-space-between">
-      <div className="d-flex flex-column" style={{ maxWidth: "230px" }}>
+      <div className="d-flex flex-column" style={{ maxWidth: "210px" }}>
         <Typography.Text strong ellipsis={true}>
           {title}
         </Typography.Text>

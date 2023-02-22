@@ -45,31 +45,33 @@ const feedbackItems = [
 const Feedbacks = () => {
   return (
     <div style={{ background: "white" }}>
-      <Space
-        direction="vertical"
-        style={{ padding: "48px 50px", width: "100%" }}
-        align="center"
-        size={48}
-      >
-        <Space direction="vertical" align="center">
-          <Title level={2} className="m-0">
-            What feeling are saying
-          </Title>
-          <Text type="secondary">
-            Learn a language, explore new cultures, and make friends around the
-            world
-          </Text>
+      <div className="container">
+        <Space
+          direction="vertical"
+          style={{ padding: "48px 50px", width: "100%" }}
+          align="center"
+          size={48}
+        >
+          <Space direction="vertical" align="center">
+            <Title level={2} className="m-0">
+              What feeling are saying
+            </Title>
+            <Text type="secondary">
+              Learn a language, explore new cultures, and make friends around
+              the world
+            </Text>
+          </Space>
+          <div>
+            <Row align="middle" gutter={[24, 48]}>
+              {feedbackItems.map((item, index) => (
+                <Col span={8} key={index}>
+                  <FeedbackItem {...item} />
+                </Col>
+              ))}
+            </Row>
+          </div>
         </Space>
-        <div>
-          <Row align="middle" gutter={[24, 48]}>
-            {feedbackItems.map((item, index) => (
-              <Col span={8} key={index}>
-                <FeedbackItem {...item} />
-              </Col>
-            ))}
-          </Row>
-        </div>
-      </Space>
+      </div>
     </div>
   );
 };
