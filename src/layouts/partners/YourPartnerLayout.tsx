@@ -18,64 +18,49 @@ const onSearch = (value: string) => console.log(value);
 const YourPartnerLayout = () => {
   const navigate = useNavigate();
   return (
-    <div>
-      <Row
-        style={{
-          height: "calc(100vh - 64px)",
-          padding: "24px 50px",
-        }}
-        justify="space-between"
-        className="pos-relative"
+    <Row
+      justify="space-between"
+      className="pos-relative full-height-minus-header py-3"
+      gutter={12}
+    >
+      <Col
+        span={6}
+        className="pos-relative height-full d-flex flex-column overflow-hidden"
       >
-        <Col
-          span={6}
-          className="pos-relative height-full d-flex"
-          style={{
-            flexDirection: "column",
+        <Card
+          size="small"
+          className="pos-relative d-flex flex-column overflow-hidden"
+          bodyStyle={{
+            height: "100%",
             overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          <Card
-            className="pos-relative d-flex"
-            style={{
-              flexDirection: "column",
-              overflow: "hidden",
-            }}
-            bodyStyle={{
-              height: "100%",
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Space direction="vertical" className="width-full" size="middle">
-              <Space align="center">
-                <Button
-                  type="text"
-                  shape="circle"
-                  icon={<ArrowLeftOutlined />}
-                  onClick={() => navigate(-1)}
-                />
-                <Typography.Title level={3} className="m-0">
-                  All partners
-                </Typography.Title>
-              </Space>
-              <Input.Search
-                placeholder="input search text"
-                onSearch={onSearch}
+          <Space direction="vertical" className="width-full" size="middle">
+            <Space align="center">
+              <Button
+                type="text"
+                shape="circle"
+                icon={<ArrowLeftOutlined />}
+                onClick={() => navigate(-1)}
               />
-              <Divider orientation="left" plain>
-                100 partners
-              </Divider>
+              <Typography.Title level={3} className="m-0">
+                All partners
+              </Typography.Title>
             </Space>
-            <div style={{ overflowY: "scroll" }}>
-              <MenuUserList />
-            </div>
-          </Card>
-        </Col>
-        <Outlet />
-      </Row>
-    </div>
+            <Input.Search placeholder="input search text" onSearch={onSearch} />
+            <Divider orientation="left" plain>
+              100 partners
+            </Divider>
+          </Space>
+          <div className="overflow-y-scroll">
+            <MenuUserList />
+          </div>
+        </Card>
+      </Col>
+      <Outlet />
+    </Row>
   );
 };
 

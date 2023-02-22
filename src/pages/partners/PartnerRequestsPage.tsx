@@ -7,11 +7,7 @@ const PartnerRequestsPage = () => {
   return (
     <Col
       span={18}
-      style={{
-        overflowY: "scroll",
-        height: "100%",
-        padding: "0 24px 48px 24px",
-      }}
+      className="overflow-y-scroll height-full pb-5 overflow-x-hidden"
     >
       <ContentTitleWithSearch title="Partner requests" />
       <FilterLine />

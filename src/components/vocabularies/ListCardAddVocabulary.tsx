@@ -2,6 +2,7 @@ import { Button, Card, Col, Input, Row, Space, Typography } from "antd";
 import { List, arrayMove } from "react-movable";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import UploadImage from "../UploadImage";
 
 interface Vocabulary {
   term: string;
@@ -78,9 +79,10 @@ const ListCardAddVocabulary = () => {
               }
               {...props}
             >
-              <Row gutter={8} className="py-2">
-                <Col span={12}>
+              <Row gutter={8} align="middle">
+                <Col flex={1}>
                   <Input
+                    size="large"
                     placeholder="Term"
                     value={value.term}
                     onChange={(e) =>
@@ -88,8 +90,9 @@ const ListCardAddVocabulary = () => {
                     }
                   />
                 </Col>
-                <Col span={12}>
+                <Col flex={2}>
                   <Input.TextArea
+                    size="large"
                     placeholder="Define"
                     rows={1}
                     value={value.define}
@@ -98,6 +101,9 @@ const ListCardAddVocabulary = () => {
                     }
                     autoSize={true}
                   />
+                </Col>
+                <Col flex="none">
+                  <UploadImage />
                 </Col>
               </Row>
             </Card>

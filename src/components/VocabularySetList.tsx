@@ -41,12 +41,12 @@ for (let i = 0; i < 20; i++) {
 const VocabularySetList = ({
   showModal,
   setVocabularySet,
-  colSpan = 6,
+  colSpan = 8,
   editable = false,
 }: ListProps) => {
   return (
     <div>
-      <Row gutter={[24, 24]}>
+      <Row gutter={[12, 12]}>
         {items.map((item, index) => (
           <Col
             span={colSpan}

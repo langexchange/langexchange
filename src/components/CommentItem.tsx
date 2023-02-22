@@ -1,5 +1,6 @@
 import { Avatar, Button, Col, Row, Space, Typography } from "antd";
 import { HeartOutlined, EditOutlined, MoreOutlined } from "@ant-design/icons";
+import Diff from "./Diff";
 
 interface CommentProps {
   owner: {
@@ -25,7 +26,12 @@ const CommentItem = ({ owner, heartNumber, contents, time }: CommentProps) => {
         }}
       >
         <Typography.Text strong={true}>{owner.fullname}</Typography.Text>
-        <Typography.Paragraph>{contents}</Typography.Paragraph>
+        <Typography.Paragraph>
+          <Diff
+            originalText={contents}
+            correctedText={contents.replace("A", "abcdedit")}
+          />
+        </Typography.Paragraph>
         <Row>
           <Col flex="auto">
             <Space>

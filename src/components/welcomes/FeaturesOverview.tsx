@@ -1,8 +1,8 @@
 import { Col, Row, Space, Typography } from "antd";
-import MakeFriendIcon from "../../assets/images/make_friend.svg";
-import StoryIcon from "../../assets/images/story.svg";
-import ChattingIcon from "../../assets/images/chatting.svg";
-import LanguageIcon from "../../assets/images/language.svg";
+import MakeFriendIcon from "../../assets/images/make_friend.png";
+import StoryIcon from "../../assets/images/story.png";
+import ChattingIcon from "../../assets/images/chatting.png";
+import LanguageIcon from "../../assets/images/language.png";
 import FeatureItem from "./FeatureItem";
 
 const { Title, Text } = Typography;
@@ -36,31 +36,35 @@ const featuresItems = [
 
 const FeaturesOverview = () => {
   return (
-    <Space
-      direction="vertical"
-      style={{ padding: "48px 50px" }}
-      align="center"
-      size={48}
-    >
-      <Space direction="vertical" align="center">
-        <Title level={2} className="m-0">
-          The language exchange community
-        </Title>
-        <Text type="secondary">
-          Learn a language, explore new cultures, and make friends around the
-          world
-        </Text>
-      </Space>
-      <div>
-        <Row align="middle" gutter={[24, 48]}>
-          {featuresItems.map((item, index) => (
-            <Col span={12} key={index}>
-              <FeatureItem {...item} />
-            </Col>
-          ))}
-        </Row>
+    <div className="has-background-color">
+      <div className="container">
+        <Space
+          direction="vertical"
+          style={{ padding: "48px 0" }}
+          align="center"
+          size={48}
+        >
+          <Space direction="vertical" align="center">
+            <Title level={2} className="m-0">
+              The language exchange community
+            </Title>
+            <Text type="secondary">
+              Learn a language, explore new cultures, and make friends around
+              the world
+            </Text>
+          </Space>
+          <div>
+            <Row align="middle" gutter={[24, 48]}>
+              {featuresItems.map((item, index) => (
+                <Col span={12} key={index}>
+                  <FeatureItem {...item} />
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </Space>
       </div>
-    </Space>
+    </div>
   );
 };
 

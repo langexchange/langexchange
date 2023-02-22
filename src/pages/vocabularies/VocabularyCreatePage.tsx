@@ -12,8 +12,9 @@ import {
 } from "antd";
 import { LeftOutlined, PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import type { SelectProps } from "antd";
 import ListCardAddVocabulary from "../../components/vocabularies/ListCardAddVocabulary";
+import type { SelectProps } from "antd";
+import UploadImage from "../../components/UploadImage";
 
 const languages: SelectProps["options"] = [
   {
@@ -55,12 +56,13 @@ const VocabularyCreatePage = () => {
   return (
     <div
       className="has-background-color height-full"
-      style={{ minHeight: "calc(100vh - 96px)" }}
+      style={{
+        minHeight: "calc(100vh - 48px)",
+      }}
     >
       {contextHolder}
       <div
         style={{
-          width: "fit-content",
           minWidth: "900px",
           margin: "auto",
           padding: "24px 0",
@@ -87,46 +89,61 @@ const VocabularyCreatePage = () => {
             Create
           </Button>
         </div>
-        <Form autoComplete="off" labelAlign="left">
-          <Form.Item name="title" label="Title" labelCol={{ span: 3 }} required>
-            <Input placeholder='Enter a title, for example " Biology - Chapter 22: Evolution"' />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Description"
-            labelCol={{ span: 3 }}
-          >
-            <Input.TextArea autoSize={true} placeholder="Add description..." />
-          </Form.Item>
+        <Row gutter={24}>
+          <Col flex="auto">
+            <Form autoComplete="off" labelAlign="left">
+              <Form.Item
+                name="title"
+                label="Title"
+                labelCol={{ span: 2 }}
+                required
+              >
+                <Input placeholder='Enter a title, for example " Biology - Chapter 22: Evolution"' />
+              </Form.Item>
+              <Form.Item
+                name="description"
+                label="Description"
+                labelCol={{ span: 2 }}
+              >
+                <Input.TextArea
+                  autoSize={true}
+                  placeholder="Add description..."
+                />
+              </Form.Item>
 
-          <Row gutter={12}>
-            <Col>
-              <Form.Item label="Public" valuePropName="checked">
-                <Switch />
-              </Form.Item>
-            </Col>
-            <Col>
-              <Form.Item label="Term languages">
-                <Select
-                  placeholder="Term languages"
-                  defaultValue={["english"]}
-                  options={languages}
-                  style={{ width: "200px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col>
-              <Form.Item label="Define languages">
-                <Select
-                  placeholder="Define languages"
-                  defaultValue={["vietnamese"]}
-                  options={languages}
-                  style={{ width: "200px" }}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
+              <Row gutter={24}>
+                <Col>
+                  <Form.Item label="Public" valuePropName="checked">
+                    <Switch />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  <Form.Item label="Term languages">
+                    <Select
+                      placeholder="Term languages"
+                      defaultValue={["english"]}
+                      options={languages}
+                      style={{ width: "200px" }}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  <Form.Item label="Define languages">
+                    <Select
+                      placeholder="Define languages"
+                      defaultValue={["vietnamese"]}
+                      options={languages}
+                      style={{ width: "200px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Col>
+          <Col flex="none">
+            <UploadImage />
+          </Col>
+        </Row>
         <ListCardAddVocabulary />
       </div>
     </div>

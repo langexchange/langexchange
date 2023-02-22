@@ -46,7 +46,7 @@ const FilterLine = () => {
   return (
     <Form className="width-full">
       <Row gutter={12}>
-        <Col span={6}>
+        <Col flex="auto">
           <Form.Item label="Natives">
             <Select
               allowClear
@@ -60,7 +60,7 @@ const FilterLine = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col flex="auto">
           <Form.Item label="Targets">
             <Select
               allowClear
@@ -73,7 +73,7 @@ const FilterLine = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col flex="auto">
           <Form.Item label="Countries">
             <Select
               allowClear
@@ -92,7 +92,7 @@ const FilterLine = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={3}>
+        <Col flex="auto">
           <Form.Item className="text-center">
             <Space>
               <Button type="primary" htmlType="submit" className="btn-warning">

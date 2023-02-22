@@ -1,4 +1,4 @@
-import Logo from "../../assets/images/logo.svg";
+import Logo from "../../assets/images/logo.png";
 import AuthenBackgroundImage from "../../assets/images/authen_bg.png";
 import { Button, Image, Space, Tabs, Typography } from "antd";
 import { RollbackOutlined } from "@ant-design/icons";
