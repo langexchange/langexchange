@@ -1,8 +1,8 @@
 import { Col, Row, Space, Typography } from "antd";
-import LocationIcon from "../../assets/images/locations.svg";
-import BookIcon from "../../assets/images/books.svg";
-import NoteIcon from "../../assets/images/note.svg";
-import LanguageIcon from "../../assets/images/language.svg";
+import LocationIcon from "../../assets/images/locations.png";
+import BookIcon from "../../assets/images/books.png";
+import NoteIcon from "../../assets/images/note.png";
+import LanguageIcon from "../../assets/images/language.png";
 import MissonItem from "../welcomes/FeatureItem";
 
 const { Title } = Typography;
@@ -36,26 +36,25 @@ const missonItems = [
 
 const Missons = () => {
   return (
-    <Space
-      direction="vertical"
-      style={{ padding: "48px 50px" }}
-      align="center"
-      size={48}
-    >
-      <Title level={2} className="m-0">
-        <span className="color-blue-logo">Lang</span>
-        <span className="color-red-logo">Exchange</span> missons
-      </Title>
-      <div>
-        <Row align="middle" gutter={[24, 48]}>
-          {missonItems.map((item, index) => (
-            <Col span={12} key={index}>
-              <MissonItem {...item} />
-            </Col>
-          ))}
-        </Row>
+    <div className="has-background-color">
+      <div className="container py-5">
+        <Space direction="vertical" align="center" size={48}>
+          <Title level={2} className="m-0">
+            <span className="color-blue-logo">Lang</span>
+            <span className="color-red-logo">Exchange</span> missons
+          </Title>
+          <div>
+            <Row align="middle" gutter={[24, 48]}>
+              {missonItems.map((item, index) => (
+                <Col span={12} key={index}>
+                  <MissonItem {...item} />
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </Space>
       </div>
-    </Space>
+    </div>
   );
 };
 

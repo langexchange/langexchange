@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { Col, Row } from "antd";
+import { Col, Row, RowProps } from "antd";
 import UserCard from "../UserCard";
 
 interface UserProps {
@@ -12,6 +12,7 @@ interface UserProps {
 
 interface YourPartnersListProps {
   colSpan?: number;
+  gutter?: RowProps["gutter"];
 }
 
 const items: UserProps[] = [];
@@ -26,10 +27,13 @@ for (let i = 0; i < 10; i++) {
   });
 }
 
-const YourParnersList = ({ colSpan = 6 }: YourPartnersListProps) => {
+const YourParnersList = ({
+  colSpan = 6,
+  gutter = [24, 24],
+}: YourPartnersListProps) => {
   return (
     <div>
-      <Row gutter={[24, 24]}>
+      <Row gutter={gutter}>
         {items.map((item, index) => (
           <Col span={colSpan} key={index}>
             <UserCard {...item} type="partner" />

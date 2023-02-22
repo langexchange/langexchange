@@ -1,4 +1,4 @@
-import { Menu, Space } from "antd";
+import { Card, Menu, Space } from "antd";
 import type { MenuProps } from "antd";
 import {
   CompassOutlined,
@@ -33,24 +33,15 @@ const Sidebar = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "white",
-        padding: "12px 0",
-        borderRadius: "8px",
-      }}
-    // className="height-full"
-    >
-      <Space className="width-full" direction="vertical">
-        <Menu
-          onClick={onClick}
-          mode="inline"
-          items={items}
-          style={{ border: "none" }}
-          selectedKeys={[activeKey]}
-        />
-      </Space>
-    </div>
+    <Card size="small" bodyStyle={{ padding: "4px" }}>
+      <Menu
+        onClick={onClick}
+        mode="inline"
+        items={items}
+        style={{ border: "none" }}
+        selectedKeys={[activeKey]}
+      />
+    </Card>
   );
 };
 

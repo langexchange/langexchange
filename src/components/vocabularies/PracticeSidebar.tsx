@@ -87,7 +87,7 @@ const PracticeSidebar = () => {
         mode="vertical"
         items={items}
         className="item-height-max-content"
-        style={{ overflowY: "scroll" }}
+        style={{ overflowY: "scroll", border: "none" }}
       />
       <ModalAddToPracticeList
         open={isModalOpen}

@@ -1,4 +1,4 @@
-import Logo from "../../assets/images/logo.svg";
+import Logo from "../../assets/images/logo.png";
 import { Button, Image, Space } from "antd";
 import {
   YoutubeFilled,

@@ -27,7 +27,12 @@ const UserItem = ({
     <Space>
       {direction === "right" ? (
         <>
-          <Typography.Text strong={isStrong}>{fullname}</Typography.Text>
+          <Typography.Text
+            strong={isStrong}
+            style={(!isStrong && { fontWeight: 500 }) || {}}
+          >
+            {fullname}
+          </Typography.Text>
           {badge ? (
             <Badge count={number}>
               <Avatar
@@ -62,7 +67,12 @@ const UserItem = ({
             />
           )}
           <Space.Compact direction="vertical">
-            <Typography.Text strong={isStrong}>{fullname}</Typography.Text>
+            <Typography.Text
+              strong={isStrong}
+              style={(!isStrong && { fontWeight: 500 }) || {}}
+            >
+              {fullname}
+            </Typography.Text>
             {description ? (
               <Typography.Text type="secondary">{description}</Typography.Text>
             ) : null}

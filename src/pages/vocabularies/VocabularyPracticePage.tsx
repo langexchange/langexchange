@@ -16,20 +16,20 @@ const VocabularyPracticePage = () => {
   };
 
   return (
-    <>
-      <FlashCardList />
+    <div>
       <Card
         hoverable
         size="small"
-        style={{ right: "12px", top: "60px" }}
-        className="pos-absolute"
         onClick={showDrawer}
+        className="mb-3 float-right"
+        style={{ width: "fit-content" }}
       >
         <LeftOutlined />
         Dashboard
       </Card>
+      <FlashCardList />
       <Dashboard onClose={onClose} open={open} />
-    </>
+    </div>
   );
 };
 

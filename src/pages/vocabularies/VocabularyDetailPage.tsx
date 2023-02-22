@@ -20,7 +20,7 @@ const VocabularyDetailPage = () => {
       {contextHolder}
       <div
         style={{
-          width: "fit-content",
+          // width: "fit-content",
           margin: "auto",
           padding: "24px 0",
         }}
@@ -42,31 +42,32 @@ const VocabularyDetailPage = () => {
         </div>
         <div className="ma mb-3" style={{ width: "fit-content" }}>
           <FlashCardList type="view" />
+          <br />
+          <Card size="small">
+            <div className="d-flex align-items-center justify-space-between">
+              <UserItem
+                fullname={faker.name.fullName()}
+                image={faker.image.abstract()}
+                description={faker.date.recent().toString()}
+                isStrong={true}
+              />
+              <Space>
+                <Button
+                  shape="circle"
+                  type="primary"
+                  className="btn-success"
+                  icon={<UserAddOutlined />}
+                />
+                <Button
+                  shape="circle"
+                  type="primary"
+                  className="btn-warning"
+                  icon={<MoreOutlined rotate={90} />}
+                />
+              </Space>
+            </div>
+          </Card>
         </div>
-        <Card size="small">
-          <div className="d-flex align-items-center justify-space-between">
-            <UserItem
-              fullname={faker.name.fullName()}
-              image={faker.image.abstract()}
-              description={faker.date.recent().toString()}
-              isStrong={true}
-            />
-            <Space>
-              <Button
-                shape="circle"
-                type="primary"
-                className="btn-success"
-                icon={<UserAddOutlined />}
-              />
-              <Button
-                shape="circle"
-                type="primary"
-                className="btn-warning"
-                icon={<MoreOutlined rotate={90} />}
-              />
-            </Space>
-          </div>
-        </Card>
         <Divider />
 
         <div>

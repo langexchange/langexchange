@@ -13,22 +13,13 @@ const onFinishFailed = (errorInfo: any) => {
 
 const SubcribeForm = () => {
   return (
-    <div
-      style={{
-        padding: "48px 98px",
-      }}
-      className="bg-white"
-    >
-      <Row align="middle">
+    <div className="bg-white">
+      <Row align="middle" className="container py-5">
         <Col span={12} className="d-flex justify-center">
-          <Image
-            src={SubcribeFormImage}
-            alt="LangExchange subcribe"
-          // height="460px"
-          />
+          <Image src={SubcribeFormImage} alt="LangExchange subcribe" />
         </Col>
         <Col span={12}>
-          <Space size={40} direction="vertical">
+          <Space size={40} direction="vertical" className="float-right">
             <div style={styles.title_container}>
               <Title level={2}>
                 Subscribe to receive the latest information

@@ -1,39 +1,54 @@
-import { Col, Row, Space } from "antd";
+import { Col, Row } from "antd";
+import { useState } from "react";
 import PostList from "../../components/community/PostList";
 import RightSidebar from "../../components/community/RightSidebar";
 import Sidebar from "../../components/community/Sidebar";
 import PostInput from "../../components/PostInput";
+import PostModal from "../../components/PostModal";
 
 const CommunityPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [post, setPost] = useState({
+    owner: {
+      fullname: "",
+      color: "",
+      image: "",
+    },
+    images: [""],
+    contents: "",
+    languages: [""],
+    emotions: "",
+    comments: "",
+    time: "",
+  });
+
+  const showModal = () => {
+    console.log("show");
+    setIsModalOpen(true);
+  };
+
   return (
     <div>
-      <Row
-        style={{
-          height: "calc(100vh - 64px)",
-          padding: "24px 50px",
-        }}
-        justify="space-between"
-      >
+      <Row justify="space-between" className="full-height-minus-header py-3">
         <Col span={6}>
           <RightSidebar />
         </Col>
-        <Col
-          span={10}
-          style={{
-            overflowY: "scroll",
-            height: "100%",
-            padding: "0 24px 48px 24px",
-          }}
-        >
-          <div style={{ marginBottom: "24px" }}>
+        <Col span={12} className="overflow-y-scroll height-full px-3 pb-5">
+          <div className="mb-3">
             <PostInput />
           </div>
-          <PostList />
+          <PostList setPost={setPost} showModal={showModal} />
         </Col>
         <Col span={6}>
           <Sidebar />
         </Col>
       </Row>
+      <PostModal
+        post={post}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </div>
   );
 };

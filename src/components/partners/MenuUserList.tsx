@@ -57,6 +57,7 @@ const MenuUserList = () => {
       mode="vertical"
       items={items}
       className="item-height-max-content"
+      style={{ border: "none" }}
     />
   );
 };

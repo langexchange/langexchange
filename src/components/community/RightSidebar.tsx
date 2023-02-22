@@ -47,9 +47,13 @@ const handleChange = (value: string | string[]) => {
 
 const RightSidebar = () => {
   return (
-    <Card>
+    <Card size="small" className="has-background-color">
       <Space direction="vertical" className="width-full" size="middle">
-        <Input.Search placeholder="input search text" onSearch={onSearch} />
+        <Input.Search
+          placeholder="input search text"
+          onSearch={onSearch}
+          className="input-no-background"
+        />
 
         <Form>
           <Form.Item label="Languages" style={{ marginBottom: "12px" }}>
@@ -61,6 +65,7 @@ const RightSidebar = () => {
               onChange={handleChange}
               style={{ width: "100%" }}
               options={options}
+              className="input-no-background"
             />
           </Form.Item>
           <Row>

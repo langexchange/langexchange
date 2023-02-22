@@ -10,7 +10,7 @@ interface FeatureItemProps {
 
 const FeatureItem = ({ image, title, descriptions }: FeatureItemProps) => {
   return (
-    <Space direction="vertical" align="center" style={{ padding: "0 48px" }}>
+    <Space direction="vertical" align="center">
       <Space direction="vertical" align="center">
         <Image src={image} alt="LangExchange feature" />
         <Title level={4}>{title}</Title>

@@ -4,14 +4,15 @@ import { Outlet } from "react-router-dom";
 
 const PracticeVocabularyLayout = () => {
   return (
-    <Layout style={{ maxHeight: "calc(100vh - 96px)" }}>
+    <Layout className="py-4 has-background-color full-height-minus-header">
       <Layout.Sider
-        className="white-background sider-with-content-scroll py-3"
-        width={350}
+        className="white-background sider-with-content-scroll py-3 px-3"
+        width={360}
+        style={{ borderRadius: "8px" }}
       >
         <PracticeSidebar />
       </Layout.Sider>
-      <Layout.Content className="has-background-color d-flex justify-center pt-5 pos-relative">
+      <Layout.Content className="has-background-color d-flex justify-center">
         <Outlet />
       </Layout.Content>
     </Layout>

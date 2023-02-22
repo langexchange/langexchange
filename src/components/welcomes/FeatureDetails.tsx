@@ -6,19 +6,19 @@ import ToolsPicture from "../../assets/images/learning_tools.png";
 
 const featureDetailItems = [
   {
-    title: "Many friends, lots of fun... ",
+    title: "Many friends, lots of fun",
     descriptions:
       "Lorem ipsum dolor sit amet consectetur. Feugiat donec id aenean metus nunc. Feugiat donec id aenean metus nunc. Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur. Feugiat donec id aenean metus nunc. Feugiat donec id aenean metus nunc. Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur. Feugiat donec id aenean metus nunc. Feugiat donec id aenean metus nunc.",
     image: MakeFriendPicture,
   },
   {
-    title: "Share stories, learn together... ",
+    title: "Share stories, learn together",
     descriptions:
       "Lorem ipsum dolor sit amet consectetur. Feugiat donec id aenean metus nunc. Feugiat donec id aenean metus nunc. Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur. Feugiat donec id aenean metus nunc. Feugiat donec id aenean metus nunc. Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur. Feugiat donec id aenean metus nunc. Feugiat donec id aenean metus nunc.",
     image: ShareStoriesPicture,
   },
   {
-    title: "Chat together, more practice  ",
+    title: "Chat together, more practice",
     descriptions:
       "Lorem ipsum dolor sit amet consectetur. Feugiat donec id aenean metus nunc. Feugiat donec id aenean metus nunc. Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur. Feugiat donec id aenean metus nunc. Feugiat donec id aenean metus nunc. Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur. Feugiat donec id aenean metus nunc. Feugiat donec id aenean metus nunc.",
     image: ChatPicture,
