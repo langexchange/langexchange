@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Menu, Space, Typography } from "antd";
+import { Avatar, Button, Card, List, Menu, Space, Typography } from "antd";
 import UserItem from "../UserItem";
 import { MoreOutlined } from "@ant-design/icons";
 import { faker } from "@faker-js/faker";
@@ -33,17 +33,11 @@ const items: MenuProps["items"] = [];
 let i = 0;
 for (let item of userItems) {
   items.push({
-    label: <UserItem {...item} direction="right" badge={false} />,
+    label: <UserItem {...item} direction="left" badge={false} />,
     key: i.toString(),
   });
   i++;
 }
-
-const onClick: MenuProps["onClick"] = (e) => {
-  console.log("click ", e);
-};
-
-console.log(items);
 
 const Sidebar = () => {
   return (
@@ -57,60 +51,54 @@ const Sidebar = () => {
       <Space
         size="large"
         direction="vertical"
-        className="width-full text-right"
-        align="end"
+        className="width-full"
+      // align="start"
       >
         <Card
-          bodyStyle={{ padding: "8px 12px", width: "max-content" }}
+          bodyStyle={{
+            padding: "8px 12px",
+            width: "max-content",
+          }}
           hoverable
+          className="width-full"
         >
-          <Space align="center">
+          <Space align="center" size={12}>
+            <Avatar
+              style={{ verticalAlign: "middle" }}
+              size="large"
+              src={faker.image.abstract(50, 50)}
+            />
             <Typography.Title level={3} className="m-0 color-primary">
               Dinh Nhu Tan
             </Typography.Title>
-            <Avatar style={{ verticalAlign: "middle" }} size="large">
-              Tan
-            </Avatar>
           </Space>
         </Card>
-        <Space direction="vertical">
-          <Space align="center">
-            <Typography.Text type="secondary" strong={true}>
-              Study spaces
-            </Typography.Text>
-            <Button
-              // type="text"
-              size="small"
-              shape="circle"
-              icon={<MoreOutlined rotate={90} />}
-            />
-          </Space>
-          <Menu
-            onClick={onClick}
-            mode="vertical"
-            style={{ background: "none", border: "none" }}
-            className="item-height-max-content item-no-padding"
-            items={items.slice(0, 4)}
-          />
-        </Space>
-        <Space direction="vertical">
-          <Space align="center">
-            <Typography.Text type="secondary" strong={true}>
+        <Space direction="vertical" className="text-left width-full">
+          <div className="d-flex align-items-center justify-space-between">
+            <Typography.Text type="secondary" className="fz-16 text-500">
               Active partners
             </Typography.Text>
             <Button
-              // type="text"
+              type="text"
               size="small"
               shape="circle"
               icon={<MoreOutlined rotate={90} />}
             />
-          </Space>
-          <Menu
-            onClick={onClick}
-            mode="vertical"
-            className="item-height-max-content item-no-padding"
-            style={{ background: "none", border: "none" }}
-            items={items.slice(5, 10)}
+          </div>
+          <List
+            // header={<div>Header</div>}
+            // footer={<div>Footer</div>}
+            className="text-left"
+            itemLayout="horizontal"
+            dataSource={userItems}
+            split={false}
+            renderItem={(item) => (
+              <List.Item style={{ padding: 0 }}>
+                <div className="as-the-button width-full">
+                  <UserItem {...item} direction="left" badge={false} />
+                </div>
+              </List.Item>
+            )}
           />
         </Space>
       </Space>

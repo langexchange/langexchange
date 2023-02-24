@@ -30,9 +30,13 @@ const CommunityPage = () => {
 
   return (
     <div>
-      <Row justify="space-between" className="full-height-minus-header py-3">
+      <Row
+        justify="space-between"
+        className="full-height-minus-header py-3"
+        gutter={24}
+      >
         <Col span={6}>
-          <RightSidebar />
+          <Sidebar />
         </Col>
         <Col span={12} className="overflow-y-scroll height-full px-3 pb-5">
           <div className="mb-3">
@@ -41,7 +45,7 @@ const CommunityPage = () => {
           <PostList setPost={setPost} showModal={showModal} />
         </Col>
         <Col span={6}>
-          <Sidebar />
+          <RightSidebar />
         </Col>
       </Row>
       <PostModal

@@ -24,7 +24,7 @@ for (let i = 0; i < 10; i++) {
     },
     heartNumber: Number(faker.random.numeric()),
     contents: faker.random.words(Number(faker.random.numeric(2))),
-    time: faker.date.past().toString(),
+    time: faker.date.past().toLocaleString(),
   };
   items.push(item);
 }

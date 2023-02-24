@@ -76,7 +76,7 @@ const PartnerDetailPage = () => {
                   key: "vocabularies",
                   children: (
                     <VocabularyList
-                      colSpan={12}
+                      colSpan={24}
                       editable={false}
                       setVocabularySet={setVocabularySet}
                       showModal={showModalVocabulary}

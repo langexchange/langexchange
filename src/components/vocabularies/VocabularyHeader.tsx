@@ -29,26 +29,9 @@ const items: MenuProps["items"] = [
 const VocabularyHeader = () => {
   const activeKey: string = window.location.pathname.split("/")[2];
   return (
-    <Layout.Header
-      style={{
-        backgroundColor: "white",
-        justifyContent: "space-between",
-        borderBottom: "1px solid rgba(5, 5, 5, 0.06)",
-        position: "sticky",
-        top: 0,
-        zIndex: 1,
-        width: "100%",
-        height: "48px",
-      }}
-    >
+    <Layout.Header className="z-index-1 bg-white justify-space-between pos-sticky t-0 width-full with-header-height with-header-border-bottom">
       <div className="container">
-        <Row
-          className="height-full"
-          align="middle"
-          style={{
-            lineHeight: "48px",
-          }}
-        >
+        <Row className="height-full" align="middle" style={{}}>
           <Col span={6}>
             <Typography.Title level={4} className="m-0">
               Vocabulary
@@ -62,9 +45,6 @@ const VocabularyHeader = () => {
               selectedKeys={[activeKey]}
               items={items}
               className="d-block height-full"
-              style={{
-                height: "48px",
-              }}
             />
           </Col>
           <Col span={6} className="text-right">

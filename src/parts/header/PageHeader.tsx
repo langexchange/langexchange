@@ -4,25 +4,65 @@ import {
   Badge,
   Button,
   Col,
+  Dropdown,
   Image,
   Layout,
   Menu,
+  message,
+  Popover,
   Row,
   Space,
 } from "antd";
 import {
   HomeOutlined,
-  GroupOutlined,
+  // GroupOutlined,
   TeamOutlined,
   MessageOutlined,
   FileTextOutlined,
-  GlobalOutlined,
+  LogoutOutlined,
+  // GlobalOutlined,
+  SettingOutlined,
   BellOutlined,
   TranslationOutlined,
 } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import type { MenuProps } from "antd";
+import { faker } from "@faker-js/faker";
+import { useState } from "react";
+import NotificationList from "../../components/NotificationList";
 const { Header } = Layout;
+
+const handleMenuClick: MenuProps["onClick"] = (e) => {
+  message.info("Click on menu item.");
+  console.log("click", e);
+};
+
+const dropdownItems: MenuProps["items"] = [
+  {
+    label: (
+      <Space>
+        <SettingOutlined />
+        Setting
+      </Space>
+    ),
+    key: "setting",
+  },
+  {
+    label: (
+      <Space>
+        <LogoutOutlined />
+        Logout
+      </Space>
+    ),
+    key: "logout",
+  },
+  { label: "Toggle theme", key: "toggle-theme" },
+];
+
+const menuDropdown = {
+  items: dropdownItems,
+  onClick: handleMenuClick,
+};
 
 const items: MenuProps["items"] = [
   {
@@ -58,25 +98,20 @@ const items: MenuProps["items"] = [
 ];
 
 const PageHeader = () => {
+  const [allRead, setAllRead] = useState(false);
   const activeKey: string = window.location.pathname.split("/")[1];
+  const [open, setOpen] = useState(false);
+
+  const hide = () => {
+    setOpen(false);
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+  };
 
   return (
-    <Header
-      className="header"
-      style={{
-        display: "flex",
-        backgroundColor: "white",
-        alignItems: "center",
-        justifyContent: "space-between",
-        borderBottom: "1px solid rgba(5, 5, 5, 0.06)",
-        position: "sticky",
-        top: 0,
-        zIndex: 1,
-        width: "100%",
-        lineHeight: "48px",
-        height: "48px",
-      }}
-    >
+    <Header className="z-index-1 bg-white d-flex justify-space-between align-items-center pos-sticky t-0 width-full with-header-height with-header-border-bottom">
       <div className="container">
         <Row className="width-full d-flex align-items-center">
           <Col span={6}>
@@ -103,26 +138,63 @@ const PageHeader = () => {
           </Col>
           <Col span={6} className="d-flex justify-end align-items-center">
             <Space className="toolbars" align="center">
-              <Button type="text" className="d-flex align-items-center">
-                <Badge count={99} overflowCount={10} size="small">
-                  <div
-                    className="d-flex align-items-center"
-                    style={{
-                      height: "24px",
-                      width: "24px",
-                    }}
-                  >
-                    <BellOutlined style={{ fontSize: "16px" }} />
+              <Popover
+                content={
+                  <NotificationList allRead={allRead} setAllRead={setAllRead} />
+                }
+                title={
+                  <div className="d-flex align-items-center justify-space-between">
+                    <Space size={4} align="center">
+                      <BellOutlined />
+                      Notifications
+                    </Space>
+                    <Button
+                      type="link"
+                      onClick={() => setAllRead(true)}
+                      className="text-300 fz-12"
+                    >
+                      Mark all read
+                    </Button>
                   </div>
-                </Badge>
-              </Button>
-              <Button
-                type="text"
-                className="d-flex align-items-center"
-                size="large"
+                }
+                trigger="click"
+                open={open}
+                onOpenChange={handleOpenChange}
+                placement="bottomRight"
               >
-                <Avatar size={36}>T</Avatar>
-              </Button>
+                <Button type="text" className="d-flex align-items-center">
+                  {allRead ? (
+                    <div className="d-flex align-items-center">
+                      <BellOutlined style={{ fontSize: "16px" }} />
+                    </div>
+                  ) : (
+                    <Badge
+                      count={99}
+                      overflowCount={10}
+                      size="small"
+                      offset={[10, 0]}
+                    >
+                      <div className="d-flex align-items-center">
+                        <BellOutlined style={{ fontSize: "16px" }} />
+                      </div>
+                    </Badge>
+                  )}
+                </Button>
+              </Popover>
+              <Dropdown
+                menu={menuDropdown}
+                trigger={["click"]}
+                arrow
+                placement="bottom"
+              >
+                <Button
+                  type="text"
+                  className="d-flex align-items-center"
+                  size="large"
+                >
+                  <Avatar src={faker.image.abstract(40, 40)}>T</Avatar>
+                </Button>
+              </Dropdown>
               <Button type="text" className="d-flex align-items-center">
                 <TranslationOutlined style={{ fontSize: "16px" }} />
               </Button>

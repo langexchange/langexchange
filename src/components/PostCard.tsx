@@ -39,6 +39,7 @@ interface PostProps extends Post {
   hoverable?: boolean;
   bordered?: boolean;
   boxShadow?: boolean;
+  correctable?: boolean;
 }
 const items: MenuProps["items"] = [
   {
@@ -88,6 +89,7 @@ const PostCard = ({
   hoverable = true,
   bordered = true,
   boxShadow = true,
+  correctable = false,
 }: PostProps) => {
   return (
     <Card

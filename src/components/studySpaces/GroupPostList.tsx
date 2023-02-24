@@ -42,7 +42,7 @@ for (let i = 0; i < 10; i++) {
     comments: faker.random.numeric(),
     languages: [faker.random.word(), faker.random.word(), faker.random.word()],
     contents: faker.random.words(80),
-    time: faker.date.past().toString(),
+    time: faker.date.past().toLocaleString(),
   };
 
   items.push(itemProps);

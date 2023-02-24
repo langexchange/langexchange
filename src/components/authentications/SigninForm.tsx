@@ -37,6 +37,7 @@ const SigninForm = () => {
           prefix={<UserOutlined className="site-form-item-icon" />}
           placeholder="Email"
           allowClear={true}
+          autoComplete="on"
         />
       </Form.Item>
       <Form.Item
@@ -48,6 +49,7 @@ const SigninForm = () => {
           type="password"
           placeholder="Password"
           allowClear={true}
+          autoComplete="on"
         />
       </Form.Item>
       <Form.Item>

@@ -61,6 +61,7 @@ const PostModal = ({ post, isModalOpen, setIsModalOpen }: any) => {
         hoverable={false}
         bordered={false}
         boxShadow={false}
+        correctable={true}
       />
       <CommentList />
     </Modal>
