@@ -22,7 +22,7 @@ const VocabularyPracticePage = () => {
         size="small"
         onClick={showDrawer}
         className="mb-3 float-right"
-        style={{ width: "fit-content" }}
+        style={{ width: "fit-content", zIndex: 1 }}
       >
         <LeftOutlined />
         Dashboard

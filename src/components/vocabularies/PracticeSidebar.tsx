@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
-import { Button, Input, Menu, MenuProps, Space } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { getElementInPathnameAt } from "../../utils/extractPathname";
+import { Button, Input, Menu, MenuProps, Space } from "antd";
 import ModalAddToPracticeList from "./ModalAddToPracticeList";
 import VocabularySetMenuItem from "./VocabularySetMenuItem";
+import { getElementInPathnameAt } from "../../utils/extractPathname";
 
 interface VocabularySet {
   id: number;

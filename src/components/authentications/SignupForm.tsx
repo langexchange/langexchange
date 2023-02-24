@@ -31,6 +31,7 @@ const SignupForm = () => {
           prefix={<UserOutlined className="site-form-item-icon" />}
           placeholder="Email"
           allowClear={true}
+          autoComplete="on"
         />
       </Form.Item>
       <Form.Item
@@ -42,6 +43,7 @@ const SignupForm = () => {
           type="password"
           placeholder="Password"
           allowClear={true}
+          autoComplete="on"
         />
       </Form.Item>
       <Form.Item
@@ -70,6 +72,7 @@ const SignupForm = () => {
           placeholder="Confirm password"
           prefix={<LockOutlined className="site-form-item-icon" />}
           allowClear={true}
+          autoComplete="on"
         />
       </Form.Item>
 

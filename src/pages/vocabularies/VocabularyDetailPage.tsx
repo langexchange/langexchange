@@ -20,7 +20,6 @@ const VocabularyDetailPage = () => {
       {contextHolder}
       <div
         style={{
-          // width: "fit-content",
           margin: "auto",
           padding: "24px 0",
         }}
@@ -48,7 +47,7 @@ const VocabularyDetailPage = () => {
               <UserItem
                 fullname={faker.name.fullName()}
                 image={faker.image.abstract()}
-                description={faker.date.recent().toString()}
+                description={faker.date.recent().toLocaleString()}
                 isStrong={true}
               />
               <Space>

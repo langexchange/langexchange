@@ -47,7 +47,7 @@ const handleChange = (value: string | string[]) => {
 
 const RightSidebar = () => {
   return (
-    <Card size="small" className="has-background-color">
+    <div className="has-background-color pt-1">
       <Space direction="vertical" className="width-full" size="middle">
         <Input.Search
           placeholder="input search text"
@@ -98,7 +98,7 @@ const RightSidebar = () => {
           </Form.Item>
         </Form>
       </Space>
-    </Card>
+    </div>
   );
 };
 

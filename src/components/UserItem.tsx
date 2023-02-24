@@ -24,7 +24,7 @@ const UserItem = ({
   badge,
 }: UserItemProps) => {
   return (
-    <Space>
+    <Space size={12}>
       {direction === "right" ? (
         <>
           <Typography.Text

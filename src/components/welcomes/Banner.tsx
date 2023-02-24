@@ -7,7 +7,7 @@ const { Title, Text } = Typography;
 const Banner = () => {
   return (
     <div className="bg-white">
-      <Row className="container" align="middle">
+      <Row className="container py-5" align="middle">
         <Col span={12} className="d-flex justify-center">
           <Image src={BannerImage} alt="Welcome banner" width="100%" />
         </Col>

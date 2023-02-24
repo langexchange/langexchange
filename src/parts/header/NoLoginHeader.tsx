@@ -52,17 +52,7 @@ const items: MenuProps["items"] = [
 
 const NoLoginHeader = () => {
   return (
-    <Header
-      className="header"
-      style={{
-        backgroundColor: "white",
-        borderBottom: "1px solid rgba(5, 5, 5, 0.06)",
-        position: "sticky",
-        top: 0,
-        zIndex: 1,
-        width: "100%",
-      }}
-    >
+    <Header className="z-index-1 bg-white pos-sticky t-0 width-full with-header-height with-header-border-bottom">
       <div
         className="container"
         style={{

@@ -8,6 +8,7 @@ import App from "./App";
 import "antd/dist/reset.css";
 import "./bootstrap.scss";
 import "./index.scss";
+import "./overwriteAntd.scss";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
