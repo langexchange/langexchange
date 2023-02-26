@@ -10,6 +10,7 @@ const VocabularyModal = ({
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleCollect = () => {
+    console.log(vocabularySet);
     setIsModalVocabularyOpen(false);
     messageApi.open({
       type: "success",
@@ -24,52 +25,53 @@ const VocabularyModal = ({
   return (
     <>
       {contextHolder}
-      <Modal
-        open={isModalVocabularyOpen}
-        onCancel={handleCancel}
-        width={800}
-        wrapClassName="pv-32"
-        style={{
-          top: 0,
-          maxHeight: "100%",
-        }}
-        bodyStyle={{
-          height: "100%",
-          overflowY: "scroll",
-        }}
-        className="d-flex flex-column modal-with-content-scroll"
-        footer={[
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={handleCollect}
-          >
-            Collect this!
-          </Button>,
-        ]}
-        title={
-          <Space align="start" direction="vertical">
-            <Space align="center">
-              <Typography.Title level={4} className="m-0">
-                {vocabularySet.title}
-              </Typography.Title>
-              <Tag color="magenta"> 10 vocabularies</Tag>
-            </Space>
-            <Space>
-              <Space>
-                Term:
-                <Tag color="blue">{vocabularySet.termLanguage}</Tag>
+      {vocabularySet && (
+        <Modal
+          open={isModalVocabularyOpen}
+          onCancel={handleCancel}
+          width={800}
+          wrapClassName="pv-32"
+          style={{
+            top: 0,
+            maxHeight: "100%",
+          }}
+          className="d-flex flex-column modal-with-content-scroll"
+          footer={[
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleCollect}
+            >
+              Collect this!
+            </Button>,
+          ]}
+          title={
+            <Space align="start" direction="vertical">
+              <Space align="center">
+                <Typography.Title level={4} className="m-0">
+                  {vocabularySet.title}
+                </Typography.Title>
+                <Tag color="magenta">
+                  {" "}
+                  {vocabularySet.vocabularies.length} vocabularies
+                </Tag>
               </Space>
               <Space>
-                Define:
-                <Tag color="green">{vocabularySet.defineLanguage}</Tag>
+                <Space>
+                  Term:
+                  <Tag color="blue">{vocabularySet.termLanguage}</Tag>
+                </Space>
+                <Space>
+                  Define:
+                  <Tag color="green">{vocabularySet.definitionLanguage}</Tag>
+                </Space>
               </Space>
             </Space>
-          </Space>
-        }
-      >
-        <VocabularyList />
-      </Modal>
+          }
+        >
+          <VocabularyList vocabularies={vocabularySet.vocabularies} />
+        </Modal>
+      )}
     </>
   );
 };

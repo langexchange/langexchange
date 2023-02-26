@@ -5,7 +5,7 @@ import Sidebar from "../../components/partners/Sidebar";
 const PartnerLayout = () => {
   return (
     <Row
-      gutter={12}
+      gutter={24}
       className="full-height-minus-header py-3"
       justify="space-between"
     >

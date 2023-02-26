@@ -20,10 +20,10 @@ const ProfileCard = () => {
         width: "100%",
         backgroundColor: "white",
       }}
-      className="height-full pos-relative"
+      className="height-full pos-relative card-custome-scroll"
       bodyStyle={{
         height: "100%",
-        overflow: "scroll",
+        // overflow: "scroll",
       }}
     >
       <div className="avatar and basic info">
@@ -164,6 +164,7 @@ const ProfileCard = () => {
           <Tag color="blue">blue</Tag>
           <Tag color="geekblue">geekblue</Tag>
           <Tag color="purple">purple</Tag>
+          <Tag color="magenta">magenta</Tag>
         </Space>
       </div>
       <div className="topics"></div>

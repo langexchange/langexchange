@@ -341,11 +341,19 @@ $background-color: #f0f2f5;
 }
 
 .full-height-minus-header {
-  height: calc(100vh - 48px);
+  height: calc(100vh - 48px - 0.5rem);
+}
+
+.overflow-auto {
+  overflow: auto;
 }
 
 .overflow-y-scroll {
   overflow-y: scroll;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .overflow-x-hidden {
@@ -391,4 +399,48 @@ $background-color: #f0f2f5;
 
 .t-0 {
   top: 0;
+}
+
+.slick-dots {
+  ul {
+    li {
+      button {
+        &:before {
+          color: #fff;
+          font-size: 11px;
+        }
+      }
+    }
+    li.slick-active {
+      button {
+        &:before {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.auto-hide-scroll {
+  overflow: hidden;
+}
+
+.auto-hide-scroll:hover {
+  overflow-y: scroll;
+  overflow-y: overlay !important;
+}
+
+.scroll-style-1::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.scroll-style-1::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+
+.scroll-style-1::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #8c8c8c;
 }

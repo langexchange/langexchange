@@ -1,48 +1,45 @@
 import { Avatar, Button, Col, Row, Space, Typography } from "antd";
 import { HeartOutlined, EditOutlined, MoreOutlined } from "@ant-design/icons";
 import Diff from "./Diff";
+import Comment from "../types/Comment";
 
-interface CommentProps {
-  owner: {
-    fullname: string;
-    color: string;
-    image: string;
-  };
-  heartNumber: number;
-  contents: string;
-  time: string;
-}
-
-const CommentItem = ({ owner, heartNumber, contents, time }: CommentProps) => {
+const CommentItem: React.FC<Comment> = ({
+  id,
+  owner,
+  numHearts,
+  content,
+  createdAt,
+  type,
+}) => {
   return (
     <Space align="start">
-      <Avatar size="large" />
+      <Avatar size="large" src={owner.avatar} />
       <Space
+        className="has-background-color py-2 px-3 rounded-4"
         direction="vertical"
-        style={{
-          backgroundColor: "#f0f2f5",
-          borderRadius: "18px",
-          padding: "8px 12px",
-        }}
       >
         <Typography.Text strong={true}>{owner.fullname}</Typography.Text>
         <Typography.Paragraph>
-          <Diff
-            originalText={contents}
-            correctedText={contents.replace("A", "abcdedit")}
-          />
+          {type === "corrected" ? (
+            <Diff
+              originalText={content}
+              correctedText={content.replace("A", "abcdedit")}
+            />
+          ) : (
+            <span>content</span>
+          )}
         </Typography.Paragraph>
-        <Row>
+        <Row align="middle">
           <Col flex="auto">
             <Space>
               <Space size={0}>
                 <Button
                   type="text"
                   icon={<HeartOutlined />}
-                  danger
                   shape="circle"
+                  danger
                 />
-                <Typography.Text type="danger">{heartNumber}</Typography.Text>
+                <Typography.Text type="danger">{numHearts}</Typography.Text>
               </Space>
               <Button
                 type="text"
@@ -54,13 +51,16 @@ const CommentItem = ({ owner, heartNumber, contents, time }: CommentProps) => {
                 type="text"
                 icon={<MoreOutlined rotate={90} />}
                 shape="circle"
-                className="btn-text-secondary"
+                className="btn-text-secondary secondary-color"
               />
             </Space>
           </Col>
           <Col flex="none">
-            <Typography.Text type="secondary" style={{ float: "right" }}>
-              {time}
+            <Typography.Text
+              type="secondary"
+              className="float-right ms-4 fz-12 text-500"
+            >
+              {createdAt}
             </Typography.Text>
           </Col>
         </Row>

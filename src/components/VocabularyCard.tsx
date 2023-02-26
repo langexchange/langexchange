@@ -1,31 +1,24 @@
 import { Button, Card, Space, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import UserItem from "./UserItem";
+import VocabularySet from "../types/VocabularySet";
 
-interface Vocabulary {
-  owner?: {
-    fullname: string;
-    color?: string;
-    image: string;
-  };
-  title: string;
-  descriptions: string;
-  termLanguage: string;
-  defineLanguage: string;
-}
-
-interface VocabularyCardProps extends Vocabulary {
+interface VocabularyCardProps extends VocabularySet {
   editable?: boolean;
-  setVocabularySet?: (val: Vocabulary) => void;
+  setVocabularySet?: React.Dispatch<React.SetStateAction<VocabularySet | null>>;
   showModal?: () => void;
 }
 
 const VocabularyCard = ({
+  id,
   owner,
   title,
-  descriptions,
+  description,
   termLanguage,
-  defineLanguage,
+  definitionLanguage,
+  createdAt,
+  isPublic,
+  vocabularies,
   editable = false,
   setVocabularySet,
   showModal,
@@ -34,10 +27,15 @@ const VocabularyCard = ({
     showModal && showModal();
     setVocabularySet &&
       setVocabularySet({
+        id,
+        owner,
+        createdAt,
+        isPublic,
+        vocabularies,
         title,
-        descriptions,
+        description,
         termLanguage,
-        defineLanguage,
+        definitionLanguage,
       });
   };
   return (
@@ -54,7 +52,7 @@ const VocabularyCard = ({
         <Space direction="vertical" style={{ flex: 1 }}>
           <Typography.Title level={5}>{title}</Typography.Title>
           <Typography.Paragraph type="secondary">
-            {descriptions}
+            {description}
           </Typography.Paragraph>
           <Space>
             <Space>
@@ -63,16 +61,10 @@ const VocabularyCard = ({
             </Space>
             <Space>
               Define:
-              <Tag color="green">{defineLanguage}</Tag>
+              <Tag color="green">{definitionLanguage}</Tag>
             </Space>
           </Space>
-          {owner ? (
-            <UserItem
-              fullname={owner.fullname}
-              size="small"
-              image={owner.image}
-            />
-          ) : null}
+          {owner ? <UserItem {...owner} size="small" /> : null}
         </Space>
         {editable ? (
           <Space style={{ justifyContent: "end" }}>
