@@ -98,9 +98,13 @@ function SampleNextArrow(props: any) {
       className={className}
       style={{
         ...style,
-        display: "block",
-        right: "32px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        right: "24px",
         position: "absolute",
+        height: "48px",
+        width: "48px",
       }}
       onClick={(e) => {
         e.preventDefault();
@@ -118,10 +122,14 @@ function SamplePrevArrow(props: any) {
       className={className}
       style={{
         ...style,
-        display: "block",
-        left: "32px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        left: "24px",
         position: "absolute",
         zIndex: 2,
+        height: "48px",
+        width: "48px",
       }}
       onClick={(e) => {
         e.preventDefault();

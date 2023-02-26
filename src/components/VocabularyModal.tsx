@@ -52,7 +52,6 @@ const VocabularyModal = ({
                   {vocabularySet.title}
                 </Typography.Title>
                 <Tag color="magenta">
-                  {" "}
                   {vocabularySet.vocabularies.length} vocabularies
                 </Tag>
               </Space>
