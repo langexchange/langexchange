@@ -1,46 +1,54 @@
-import { Select, SelectProps, Tag } from "antd";
+import { Select, SelectProps, Tag, TagProps } from "antd";
 import type { CustomTagProps } from "rc-select/lib/BaseSelect";
 
-const languages: SelectProps["options"] = [
+const languages = [
   {
     value: "english",
     label: "English",
+    color: "blue",
   },
   {
     value: "vietnamese",
     label: "Vietnamese",
+    color: "blue",
   },
   {
     value: "chinese",
     label: "Chinese",
+    color: "blue",
   },
   {
     value: "japanese",
     label: "Japanese",
+    color: "blue",
   },
   {
     value: "korean",
     label: "Korean",
+    color: "blue",
   },
   {
     value: "laos",
     label: "Laos",
+    color: "blue",
   },
 ];
 
 interface Props extends SelectProps {
   width?: string | number;
+  color?: string;
 }
 
-const tagRender = (props: CustomTagProps) => {
-  const { label, value, closable, onClose } = props;
+const tagRender = (props: any) => {
+  console.log(props);
+  const { label, value, color, closable, onClose } = props;
   const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     event.stopPropagation();
   };
   return (
     <Tag
-      color="blue"
+      color={color || "blue"}
       onMouseDown={onPreventMouseDown}
       closable={closable}
       onClose={onClose}
@@ -51,15 +59,15 @@ const tagRender = (props: CustomTagProps) => {
   );
 };
 
-const SeclectLanguageInput = ({ width, ...rest }: Props) => {
+const SeclectLanguageInput = ({ width, color = "blue", ...rest }: Props) => {
   const widthProperty = (typeof width === "number" && `${width}px`) || width;
-  console.log({ ...rest.style, width: widthProperty });
+
   return (
     <Select
       {...rest}
       defaultValue={["english"]}
-      tagRender={tagRender}
-      options={languages}
+      tagRender={(props) => tagRender({ ...props, color })}
+      options={languages.map((language) => ({ ...language, color }))}
       style={(width && { ...rest.style, width: widthProperty }) || rest.style}
     />
   );

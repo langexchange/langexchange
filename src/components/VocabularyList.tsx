@@ -34,8 +34,8 @@ const VocabularyList = ({ type, vocabularies }: Props) => {
       itemLayout="horizontal"
       dataSource={vocabularies || items}
       split={false}
-      renderItem={(item) => (
-        <List.Item>
+      renderItem={(item, index) => (
+        <List.Item key={index}>
           <VocabularyItem {...item} badge={badge} />
         </List.Item>
       )}

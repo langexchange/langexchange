@@ -1,4 +1,5 @@
-import { Badge, Card, Col, Row, Typography } from "antd";
+import { faker } from "@faker-js/faker";
+import { Badge, Card, Col, Image, Row, Typography } from "antd";
 
 interface VocabularyProps {
   term: string;
@@ -21,34 +22,48 @@ const VocabularyItem = ({ term, define, badge }: VocabularyProps) => {
                 style={{ borderRight: "solid 2px #8c8c8c" }}
                 className="d-flex align-items-center"
               >
-                <Typography.Text>{term}</Typography.Text>
+                <Typography.Text className="fz-18 text-300">
+                  {term}
+                </Typography.Text>
               </Col>
               <Col
-                span={18}
+                span={14}
                 className="d-flex align-items-center"
                 style={{ paddingRight: "60px" }}
               >
-                <Typography.Text>{define}</Typography.Text>
+                <Typography.Text className="fz-18 text-300">
+                  {define}
+                </Typography.Text>
+              </Col>
+              <Col span={4}>
+                <Image src={faker.image.nature()} />
               </Col>
             </Row>
           </Card>
         </Badge.Ribbon>
       ) : (
         <Card size="small" className="width-full">
-          <Row gutter={24}>
+          <Row gutter={24} wrap={false}>
             <Col
               span={6}
               style={{ borderRight: "solid 2px #8c8c8c" }}
               className="d-flex align-items-center"
             >
-              <Typography.Text>{term}</Typography.Text>
+              <Typography.Text className="fz-18 text-300">
+                {term}
+              </Typography.Text>
             </Col>
             <Col
-              span={18}
+              span={14}
               className="d-flex align-items-center"
               style={{ paddingRight: "60px" }}
             >
-              <Typography.Text>{define}</Typography.Text>
+              <Typography.Text className="fz-18 text-300">
+                {define}
+              </Typography.Text>
+            </Col>
+            <Col span={4}>
+              <Image src={faker.image.nature()} />
             </Col>
           </Row>
         </Card>

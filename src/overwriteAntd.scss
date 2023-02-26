@@ -168,8 +168,27 @@
   }
 }
 
+.ant-card.action-small-no-border {
+  .ant-card-actions {
+    justify-content: end;
+    border: none !important;
+    li {
+      border: none !important;
+      margin: 0 !important;
+      width: fit-content !important;
+      padding: 4px 8px !important;
+    }
+  }
+}
+
 .ant-collapse-header {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
+}
+
+.ant-rate-star-second {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
