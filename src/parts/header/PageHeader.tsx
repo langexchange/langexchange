@@ -25,7 +25,7 @@ import {
   BellOutlined,
   TranslationOutlined,
 } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { faker } from "@faker-js/faker";
 import { useState } from "react";
@@ -39,22 +39,14 @@ const handleMenuClick: MenuProps["onClick"] = (e) => {
 
 const dropdownItems: MenuProps["items"] = [
   {
-    label: (
-      <Space>
-        <SettingOutlined />
-        Setting
-      </Space>
-    ),
+    label: <Link to="/dinhnhutan/settings">Setting</Link>,
     key: "setting",
+    icon: <SettingOutlined />,
   },
   {
-    label: (
-      <Space>
-        <LogoutOutlined />
-        Logout
-      </Space>
-    ),
+    label: <Link to="/">Logout</Link>,
     key: "logout",
+    icon: <LogoutOutlined />,
   },
   { label: "Toggle theme", key: "toggle-theme" },
 ];
@@ -116,7 +108,7 @@ const PageHeader = () => {
         <Row className="width-full d-flex align-items-center">
           <Col span={6}>
             <div className="logo">
-              <NavLink to="/">
+              <NavLink to="/community">
                 <Image
                   src={Logo}
                   alt="LangExchange Logo"

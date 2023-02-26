@@ -1,7 +1,8 @@
-import { Button, Card, Space, Tag, Typography } from "antd";
+import { Button, Card, Image, Space, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import UserItem from "./UserItem";
 import VocabularySet from "../types/VocabularySet";
+import { faker } from "@faker-js/faker";
 
 interface VocabularyCardProps extends VocabularySet {
   editable?: boolean;
@@ -41,50 +42,45 @@ const VocabularyCard = ({
   return (
     <Card
       hoverable
-      className="height-full"
-      bodyStyle={{
-        padding: "12px",
-        height: "100%",
-      }}
+      className="height-full action-small-no-border "
+      size="small"
       onClick={onClick}
+      cover={
+        <Image
+          src={faker.image.nature()}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        />
+      }
+      actions={[
+        <Button icon={<DeleteOutlined />} type="text" shape="circle" danger />,
+        <Button
+          icon={<EditOutlined />}
+          type="text"
+          shape="circle"
+          className="btn-text-warning"
+        />,
+      ]}
     >
-      <div className="d-flex height-full" style={{ flexDirection: "column" }}>
-        <Space direction="vertical" style={{ flex: 1 }}>
-          <Typography.Title level={5}>{title}</Typography.Title>
-          <Typography.Paragraph type="secondary">
-            {description}
-          </Typography.Paragraph>
+      <Space direction="vertical" style={{ flex: 1 }}>
+        <Typography.Title level={5}>{title}</Typography.Title>
+        <Typography.Paragraph type="secondary">
+          {description}
+        </Typography.Paragraph>
+        <Space>
           <Space>
-            <Space>
-              Term:
-              <Tag color="blue">{termLanguage}</Tag>
-            </Space>
-            <Space>
-              Define:
-              <Tag color="green">{definitionLanguage}</Tag>
-            </Space>
+            Term:
+            <Tag color="blue">{termLanguage}</Tag>
           </Space>
-          {owner ? <UserItem {...owner} size="small" /> : null}
+          <Space>
+            Define:
+            <Tag color="green">{definitionLanguage}</Tag>
+          </Space>
         </Space>
-        {editable ? (
-          <Space style={{ justifyContent: "end" }}>
-            <Button
-              icon={<DeleteOutlined />}
-              type="text"
-              shape="circle"
-              danger
-            />
-            <Button
-              icon={<EditOutlined />}
-              type="text"
-              shape="circle"
-              className="btn-text-warning"
-            />
-          </Space>
-        ) : (
-          ""
-        )}
-      </div>
+        {owner ? <UserItem {...owner} size="small" /> : null}
+      </Space>
     </Card>
   );
 };

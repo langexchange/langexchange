@@ -1,4 +1,14 @@
-import { Avatar, Button, Card, Divider, Space, Tag, Typography } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Divider,
+  Rate,
+  Space,
+  Tag,
+  TagProps,
+  Typography,
+} from "antd";
 import {
   UserDeleteOutlined,
   MessageOutlined,
@@ -7,51 +17,127 @@ import {
   TeamOutlined,
   SketchOutlined,
   HeartOutlined,
-  StarFilled,
-  StarOutlined,
 } from "@ant-design/icons";
 import { faker } from "@faker-js/faker";
 
-const ProfileCard = () => {
+const inforItems = [
+  {
+    icon: <HomeOutlined />,
+    text: "Hanoi, Vietnam",
+  },
+  {
+    icon: <FormOutlined />,
+    text: "100 posts",
+  },
+  {
+    icon: <TeamOutlined />,
+    text: "50 partners",
+  },
+];
+
+const nativeLanguages = [
+  {
+    language: "Vietnamese",
+    rate: 4,
+  },
+  {
+    language: "English",
+    rate: 4,
+  },
+];
+
+const targetLanguages = [
+  {
+    language: "Chinese",
+    rate: 2,
+  },
+  {
+    language: "Japanese",
+    rate: 3,
+  },
+];
+
+interface Language {
+  language: string;
+  rate: number;
+}
+
+interface LanguageRateProps extends Language {
+  color: TagProps["color"];
+}
+
+interface LanguageRateListProps {
+  title: string;
+  icon: React.ReactNode;
+  color: TagProps["color"];
+  languages: Language[];
+}
+
+const LanguageRate: React.FC<LanguageRateProps> = ({
+  color,
+  language,
+  rate,
+}) => {
   return (
-    <Card
-      style={{
-        height: "100%",
-        width: "100%",
-        backgroundColor: "white",
-      }}
-      className="height-full pos-relative card-custome-scroll"
-      bodyStyle={{
-        height: "100%",
-        // overflow: "scroll",
-      }}
-    >
+    <div className="d-flex align-items-center justify-space-between">
+      <Tag color={color}>{language}</Tag>
+      <Rate disabled defaultValue={rate} />
+    </div>
+  );
+};
+
+const LanguageRateList: React.FC<LanguageRateListProps> = ({
+  title,
+  icon,
+  color,
+  languages,
+}) => {
+  return (
+    <Space direction="vertical" className="width-full">
+      <Typography.Text type="secondary">
+        <Space align="center">
+          {icon}
+          {title}
+        </Space>
+      </Typography.Text>
+      <Space direction="vertical" className="width-full px-4">
+        {languages.map((item, index) => (
+          <LanguageRate {...item} color={color} key={index} />
+        ))}
+      </Space>
+    </Space>
+  );
+};
+
+interface InfoItemProps {
+  icon: React.ReactNode;
+  text: string;
+}
+const InfoItem: React.FC<InfoItemProps> = ({ icon, text }) => {
+  return (
+    <Typography.Text type="secondary">
+      <Space align="center">
+        {icon}
+        {text}
+      </Space>
+    </Typography.Text>
+  );
+};
+
+const ProfileCard: React.FC = () => {
+  return (
+    <Card className="height-full pos-relative card-custome-scroll bg-white h-100 w-100">
       <div className="avatar and basic info">
         <div className="d-flex align-items-center justify-space-between">
           <Space>
-            <Avatar size={100} />
+            <Avatar size={100} src={faker.image.avatar()} />
             <Space direction="vertical" size={0}>
               <Typography.Title level={3} className="m-0">
                 Dinh Nhu Tan
               </Typography.Title>
-              <Typography.Text type="secondary">
-                <Space align="center">
-                  <HomeOutlined />
-                  Ho Chi Minh, Viet Nam
-                </Space>
-              </Typography.Text>
-              <Typography.Text type="secondary">
-                <Space align="center">
-                  <FormOutlined />
-                  100 posts
-                </Space>
-              </Typography.Text>
-              <Typography.Text type="secondary">
-                <Space align="center">
-                  <TeamOutlined />
-                  50 partners
-                </Space>
-              </Typography.Text>
+              {inforItems.map((item, index) => (
+                <InfoItem {...item} key={index} />
+              ))}
             </Space>
           </Space>
           <Space direction="vertical">
@@ -72,82 +158,28 @@ const ProfileCard = () => {
       </div>
       <br />
       <Space className="languages width-full" direction="vertical" size="large">
-        <Space direction="vertical" className="width-full">
-          <Typography.Text type="secondary">
-            <Space align="center">
-              <SketchOutlined />
-              Native languages
-            </Space>
-          </Typography.Text>
-          <Space
-            direction="vertical"
-            className="width-full"
-            style={{ padding: "0 24px" }}
-          >
-            <div className="d-flex align-items-center justify-space-between">
-              <Tag color="blue">Vietnamese</Tag>
-              <Space>
-                <StarFilled className="color-warning" />
-                <StarFilled className="color-warning" />
-                <StarFilled className="color-warning" />
-                <StarFilled className="color-warning" />
-                <StarOutlined className="color-warning" />
-              </Space>
-            </div>
-            <div className="d-flex align-items-center justify-space-between">
-              <Tag color="blue">English</Tag>
-              <Space>
-                <StarFilled className="color-warning" />
-                <StarFilled className="color-warning" />
-                <StarFilled className="color-warning" />
-                <StarFilled className="color-warning" />
-                <StarOutlined className="color-warning" />
-              </Space>
-            </div>
-          </Space>
-        </Space>
-        <Space direction="vertical" className="width-full">
-          <Typography.Text type="secondary">
-            <Space align="center">
-              <HeartOutlined />
-              Target languages
-            </Space>
-          </Typography.Text>
-          <Space
-            direction="vertical"
-            className="width-full"
-            style={{ padding: "0 24px" }}
-          >
-            <div className="d-flex align-items-center justify-space-between">
-              <Tag color="green">Chinese</Tag>
-              <Space>
-                <StarFilled className="color-warning" />
-                <StarFilled className="color-warning" />
-                <StarOutlined className="color-warning" />
-                <StarOutlined className="color-warning" />
-                <StarOutlined className="color-warning" />
-              </Space>
-            </div>
-            <div className="d-flex align-items-center justify-space-between">
-              <Tag color="green">Japanese</Tag>
-              <Space>
-                <StarFilled className="color-warning" />
-                <StarFilled className="color-warning" />
-                <StarFilled className="color-warning" />
-                <StarOutlined className="color-warning" />
-                <StarOutlined className="color-warning" />
-              </Space>
-            </div>
-          </Space>
-        </Space>
+        {[
+          {
+            title: "Native languages",
+            icon: <SketchOutlined />,
+            color: "blue",
+            languages: nativeLanguages,
+          },
+          {
+            title: "Target languages",
+            icon: <HeartOutlined />,
+            color: "green",
+            languages: targetLanguages,
+          },
+        ].map((item, index) => (
+          <LanguageRateList {...item} key={index} />
+        ))}
       </Space>
       <br />
       <br />
-      <div className="bio">
-        <Typography.Paragraph italic className="text-justify text-300">
-          "{faker.random.words(50)}"
-        </Typography.Paragraph>
-      </div>
+      <Typography.Paragraph italic className="text-justify text-300">
+        "{faker.lorem.paragraphs()}"
+      </Typography.Paragraph>
       <div className="interest">
         <Divider orientation="left" plain>
           Interests

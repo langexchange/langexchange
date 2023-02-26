@@ -4,6 +4,7 @@ import AuthenticationLayout from "./layouts/authentications/AuthenticationLayout
 import NoSignedInLayout from "./layouts/NoSignedInLayout";
 import PartnerLayout from "./layouts/partners/PartnerLayout";
 import YourPartnerLayout from "./layouts/partners/YourPartnerLayout";
+import ProfileLayout from "./layouts/profile/ProfileLayout";
 import StudySpaceLayout from "./layouts/studySpace/StudySpaceLayout";
 import MainVocabularyLayout from "./layouts/vocabularies/MainVocabularyLayout";
 import PracticeVocabularyLayout from "./layouts/vocabularies/PracticeVocabularyLayout";
@@ -17,6 +18,9 @@ import PartnerDetailPage from "./pages/partners/PartnerDetailPage";
 import PartnerExplorePage from "./pages/partners/PartnerExplorePage";
 import PartnerRequestsPage from "./pages/partners/PartnerRequestsPage";
 import YourPartnersPage from "./pages/partners/YourPartnersPage";
+import ProfileSettingsPage from "./pages/profiles/ProfileSettingsPage";
+import ProfileVocabulariesPage from "./pages/profiles/ProfileVocabulariePage";
+import ProfileWallPage from "./pages/profiles/ProfileWallPage";
 import StudySpaceExplorePage from "./pages/studySpaces/StudySpaceExplorePage";
 import StudySpaceOwnPage from "./pages/studySpaces/StudySpaceOwnPage";
 import StudySpacePage from "./pages/studySpaces/StudySpacePage";
@@ -76,6 +80,12 @@ const App: React.FC = () => {
             </Route>
             <Route path="details" element={<VocabularyDetailPage />} />
             <Route path="create" element={<VocabularyCreatePage />} />
+          </Route>
+          <Route path="/:userId" element={<ProfileLayout />}>
+            <Route index element={<ProfileWallPage />} />
+            <Route path="wall" element={<ProfileWallPage />} />
+            <Route path="vocabularies" element={<ProfileVocabulariesPage />} />
+            <Route path="settings" element={<ProfileSettingsPage />} />
           </Route>
         </Route>
         <Route path="/*" element={<NotFoundPage />} />
