@@ -50,7 +50,7 @@ const RightSidebar = () => {
     <div className="has-background-color pt-1">
       <Space direction="vertical" className="width-full" size="middle">
         <Input.Search
-          placeholder="input search text"
+          placeholder="Type to search posts..."
           onSearch={onSearch}
           className="input-no-background"
         />

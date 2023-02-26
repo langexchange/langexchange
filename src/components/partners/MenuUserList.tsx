@@ -1,34 +1,11 @@
 import { Menu } from "antd";
 import UserItem from "../UserItem";
-import { faker } from "@faker-js/faker";
 import type { MenuProps } from "antd";
 import { Link } from "react-router-dom";
+import User from "../../types/User";
+import { fakeUsers } from "../../utils/fakeData/fakeUser";
 
-interface UserItemProps {
-  fullname: string;
-  size: any;
-  number: any;
-  color: string;
-  image: string;
-  isStrong: boolean;
-  description: string;
-}
-
-const userItems: UserItemProps[] = [];
-
-for (let i = 0; i < 20; i++) {
-  const itemProps: UserItemProps = {
-    fullname: faker.name.fullName(),
-    size: 36,
-    number: faker.random.numeric(),
-    color: faker.color.rgb({ format: "hex", casing: "lower" }),
-    image: faker.image.abstract(),
-    isStrong: false,
-    description: faker.random.words(4),
-  };
-
-  userItems.push(itemProps);
-}
+const userItems: User[] = fakeUsers(20);
 
 const items: MenuProps["items"] = [];
 

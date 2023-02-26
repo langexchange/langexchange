@@ -1,27 +1,17 @@
-import { faker } from "@faker-js/faker";
 import { List } from "antd";
+import Vocabulary from "../types/Vocabulary";
+import { fakeVocabularies } from "../utils/fakeData/fakeVocabulary";
 import VocabularyItem from "./VocabularyItem";
 
-interface Vocabulary {
-  term: string;
-  define: string;
-}
-
-const items: Vocabulary[] = [];
-for (let i = 0; i < 10; i++) {
-  const item: Vocabulary = {
-    term: faker.random.word(),
-    define: faker.random.words(10),
-  };
-  items.push(item);
-}
+const items: Vocabulary[] = fakeVocabularies(10);
 
 type VocabType = "hard" | "known";
 interface Props {
   type?: VocabType;
+  vocabularies?: Vocabulary[];
 }
 
-const VocabularyList = ({ type }: Props) => {
+const VocabularyList = ({ type, vocabularies }: Props) => {
   let badge: any;
   switch (type) {
     case "hard":
@@ -42,7 +32,7 @@ const VocabularyList = ({ type }: Props) => {
   return (
     <List
       itemLayout="horizontal"
-      dataSource={items}
+      dataSource={vocabularies || items}
       split={false}
       renderItem={(item) => (
         <List.Item>

@@ -1,11 +1,10 @@
 import { Avatar, Badge, Image, Space, Typography } from "antd";
+import User from "../types/User";
 
-interface UserItemProps {
-  fullname: string;
+interface UserItemProps extends User {
   size?: any;
   number?: any;
   color?: string;
-  image: string;
   isStrong?: boolean;
   direction?: string;
   description?: string;
@@ -17,7 +16,7 @@ const UserItem = ({
   size,
   number,
   color,
-  image,
+  avatar,
   isStrong,
   direction,
   description,
@@ -38,14 +37,14 @@ const UserItem = ({
               <Avatar
                 style={{ verticalAlign: "middle", backgroundColor: color }}
                 size={size}
-                src={<Image src={image} style={{ width: 32 }} />}
+                src={<Image src={avatar} style={{ width: 32 }} />}
               />
             </Badge>
           ) : (
             <Avatar
               style={{ verticalAlign: "middle", backgroundColor: color }}
               size={size}
-              src={<Image src={image} style={{ width: 32 }} />}
+              src={<Image src={avatar} style={{ width: 32 }} />}
             />
           )}
         </>
@@ -56,14 +55,14 @@ const UserItem = ({
               <Avatar
                 style={{ verticalAlign: "middle", backgroundColor: color }}
                 size={size}
-                src={<Image src={image} style={{ width: 32 }} />}
+                src={<Image src={avatar} style={{ width: 32 }} />}
               />
             </Badge>
           ) : (
             <Avatar
               style={{ verticalAlign: "middle", backgroundColor: color }}
               size={size}
-              src={<Image src={image} style={{ width: 32 }} />}
+              src={<Image src={avatar} style={{ width: 32 }} />}
             />
           )}
           <Space.Compact direction="vertical">

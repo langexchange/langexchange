@@ -28,7 +28,7 @@ import VocabularyPracticePage from "./pages/vocabularies/VocabularyPracticePage"
 import YourVocabularyPage from "./pages/vocabularies/YourVocabularyPage";
 import WelcomePage from "./pages/welcomes/WelcomePage";
 
-function App() {
+const App: React.FC = () => {
   const location = useLocation();
 
   return (
@@ -82,6 +82,6 @@ function App() {
       </Routes>
     </div>
   );
-}
+};
 
 export default App;

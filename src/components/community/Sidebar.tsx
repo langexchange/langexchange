@@ -1,93 +1,51 @@
-import { Avatar, Button, Card, List, Menu, Space, Typography } from "antd";
 import UserItem from "../UserItem";
-import { MoreOutlined } from "@ant-design/icons";
+import User from "../../types/User";
 import { faker } from "@faker-js/faker";
-import type { MenuProps } from "antd";
+import { fakeUsers } from "../../utils/fakeData/fakeUser";
+import { Avatar, Card, Collapse, List, Space, Typography } from "antd";
 
-interface UserItemProps {
-  fullname: string;
-  size: any;
-  number: any;
-  color: string;
-  image: string;
-  isStrong: boolean;
-}
+const userItems: User[] = fakeUsers(10);
 
-const userItems: UserItemProps[] = [];
-
-for (let i = 0; i < 10; i++) {
-  const itemProps: UserItemProps = {
-    fullname: faker.name.fullName(),
-    size: 36,
-    number: faker.random.numeric(),
-    color: faker.color.rgb({ format: "hex", casing: "lower" }),
-    image: faker.image.abstract(),
-    isStrong: false,
-  };
-
-  userItems.push(itemProps);
-}
-
-const items: MenuProps["items"] = [];
-
-let i = 0;
-for (let item of userItems) {
-  items.push({
-    label: <UserItem {...item} direction="left" badge={false} />,
-    key: i.toString(),
-  });
-  i++;
-}
-
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        // backgroundColor: "white",
-      }}
-    >
-      <Space
-        size="large"
-        direction="vertical"
+    <Space size="large" direction="vertical" className="width-full">
+      <Card
+        bodyStyle={{
+          padding: "8px 12px",
+          width: "max-content",
+        }}
+        hoverable
         className="width-full"
-      // align="start"
       >
-        <Card
-          bodyStyle={{
-            padding: "8px 12px",
-            width: "max-content",
-          }}
-          hoverable
-          className="width-full"
-        >
-          <Space align="center" size={12}>
-            <Avatar
-              style={{ verticalAlign: "middle" }}
-              size="large"
-              src={faker.image.abstract(50, 50)}
-            />
-            <Typography.Title level={3} className="m-0 color-primary">
-              Dinh Nhu Tan
-            </Typography.Title>
-          </Space>
-        </Card>
-        <Space direction="vertical" className="text-left width-full">
-          <div className="d-flex align-items-center justify-space-between">
-            <Typography.Text type="secondary" className="fz-16 text-500">
+        <Space align="center" size={12}>
+          <Avatar
+            style={{ verticalAlign: "middle" }}
+            size="large"
+            src={faker.image.abstract(50, 50)}
+          />
+          <Typography.Title level={3} className="m-0 color-primary">
+            Dinh Nhu Tan
+          </Typography.Title>
+        </Space>
+      </Card>
+      <Collapse
+        collapsible="header"
+        defaultActiveKey={["1"]}
+        bordered={false}
+        expandIconPosition="end"
+      >
+        <Collapse.Panel
+          header={
+            <Typography.Text
+              type="secondary"
+              className="fz-16 text-500 d-block"
+            >
               Active partners
             </Typography.Text>
-            <Button
-              type="text"
-              size="small"
-              shape="circle"
-              icon={<MoreOutlined rotate={90} />}
-            />
-          </div>
+          }
+          key="1"
+        >
           <List
-            // header={<div>Header</div>}
-            // footer={<div>Footer</div>}
             className="text-left"
             itemLayout="horizontal"
             dataSource={userItems}
@@ -100,9 +58,9 @@ const Sidebar = () => {
               </List.Item>
             )}
           />
-        </Space>
-      </Space>
-    </div>
+        </Collapse.Panel>
+      </Collapse>
+    </Space>
   );
 };
 

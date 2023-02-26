@@ -86,8 +86,7 @@ const PracticeSidebar = () => {
         selectedKeys={[activeKey]}
         mode="vertical"
         items={items}
-        className="item-height-max-content"
-        style={{ overflowY: "scroll", border: "none" }}
+        className="auto-hide-scroll scroll-style-1 item-height-max-content border-0"
       />
       <ModalAddToPracticeList
         open={isModalOpen}

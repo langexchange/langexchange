@@ -60,7 +60,6 @@ const ModalAddToPracticeList = ({ open, onOk, onCancel }: ModalProps) => {
         width={800}
         wrapClassName="pv-32"
         style={{ top: 0, maxHeight: "100%" }}
-        bodyStyle={{ height: "100%", overflowY: "scroll" }}
         className="d-flex flex-column modal-with-content-scroll"
       >
         <List
