@@ -1,32 +1,16 @@
-import { faker } from "@faker-js/faker";
 import { Col, Row } from "antd";
+import VocabularySet from "../../types/VocabularySet";
 import VocabularyCard from "../VocabularyCard";
+import { fakeVocabularySets } from "../../utils/fakeData/fakeVocabularySet";
 
 interface ListProps {
   colSpan?: number;
   editable?: boolean;
-  setVocabularySet?: (val: Vocabulary) => void;
+  setVocabularySet?: React.Dispatch<React.SetStateAction<VocabularySet | null>>;
   showModal?: () => void;
 }
 
-interface Vocabulary {
-  title: string;
-  descriptions: string;
-  termLanguage: string;
-  defineLanguage: string;
-}
-
-const items: Vocabulary[] = [];
-
-for (let i = 0; i < 10; i++) {
-  const item: Vocabulary = {
-    title: faker.random.words(4),
-    descriptions: faker.random.words(15),
-    termLanguage: faker.random.words(1),
-    defineLanguage: faker.random.words(1),
-  };
-  items.push(item);
-}
+const items: VocabularySet[] = fakeVocabularySets(10);
 
 const VocabularyList = ({
   showModal,

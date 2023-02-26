@@ -1,7 +1,12 @@
+import { Typography } from "antd";
+
 interface Props {
   originalText: string;
   correctedText: string;
   mode?: "characters" | "words";
+  style?: React.CSSProperties;
+  className?: string;
+  code?: boolean;
 }
 
 const styles = {
@@ -19,6 +24,9 @@ const Diff = ({
   originalText = "",
   correctedText = "",
   mode = "words",
+  className,
+  style,
+  code = false,
 }: Props) => {
   const diff = require("diff");
   let groups = [];
@@ -27,15 +35,33 @@ const Diff = ({
     groups = diff.diffChars(originalText, correctedText);
   if (mode === "words") groups = diff.diffWords(originalText, correctedText);
 
-  const mappedNodes = groups.map((group: any) => {
+  const mappedNodes = groups.map((group: any, index: number) => {
     const { value, added, removed } = group;
     let nodeStyles;
     if (added) nodeStyles = styles.added;
     if (removed) nodeStyles = styles.removed;
-    return <span style={nodeStyles}>{value}</span>;
+    return (
+      <span style={nodeStyles} key={index}>
+        {value}
+      </span>
+    );
   });
 
-  return <span>{mappedNodes}</span>;
+  if (code) {
+    return (
+      <Typography.Paragraph>
+        <pre style={style} className={className}>
+          {mappedNodes}
+        </pre>
+      </Typography.Paragraph>
+    );
+  } else {
+    return (
+      <span style={style} className={className}>
+        {mappedNodes}
+      </span>
+    );
+  }
 };
 
 export default Diff;

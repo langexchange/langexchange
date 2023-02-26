@@ -5,6 +5,7 @@ import FlashCardList from "../../components/vocabularies/FlashCardList";
 import UserItem from "../../components/UserItem";
 import VocabularyList from "../../components/VocabularyList";
 import BackCircleButton from "../../components/BackCircleButton";
+import { fakeUser } from "../../utils/fakeData/fakeUser";
 
 const VocabularyDetailPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -45,8 +46,7 @@ const VocabularyDetailPage = () => {
           <Card size="small">
             <div className="d-flex align-items-center justify-space-between">
               <UserItem
-                fullname={faker.name.fullName()}
-                image={faker.image.abstract()}
+                {...fakeUser()}
                 description={faker.date.recent().toLocaleString()}
                 isStrong={true}
               />

@@ -21,7 +21,7 @@ const YourPartnerLayout = () => {
     <Row
       justify="space-between"
       className="pos-relative full-height-minus-header py-3"
-      gutter={12}
+      gutter={0}
     >
       <Col
         span={6}
@@ -54,7 +54,7 @@ const YourPartnerLayout = () => {
               100 partners
             </Divider>
           </Space>
-          <div className="overflow-y-scroll">
+          <div className="auto-hide-scroll scroll-style-1">
             <MenuUserList />
           </div>
         </Card>
