@@ -6,10 +6,10 @@ import ProfileCard from "../../pages/partners/ProfileCard";
 const ProfileLayout = () => {
   return (
     <Row className="full-height-minus-header py-3">
-      <Col span={8}>
+      <Col span={10}>
         <ProfileCard />
       </Col>
-      <Col span={16} className="h-100">
+      <Col span={14} className="h-100">
         <Row wrap={false} className="h-100">
           <Col flex="none">
             <SidebarNavigation />
