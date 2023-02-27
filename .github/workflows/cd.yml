@@ -3,7 +3,7 @@ name: Auto build and push image
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
