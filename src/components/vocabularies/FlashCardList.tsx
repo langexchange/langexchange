@@ -4,30 +4,17 @@ import FlashCard from "./FlashCard";
 import { Button, Space } from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import classes from "./FlashCardList.module.scss";
+import Vocabulary from "../../types/Vocabulary";
+import { fakeVocabularies } from "../../utils/fakeData/fakeVocabulary";
 
-interface Card {
-  id: string;
-  term: string;
-  define: string;
-}
+const items: Vocabulary[] = fakeVocabularies(10);
 
-const items: Card[] = [];
-
-for (let index = 0; index < 20; index++) {
-  const card: Card = {
-    id: faker.database.mongodbObjectId().toString(),
-    term: faker.random.words(3),
-    define: faker.random.words(10),
-  };
-  items.push(card);
-}
-
-interface Props {
+interface FlashCardListProps {
   type?: "view" | "practice";
 }
 
-const FlashCardList = ({ type = "practice" }: Props) => {
-  const cards = items.map((item) => {
+const FlashCardList: React.FC<FlashCardListProps> = ({ type = "practice" }) => {
+  const cards = items.map((item: Vocabulary) => {
     return <FlashCard {...item} key={item.id} />;
   });
 

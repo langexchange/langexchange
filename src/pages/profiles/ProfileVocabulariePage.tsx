@@ -1,6 +1,7 @@
 import { useState } from "react";
 import VocabularyList from "../../components/partners/VocabularyList";
 import VocabularyModal from "../../components/VocabularyModal";
+import VocabularySetList from "../../components/VocabularySetList";
 import VocabularySet from "../../types/VocabularySet";
 
 const ProfileVocabulariesPage = () => {
@@ -17,7 +18,7 @@ const ProfileVocabulariesPage = () => {
   return (
     <>
       <VocabularyList
-        colSpan={24}
+        colSpan={12}
         editable={false}
         setVocabularySet={setVocabularySet}
         showModal={showModalVocabulary}

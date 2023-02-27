@@ -6,7 +6,10 @@ export const fakeVocabulary = () => {
     id: faker.database.mongodbObjectId().toString(),
     term: faker.lorem.word(),
     define: faker.lorem.sentence(),
-    image: faker.image.imageUrl(),
+    image:
+      Number(faker.random.numeric(2)) % 2 == 0
+        ? faker.image.imageUrl()
+        : undefined,
   };
 
   return item;

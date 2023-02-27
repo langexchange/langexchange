@@ -1,16 +1,14 @@
-import { faker } from "@faker-js/faker";
 import { Badge, Card, Col, Image, Row, Typography } from "antd";
+import Vocabulary from "../types/Vocabulary";
 
-interface VocabularyProps {
-  term: string;
-  define: string;
+interface VocabularyProps extends Vocabulary {
   badge?: {
     color: string;
     text: string;
   };
 }
 
-const VocabularyItem = ({ term, define, badge }: VocabularyProps) => {
+const VocabularyItem = ({ term, define, image, badge }: VocabularyProps) => {
   return (
     <div className="width-full">
       {badge ? (
@@ -27,7 +25,7 @@ const VocabularyItem = ({ term, define, badge }: VocabularyProps) => {
                 </Typography.Text>
               </Col>
               <Col
-                span={14}
+                span={(image && 14) || 18}
                 className="d-flex align-items-center"
                 style={{ paddingRight: "60px" }}
               >
@@ -35,9 +33,11 @@ const VocabularyItem = ({ term, define, badge }: VocabularyProps) => {
                   {define}
                 </Typography.Text>
               </Col>
-              <Col span={4}>
-                <Image src={faker.image.nature()} />
-              </Col>
+              {image ? (
+                <Col span={4}>
+                  <Image src={image} />
+                </Col>
+              ) : null}
             </Row>
           </Card>
         </Badge.Ribbon>
@@ -54,7 +54,7 @@ const VocabularyItem = ({ term, define, badge }: VocabularyProps) => {
               </Typography.Text>
             </Col>
             <Col
-              span={14}
+              span={(image && 14) || 18}
               className="d-flex align-items-center"
               style={{ paddingRight: "60px" }}
             >
@@ -62,9 +62,11 @@ const VocabularyItem = ({ term, define, badge }: VocabularyProps) => {
                 {define}
               </Typography.Text>
             </Col>
-            <Col span={4}>
-              <Image src={faker.image.nature()} />
-            </Col>
+            {image ? (
+              <Col span={4}>
+                <Image src={image} />
+              </Col>
+            ) : null}
           </Row>
         </Card>
       )}
