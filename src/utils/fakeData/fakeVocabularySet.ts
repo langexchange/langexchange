@@ -18,7 +18,10 @@ export const fakeVocabularySet = () => {
     definitionLanguage: faker.random.locale(),
     createdAt: faker.date.past().toLocaleString(),
     isPublic: Number(faker.random.numeric()) % 2 === 0,
-    image: faker.image.imageUrl(),
+    image:
+      Number(faker.random.numeric()) % 2 === 0
+        ? faker.image.imageUrl()
+        : undefined,
   };
 
   return item;

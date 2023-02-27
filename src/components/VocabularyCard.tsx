@@ -2,7 +2,6 @@ import { Button, Card, Image, Space, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import UserItem from "./UserItem";
 import VocabularySet from "../types/VocabularySet";
-import { faker } from "@faker-js/faker";
 
 interface VocabularyCardProps extends VocabularySet {
   editable?: boolean;
@@ -10,10 +9,11 @@ interface VocabularyCardProps extends VocabularySet {
   showModal?: () => void;
 }
 
-const VocabularyCard = ({
+const VocabularyCard: React.FC<VocabularyCardProps> = ({
   id,
   owner,
   title,
+  image,
   description,
   termLanguage,
   definitionLanguage,
@@ -23,7 +23,7 @@ const VocabularyCard = ({
   editable = false,
   setVocabularySet,
   showModal,
-}: VocabularyCardProps) => {
+}) => {
   const onClick = () => {
     showModal && showModal();
     setVocabularySet &&
@@ -42,25 +42,40 @@ const VocabularyCard = ({
   return (
     <Card
       hoverable
-      className="height-full action-small-no-border "
+      className="action-small-no-border "
       size="small"
       onClick={onClick}
       cover={
-        <Image
-          src={faker.image.nature()}
+        image && (
+          <Image
+            src={image}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          />
+        )
+      }
+      actions={[
+        <Button
+          icon={<DeleteOutlined />}
+          type="text"
+          shape="circle"
+          danger
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
           }}
-        />
-      }
-      actions={[
-        <Button icon={<DeleteOutlined />} type="text" shape="circle" danger />,
+        />,
         <Button
           icon={<EditOutlined />}
           type="text"
           shape="circle"
           className="btn-text-warning"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
         />,
       ]}
     >
