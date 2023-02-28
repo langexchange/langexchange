@@ -6,8 +6,10 @@ import {
   FacebookFilled,
   InstagramFilled,
 } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const PageFooter = () => {
+  const [t] = useTranslation(["commons"]);
   return (
     <Space
       align="center"
@@ -17,7 +19,7 @@ const PageFooter = () => {
     >
       <Image src={Logo} alt="LangExchange Logo" width={161} />
       <Space>
-        Follow us on:
+        {t("footer-follow")}
         <Button size="small" type="text">
           <YoutubeFilled style={{ fontSize: "24px" }} />
         </Button>

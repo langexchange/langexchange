@@ -5,9 +5,12 @@ import FlashCardList from "../../components/vocabularies/FlashCardList";
 import UserItem from "../../components/UserItem";
 import VocabularyList from "../../components/VocabularyList";
 import BackCircleButton from "../../components/BackCircleButton";
+import { fakeUser } from "../../utils/fakeData/fakeUser";
+import { useTranslation } from "react-i18next";
 
 const VocabularyDetailPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const [t] = useTranslation(["vocabulary", "commons"]);
 
   const handleCollect = () => {
     messageApi.open({
@@ -20,7 +23,6 @@ const VocabularyDetailPage = () => {
       {contextHolder}
       <div
         style={{
-          // width: "fit-content",
           margin: "auto",
           padding: "24px 0",
         }}
@@ -37,7 +39,7 @@ const VocabularyDetailPage = () => {
             icon={<PlusOutlined />}
             onClick={handleCollect}
           >
-            Collect this!
+            {t("Collect", { ns: "commons" })}
           </Button>
         </div>
         <div className="ma mb-3" style={{ width: "fit-content" }}>
@@ -46,9 +48,8 @@ const VocabularyDetailPage = () => {
           <Card size="small">
             <div className="d-flex align-items-center justify-space-between">
               <UserItem
-                fullname={faker.name.fullName()}
-                image={faker.image.abstract()}
-                description={faker.date.recent().toString()}
+                {...fakeUser()}
+                description={faker.date.recent().toLocaleString()}
                 isStrong={true}
               />
               <Space>
@@ -72,7 +73,7 @@ const VocabularyDetailPage = () => {
 
         <div>
           <Typography.Title level={4}>
-            Terminology in this module
+            {t("Terminology in this module")}
           </Typography.Title>
           <VocabularyList />
         </div>

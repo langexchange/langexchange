@@ -1,98 +1,103 @@
-import { Button, Card, Space, Tag, Typography } from "antd";
+import { Button, Card, Image, Space, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import UserItem from "./UserItem";
+import VocabularySet from "../types/VocabularySet";
+import { useTranslation } from "react-i18next";
 
-interface Vocabulary {
-  owner?: {
-    fullname: string;
-    color?: string;
-    image: string;
-  };
-  title: string;
-  descriptions: string;
-  termLanguage: string;
-  defineLanguage: string;
-}
-
-interface VocabularyCardProps extends Vocabulary {
+interface VocabularyCardProps extends VocabularySet {
   editable?: boolean;
-  setVocabularySet?: (val: Vocabulary) => void;
+  setVocabularySet?: React.Dispatch<React.SetStateAction<VocabularySet | null>>;
   showModal?: () => void;
 }
 
-const VocabularyCard = ({
+const VocabularyCard: React.FC<VocabularyCardProps> = ({
+  id,
   owner,
   title,
-  descriptions,
+  image,
+  description,
   termLanguage,
-  defineLanguage,
+  definitionLanguage,
+  createdAt,
+  isPublic,
+  vocabularies,
   editable = false,
   setVocabularySet,
   showModal,
-}: VocabularyCardProps) => {
+}) => {
+  const [t] = useTranslation(["commons"]);
   const onClick = () => {
     showModal && showModal();
     setVocabularySet &&
       setVocabularySet({
+        id,
+        owner,
+        createdAt,
+        isPublic,
+        vocabularies,
         title,
-        descriptions,
+        description,
         termLanguage,
-        defineLanguage,
+        definitionLanguage,
       });
   };
   return (
     <Card
       hoverable
-      className="height-full"
-      bodyStyle={{
-        padding: "12px",
-        height: "100%",
-      }}
+      className="action-small-no-border "
+      size="small"
       onClick={onClick}
+      cover={
+        image && (
+          <Image
+            src={image}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          />
+        )
+      }
+      actions={[
+        <Button
+          icon={<DeleteOutlined />}
+          type="text"
+          shape="circle"
+          danger
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        />,
+        <Button
+          icon={<EditOutlined />}
+          type="text"
+          shape="circle"
+          className="btn-text-warning"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        />,
+      ]}
     >
-      <div className="d-flex height-full" style={{ flexDirection: "column" }}>
-        <Space direction="vertical" style={{ flex: 1 }}>
-          <Typography.Title level={5}>{title}</Typography.Title>
-          <Typography.Paragraph type="secondary">
-            {descriptions}
-          </Typography.Paragraph>
+      <Space direction="vertical" style={{ flex: 1 }}>
+        <Typography.Title level={5}>{title}</Typography.Title>
+        <Typography.Paragraph type="secondary">
+          {description}
+        </Typography.Paragraph>
+        <Space wrap={true}>
           <Space>
-            <Space>
-              Term:
-              <Tag color="blue">{termLanguage}</Tag>
-            </Space>
-            <Space>
-              Define:
-              <Tag color="green">{defineLanguage}</Tag>
-            </Space>
+            {t("Term")}
+            <Tag color="blue">{termLanguage}</Tag>
           </Space>
-          {owner ? (
-            <UserItem
-              fullname={owner.fullname}
-              size="small"
-              image={owner.image}
-            />
-          ) : null}
+          <Space>
+            {t("Define")}
+            <Tag color="green">{definitionLanguage}</Tag>
+          </Space>
         </Space>
-        {editable ? (
-          <Space style={{ justifyContent: "end" }}>
-            <Button
-              icon={<DeleteOutlined />}
-              type="text"
-              shape="circle"
-              danger
-            />
-            <Button
-              icon={<EditOutlined />}
-              type="text"
-              shape="circle"
-              className="btn-text-warning"
-            />
-          </Space>
-        ) : (
-          ""
-        )}
-      </div>
+        {owner ? <UserItem {...owner} size="small" /> : null}
+      </Space>
     </Card>
   );
 };

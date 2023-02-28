@@ -8,6 +8,10 @@ import App from "./App";
 import "antd/dist/reset.css";
 import "./bootstrap.scss";
 import "./index.scss";
+import "./overwriteAntd.scss";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./i18n";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

@@ -1,72 +1,42 @@
-import { faker } from "@faker-js/faker";
-import { Col, Row } from "antd";
 import { Link } from "react-router-dom";
+import VocabularySet from "../types/VocabularySet";
+import { fakeVocabularySets } from "../utils/fakeData/fakeVocabularySet";
 import VocabularyCard from "./VocabularyCard";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 interface ListProps {
   colSpan?: number;
   editable?: boolean;
-  setVocabularySet?: (val: Vocabulary) => void;
+  setVocabularySet?: React.Dispatch<React.SetStateAction<VocabularySet | null>>;
   showModal?: () => void;
+  columnsCount?: number;
 }
 
-interface Vocabulary {
-  owner?: {
-    fullname: string;
-    color?: string;
-    image: string;
-  };
-  title: string;
-  descriptions: string;
-  termLanguage: string;
-  defineLanguage: string;
-}
-
-const items: Vocabulary[] = [];
-
-for (let i = 0; i < 20; i++) {
-  const item: Vocabulary = {
-    owner: {
-      fullname: faker.name.fullName(),
-      image: faker.image.abstract(),
-    },
-    title: faker.random.words(4),
-    descriptions: faker.random.words(15),
-    termLanguage: faker.random.words(1),
-    defineLanguage: faker.random.words(1),
-  };
-  items.push(item);
-}
+const items: VocabularySet[] = fakeVocabularySets(10);
 
 const VocabularySetList = ({
   showModal,
   setVocabularySet,
-  colSpan = 8,
+  columnsCount = 4,
   editable = false,
 }: ListProps) => {
   return (
-    <div>
-      <Row gutter={[12, 12]}>
+    <ResponsiveMasonry
+      columnsCountBreakPoints={{ 350: 1, 750: 2, 900: columnsCount }}
+    >
+      <Masonry gutter="16px" columnsCount={columnsCount}>
         {items.map((item, index) => (
-          <Col
-            span={colSpan}
-            key={index}
-            style={{
-              height: "auto",
-            }}
-          >
-            <Link to="/vocabularies/details">
-              <VocabularyCard
-                {...item}
-                editable={editable}
-                showModal={showModal}
-                setVocabularySet={setVocabularySet}
-              />
-            </Link>
-          </Col>
+          <Link to="/vocabularies/details" key={index}>
+            <VocabularyCard
+              {...item}
+              editable={editable}
+              showModal={showModal}
+              setVocabularySet={setVocabularySet}
+            />
+          </Link>
         ))}
-      </Row>
-    </div>
+      </Masonry>
+    </ResponsiveMasonry>
   );
 };
 

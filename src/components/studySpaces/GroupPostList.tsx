@@ -1,53 +1,30 @@
-import { faker } from "@faker-js/faker";
 import { Col, Row } from "antd";
+import Post from "../../types/Post";
 import PostCard from "../PostCard";
+import { faker } from "@faker-js/faker";
+import { fakePost } from "../../utils/fakeData/fakePost";
 
-interface PostProps {
+interface PostProps extends Post {
   group: {
     name: string;
     image: string;
   };
-  owner: {
-    fullname: string;
-    color: string;
-    image: string;
-  };
-  images: string[];
-  contents: string;
-  languages: string[];
-  emotions: string;
-  comments: string;
-  time: string;
 }
 
 const items: PostProps[] = [];
 
 for (let i = 0; i < 10; i++) {
   const itemProps: PostProps = {
+    ...fakePost(),
     group: {
       name: faker.random.words(4),
       image: faker.image.abstract(),
     },
-    owner: {
-      fullname: faker.name.fullName(),
-      image: faker.image.abstract(),
-      color: faker.color.rgb({ format: "hex", casing: "lower" }),
-    },
-    images: [
-      faker.image.abstract(),
-      faker.image.abstract(),
-      faker.image.abstract(),
-    ],
-    emotions: faker.random.numeric(),
-    comments: faker.random.numeric(),
-    languages: [faker.random.word(), faker.random.word(), faker.random.word()],
-    contents: faker.random.words(80),
-    time: faker.date.past().toString(),
   };
 
   items.push(itemProps);
 }
-const GroupPostList = () => {
+const GroupPostList: React.FC = () => {
   return (
     <Row gutter={[0, 24]}>
       {items.map((item, index) => (

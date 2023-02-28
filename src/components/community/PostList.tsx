@@ -1,52 +1,17 @@
-import { faker } from "@faker-js/faker";
 import { Col, Row } from "antd";
 import PostCard from "../PostCard";
+import Post from "../../types/Post";
+import { fakePosts } from "../../utils/fakeData/fakePost";
 
-interface PostProps {
-  owner: {
-    fullname: string;
-    color: string;
-    image: string;
-  };
-  images: string[];
-  contents: string;
-  languages: string[];
-  emotions: string;
-  comments: string;
-  time: string;
-}
-
-const items: PostProps[] = [];
-
-for (let i = 0; i < 10; i++) {
-  const itemProps: PostProps = {
-    owner: {
-      fullname: faker.name.fullName(),
-      image: faker.image.abstract(),
-      color: faker.color.rgb({ format: "hex", casing: "lower" }),
-    },
-    images: [
-      faker.image.abstract(),
-      faker.image.abstract(),
-      faker.image.abstract(),
-    ],
-    emotions: faker.random.numeric(),
-    comments: faker.random.numeric(),
-    languages: [faker.random.word(), faker.random.word(), faker.random.word()],
-    contents: faker.random.words(80),
-    time: faker.date.past().toString(),
-  };
-
-  items.push(itemProps);
-}
+const items: Post[] = fakePosts(15);
 
 interface PostListProps {
-  setPost?: (val: PostProps) => void;
+  setPost?: React.Dispatch<React.SetStateAction<Post | null>>;
   showModal?: () => void;
 }
 
-const PostList = ({ setPost, showModal }: PostListProps) => {
-  const onClick = (item: PostProps) => {
+const PostList: React.FC<PostListProps> = ({ setPost, showModal }) => {
+  const onClick = (item: Post) => {
     setPost && setPost(item);
     showModal && showModal();
   };

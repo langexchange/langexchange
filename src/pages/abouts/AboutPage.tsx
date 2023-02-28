@@ -1,5 +1,5 @@
 import BannerAbout from "../../components/abouts/BannerAbout";
-import Missons from "../../components/abouts/Missons";
+import Missions from "../../components/abouts/Missions";
 import Contacts from "../../components/abouts/Contacts";
 import SubcribeForm from "../../components/abouts/SubcribeForm";
 
@@ -7,7 +7,7 @@ const AboutPage = () => {
   return (
     <>
       <BannerAbout />
-      <Missons />
+      <Missions />
       <Contacts />
       <SubcribeForm />
     </>

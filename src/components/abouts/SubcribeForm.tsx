@@ -1,4 +1,5 @@
 import { Col, Row, Image, Space, Typography, Form, Input, Button } from "antd";
+import { useTranslation } from "react-i18next";
 import SubcribeFormImage from "../../assets/images/form_contact.png";
 
 const { Title } = Typography;
@@ -12,6 +13,8 @@ const onFinishFailed = (errorInfo: any) => {
 };
 
 const SubcribeForm = () => {
+  const [t] = useTranslation(["about"]);
+
   return (
     <div className="bg-white">
       <Row align="middle" className="container py-5">
@@ -19,11 +22,13 @@ const SubcribeForm = () => {
           <Image src={SubcribeFormImage} alt="LangExchange subcribe" />
         </Col>
         <Col span={12}>
-          <Space size={40} direction="vertical" className="float-right">
+          <Space
+            size={40}
+            direction="vertical"
+            className="float-right width-full"
+          >
             <div style={styles.title_container}>
-              <Title level={2}>
-                Subscribe to receive the latest information
-              </Title>
+              <Title level={2}>{t("subcribe-form-title")}</Title>
               <span style={styles.underline_blue}></span>
             </div>
             <Form
@@ -35,7 +40,7 @@ const SubcribeForm = () => {
               layout="vertical"
             >
               <Form.Item
-                label="Fullname"
+                label={t("fullname", { ns: "commons" })}
                 name="fullname"
               // rules={[{ required: true, message: 'Please input your fullname!' }]}
               >
@@ -52,7 +57,7 @@ const SubcribeForm = () => {
 
               <Form.Item>
                 <Button type="primary" htmlType="submit">
-                  Subcribe
+                  {t("subcribe", { ns: "commons" })}
                 </Button>
               </Form.Item>
             </Form>

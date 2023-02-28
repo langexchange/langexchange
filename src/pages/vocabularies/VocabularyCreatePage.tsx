@@ -15,37 +15,39 @@ import { useNavigate } from "react-router-dom";
 import ListCardAddVocabulary from "../../components/vocabularies/ListCardAddVocabulary";
 import type { SelectProps } from "antd";
 import UploadImage from "../../components/UploadImage";
+import { useTranslation } from "react-i18next";
 
-const languages: SelectProps["options"] = [
-  {
-    value: "english",
-    label: "English",
-  },
-  {
-    value: "vietnamese",
-    label: "Vietnamese",
-  },
-  {
-    value: "chinese",
-    label: "Chinese",
-  },
-  {
-    value: "japanese",
-    label: "Japanese",
-  },
-  {
-    value: "korean",
-    label: "Korean",
-  },
-  {
-    value: "laos",
-    label: "Laos",
-  },
-];
-
-const VocabularyCreatePage = () => {
+const VocabularyCreatePage: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
+  const [t] = useTranslation(["vocabulary", "commons"]);
+
+  const languages: SelectProps["options"] = [
+    {
+      value: "english",
+      label: t("English", { ns: "commons" }),
+    },
+    {
+      value: "vietnamese",
+      label: t("Vietnamese", { ns: "commons" }),
+    },
+    {
+      value: "chinese",
+      label: t("Chinese", { ns: "commons" }),
+    },
+    {
+      value: "japanese",
+      label: t("Japanese", { ns: "commons" }),
+    },
+    {
+      value: "korean",
+      label: t("Korean", { ns: "commons" }),
+    },
+    {
+      value: "laos",
+      label: t("Laos", { ns: "commons" }),
+    },
+  ];
 
   const handleCollect = () => {
     messageApi.open({
@@ -78,7 +80,7 @@ const VocabularyCreatePage = () => {
               className="color-secondary"
             />
             <Typography.Title className="m-0" level={3}>
-              Create new vocabulary set
+              {t("create-set-page-title")}
             </Typography.Title>
           </Space>
           <Button
@@ -86,7 +88,7 @@ const VocabularyCreatePage = () => {
             icon={<PlusOutlined />}
             onClick={handleCollect}
           >
-            Create
+            {t("Create", { ns: "commons" })}
           </Button>
         </div>
         <Row gutter={24}>
@@ -94,33 +96,36 @@ const VocabularyCreatePage = () => {
             <Form autoComplete="off" labelAlign="left">
               <Form.Item
                 name="title"
-                label="Title"
+                label={t("Title", { ns: "commons" })}
                 labelCol={{ span: 2 }}
                 required
               >
-                <Input placeholder='Enter a title, for example " Biology - Chapter 22: Evolution"' />
+                <Input placeholder={t("title-input-placeholder").toString()} />
               </Form.Item>
               <Form.Item
                 name="description"
-                label="Description"
+                label={t("Description", { ns: "commons" })}
                 labelCol={{ span: 2 }}
               >
                 <Input.TextArea
                   autoSize={true}
-                  placeholder="Add description..."
+                  placeholder={t("description-input-placeholder").toString()}
                 />
               </Form.Item>
 
               <Row gutter={24}>
                 <Col>
-                  <Form.Item label="Public" valuePropName="checked">
+                  <Form.Item
+                    label={t("Public", { ns: "commons" })}
+                    valuePropName="checked"
+                  >
                     <Switch />
                   </Form.Item>
                 </Col>
                 <Col>
-                  <Form.Item label="Term languages">
+                  <Form.Item label={t("Term", { ns: "commons" })}>
                     <Select
-                      placeholder="Term languages"
+                      placeholder={t("Term", { ns: "commons" })}
                       defaultValue={["english"]}
                       options={languages}
                       style={{ width: "200px" }}
@@ -128,9 +133,9 @@ const VocabularyCreatePage = () => {
                   </Form.Item>
                 </Col>
                 <Col>
-                  <Form.Item label="Define languages">
+                  <Form.Item label={t("Define", { ns: "commons" })}>
                     <Select
-                      placeholder="Define languages"
+                      placeholder={t("Define", { ns: "commons" })}
                       defaultValue={["vietnamese"]}
                       options={languages}
                       style={{ width: "200px" }}

@@ -1,38 +1,33 @@
-import { faker } from "@faker-js/faker";
 import { List } from "antd";
+import Vocabulary from "../types/Vocabulary";
 import VocabularyItem from "./VocabularyItem";
+import { useTranslation } from "react-i18next";
+import { fakeVocabularies } from "../utils/fakeData/fakeVocabulary";
 
-interface Vocabulary {
-  term: string;
-  define: string;
+const items: Vocabulary[] = fakeVocabularies(10);
+
+interface VocabularyListProps {
+  type?: "hard" | "known";
+  vocabularies?: Vocabulary[];
 }
 
-const items: Vocabulary[] = [];
-for (let i = 0; i < 10; i++) {
-  const item: Vocabulary = {
-    term: faker.random.word(),
-    define: faker.random.words(10),
-  };
-  items.push(item);
-}
+const VocabularyList: React.FC<VocabularyListProps> = ({
+  type,
+  vocabularies,
+}) => {
+  const [t] = useTranslation(["vocabulary"]);
 
-type VocabType = "hard" | "known";
-interface Props {
-  type?: VocabType;
-}
-
-const VocabularyList = ({ type }: Props) => {
   let badge: any;
   switch (type) {
     case "hard":
       badge = {
-        text: "Hard",
+        text: t("Hard"),
         color: "red",
       };
       break;
     case "known":
       badge = {
-        text: "Known",
+        text: t("Known"),
         color: "green",
       };
       break;
@@ -42,10 +37,10 @@ const VocabularyList = ({ type }: Props) => {
   return (
     <List
       itemLayout="horizontal"
-      dataSource={items}
+      dataSource={vocabularies || items}
       split={false}
-      renderItem={(item) => (
-        <List.Item>
+      renderItem={(item, index) => (
+        <List.Item key={index}>
           <VocabularyItem {...item} badge={badge} />
         </List.Item>
       )}

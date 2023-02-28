@@ -1,6 +1,5 @@
-import { Card, Space, Typography } from "antd";
-import { StarFilled } from "@ant-design/icons";
-import { gold } from "@ant-design/colors";
+import { Card, Rate, Space, Typography } from "antd";
+import { useTranslation } from "react-i18next";
 
 const { Text, Paragraph } = Typography;
 
@@ -11,16 +10,17 @@ interface FeedbackItemProps {
 }
 
 const FeedbackItem = ({ star, content, owner }: FeedbackItemProps) => {
+  const { t } = useTranslation(["welcome"]);
   return (
     <Card className="width-full">
       <Space align="center" direction="vertical" className="width-full">
         <Space align="center">
-          {[...new Array(star)].map((_, index) => (
-            <StarFilled key={index} style={{ color: gold[5] }} />
-          ))}
+          <Rate value={star} disabled />
         </Space>
         <Paragraph>{content}</Paragraph>
-        <Text type="secondary">by {owner}</Text>
+        <Text type="secondary">
+          {t("by")} {owner}
+        </Text>
       </Space>
     </Card>
   );

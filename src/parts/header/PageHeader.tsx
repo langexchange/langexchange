@@ -4,84 +4,132 @@ import {
   Badge,
   Button,
   Col,
+  Dropdown,
   Image,
   Layout,
   Menu,
+  message,
+  Popover,
   Row,
+  Select,
   Space,
 } from "antd";
 import {
   HomeOutlined,
-  GroupOutlined,
   TeamOutlined,
   MessageOutlined,
   FileTextOutlined,
-  GlobalOutlined,
+  LogoutOutlined,
+  SettingOutlined,
   BellOutlined,
-  TranslationOutlined,
 } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import type { MenuProps } from "antd";
+import { faker } from "@faker-js/faker";
+import { useState } from "react";
+import NotificationList from "../../components/NotificationList";
+import { useTranslation } from "react-i18next";
+import { VN } from "country-flag-icons/react/3x2";
 const { Header } = Layout;
 
-const items: MenuProps["items"] = [
-  {
-    label: <NavLink to="/community">Community</NavLink>,
-    key: "community",
-    icon: <HomeOutlined />,
-  },
-  // {
-  //   label: <NavLink to="/study-spaces">Study space</NavLink>,
-  //   key: "study-spaces",
-  //   icon: <GroupOutlined />,
-  // },
-  {
-    label: <NavLink to="/partners">Partner</NavLink>,
-    key: "partners",
-    icon: <TeamOutlined />,
-  },
-  {
-    label: <NavLink to="chat">Chat</NavLink>,
-    key: "chat",
-    icon: <MessageOutlined />,
-  },
-  {
-    label: <NavLink to="vocabularies">Vocabulary</NavLink>,
-    key: "vocabularies",
-    icon: <FileTextOutlined />,
-  },
-  // {
-  //   label: <NavLink to="live-classes">Live class</NavLink>,
-  //   key: "live-classes",
-  //   icon: <GlobalOutlined />,
-  // },
-];
+const handleMenuClick: MenuProps["onClick"] = (e) => {
+  message.info("Click on menu item.");
+  console.log("click", e);
+};
 
 const PageHeader = () => {
+  const { t, i18n } = useTranslation(["commons"]);
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+
+  const handleChangeLanguage = (value: string) => {
+    i18n.changeLanguage(value);
+    setSelectedLanguage(value);
+    message.success("Change language success");
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      label: <NavLink to="/community">{t("header-community")}</NavLink>,
+      key: "community",
+      icon: <HomeOutlined />,
+    },
+    {
+      label: <NavLink to="/partners">{t("header-partner")}</NavLink>,
+      key: "partners",
+      icon: <TeamOutlined />,
+    },
+    {
+      label: <NavLink to="chat">{t("header-chat")}</NavLink>,
+      key: "chat",
+      icon: <MessageOutlined />,
+    },
+    {
+      label: <NavLink to="vocabularies">{t("header-vocabulary")}</NavLink>,
+      key: "vocabularies",
+      icon: <FileTextOutlined />,
+    },
+  ];
+  const languages = [
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/English_language.svg"
+            width={24}
+            alt="EN"
+          />
+          EN
+        </div>
+      ),
+      value: "en",
+    },
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <div style={{ width: "24px" }} className="d-flex align-items-center">
+            <VN title="Vietnamese" style={{ width: "24px" }} />
+          </div>
+          VI
+        </div>
+      ),
+      value: "vi",
+    },
+  ];
+
+  const dropdownItems: MenuProps["items"] = [
+    {
+      label: <Link to="/dinhnhutan/settings">{t("settings")}</Link>,
+      key: "setting",
+      icon: <SettingOutlined />,
+    },
+    {
+      label: <Link to="/">{t("sign-out")}</Link>,
+      key: "sign-out",
+      icon: <LogoutOutlined />,
+    },
+    { label: "Toggle theme", key: "toggle-theme" },
+  ];
+
+  const menuDropdown = {
+    items: dropdownItems,
+    onClick: handleMenuClick,
+  };
+
+  const [allRead, setAllRead] = useState(false);
   const activeKey: string = window.location.pathname.split("/")[1];
+  const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+  };
 
   return (
-    <Header
-      className="header"
-      style={{
-        display: "flex",
-        backgroundColor: "white",
-        alignItems: "center",
-        justifyContent: "space-between",
-        borderBottom: "1px solid rgba(5, 5, 5, 0.06)",
-        position: "sticky",
-        top: 0,
-        zIndex: 1,
-        width: "100%",
-        lineHeight: "48px",
-        height: "48px",
-      }}
-    >
+    <Header className="z-index-1 bg-white d-flex justify-space-between align-items-center pos-sticky t-0 width-full with-header-height with-header-border-bottom">
       <div className="container">
         <Row className="width-full d-flex align-items-center">
           <Col span={6}>
             <div className="logo">
-              <NavLink to="/">
+              <NavLink to="/community">
                 <Image
                   src={Logo}
                   alt="LangExchange Logo"
@@ -103,29 +151,76 @@ const PageHeader = () => {
           </Col>
           <Col span={6} className="d-flex justify-end align-items-center">
             <Space className="toolbars" align="center">
-              <Button type="text" className="d-flex align-items-center">
-                <Badge count={99} overflowCount={10} size="small">
-                  <div
-                    className="d-flex align-items-center"
-                    style={{
-                      height: "24px",
-                      width: "24px",
-                    }}
-                  >
-                    <BellOutlined style={{ fontSize: "16px" }} />
+              <Popover
+                content={
+                  <NotificationList allRead={allRead} setAllRead={setAllRead} />
+                }
+                title={
+                  <div className="d-flex align-items-center justify-space-between">
+                    <Space size={4} align="center">
+                      <BellOutlined />
+                      {t("notifications")}
+                    </Space>
+                    <Button
+                      type="link"
+                      onClick={() => setAllRead(true)}
+                      className="text-300 fz-12"
+                    >
+                      {t("mark-all-as-read")}
+                    </Button>
                   </div>
-                </Badge>
-              </Button>
-              <Button
-                type="text"
-                className="d-flex align-items-center"
-                size="large"
+                }
+                trigger="click"
+                open={open}
+                onOpenChange={handleOpenChange}
+                placement="bottomRight"
               >
-                <Avatar size={36}>T</Avatar>
-              </Button>
-              <Button type="text" className="d-flex align-items-center">
-                <TranslationOutlined style={{ fontSize: "16px" }} />
-              </Button>
+                <Button
+                  type="text"
+                  className="d-flex align-items-center px-4"
+                  size="large"
+                >
+                  {allRead ? (
+                    <div className="d-flex align-items-center">
+                      <BellOutlined style={{ fontSize: "16px" }} />
+                    </div>
+                  ) : (
+                    <Badge
+                      count={99}
+                      overflowCount={10}
+                      size="small"
+                      offset={[10, 0]}
+                    >
+                      <div className="d-flex align-items-center">
+                        <BellOutlined style={{ fontSize: "16px" }} />
+                      </div>
+                    </Badge>
+                  )}
+                </Button>
+              </Popover>
+              <Dropdown
+                menu={menuDropdown}
+                trigger={["click"]}
+                arrow
+                placement="bottom"
+              >
+                <Button
+                  type="text"
+                  className="d-flex align-items-center px-4"
+                  size="large"
+                >
+                  <Avatar src={faker.image.abstract(40, 40)}>T</Avatar>
+                </Button>
+              </Dropdown>
+              <Select
+                className="d-block"
+                options={languages}
+                bordered={false}
+                onChange={handleChangeLanguage}
+                defaultValue={i18n.language}
+                value={selectedLanguage}
+                dropdownMatchSelectWidth={false}
+              />
             </Space>
           </Col>
         </Row>
