@@ -1,28 +1,33 @@
 import { List } from "antd";
 import Vocabulary from "../types/Vocabulary";
-import { fakeVocabularies } from "../utils/fakeData/fakeVocabulary";
 import VocabularyItem from "./VocabularyItem";
+import { useTranslation } from "react-i18next";
+import { fakeVocabularies } from "../utils/fakeData/fakeVocabulary";
 
 const items: Vocabulary[] = fakeVocabularies(10);
 
-type VocabType = "hard" | "known";
-interface Props {
-  type?: VocabType;
+interface VocabularyListProps {
+  type?: "hard" | "known";
   vocabularies?: Vocabulary[];
 }
 
-const VocabularyList = ({ type, vocabularies }: Props) => {
+const VocabularyList: React.FC<VocabularyListProps> = ({
+  type,
+  vocabularies,
+}) => {
+  const [t] = useTranslation(["vocabulary"]);
+
   let badge: any;
   switch (type) {
     case "hard":
       badge = {
-        text: "Hard",
+        text: t("Hard"),
         color: "red",
       };
       break;
     case "known":
       badge = {
-        text: "Known",
+        text: t("Known"),
         color: "green",
       };
       break;

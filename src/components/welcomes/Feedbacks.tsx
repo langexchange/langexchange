@@ -1,5 +1,6 @@
 import { Col, Row, Space, Typography } from "antd";
 import FeedbackItem from "./FeedbackItem";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text } = Typography;
 
@@ -43,23 +44,16 @@ const feedbackItems = [
 ];
 
 const Feedbacks = () => {
+  const { t } = useTranslation(["welcome"]);
   return (
-    <div style={{ background: "white" }}>
+    <div className="bg-white py-5">
       <div className="container">
-        <Space
-          direction="vertical"
-          style={{ padding: "48px 50px", width: "100%" }}
-          align="center"
-          size={48}
-        >
+        <Space direction="vertical" align="center" size={48}>
           <Space direction="vertical" align="center">
             <Title level={2} className="m-0">
-              What feeling are saying
+              {t("feedback-title")}
             </Title>
-            <Text type="secondary">
-              Learn a language, explore new cultures, and make friends around
-              the world
-            </Text>
+            <Text type="secondary">{t("feedback-slogan")}</Text>
           </Space>
           <div>
             <Row align="middle" gutter={[24, 48]}>

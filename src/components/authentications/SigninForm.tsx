@@ -5,10 +5,13 @@ import {
   GoogleSquareFilled,
 } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Space } from "antd";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const SigninForm = () => {
+  const [t] = useTranslation(["commons"]);
+
   const navigate = useNavigate();
 
   const onFinish = (values: any) => {
@@ -28,9 +31,9 @@ const SigninForm = () => {
         rules={[
           {
             type: "email",
-            message: "The input is not valid E-mail!",
+            message: t("email-invalid").toString(),
           },
-          { required: true, message: "Please input your E-mail!" },
+          { required: true, message: t("email-empty").toString() },
         ]}
       >
         <Input
@@ -42,29 +45,29 @@ const SigninForm = () => {
       </Form.Item>
       <Form.Item
         name="password"
-        rules={[{ required: true, message: "Please input your Password!" }]}
+        rules={[{ required: true, message: t("password-empty").toString() }]}
       >
         <Input
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
-          placeholder="Password"
+          placeholder={t("password").toString()}
           allowClear={true}
           autoComplete="on"
         />
       </Form.Item>
       <Form.Item>
         <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox>{t("remember-me")}</Checkbox>
         </Form.Item>
 
         <Link to="/forgot-password" className="float-right">
-          Forgot password
+          {t("forgot-password")}
         </Link>
       </Form.Item>
 
       <Form.Item>
         <Space>
-          Sign in with:
+          {t("signin-with")}
           <Space size="small">
             <Button type="default" shape="circle" icon={<FacebookFilled />} />
             <Button
@@ -75,7 +78,7 @@ const SigninForm = () => {
           </Space>
         </Space>
         <Button type="primary" htmlType="submit" className="float-right">
-          Sign in
+          {t("sign-in")}
         </Button>
       </Form.Item>
     </Form>

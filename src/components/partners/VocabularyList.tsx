@@ -1,4 +1,3 @@
-import { Col, Row } from "antd";
 import VocabularySet from "../../types/VocabularySet";
 import VocabularyCard from "../VocabularyCard";
 import { fakeVocabularySets } from "../../utils/fakeData/fakeVocabularySet";

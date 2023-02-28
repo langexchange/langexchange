@@ -4,10 +4,13 @@ import { faker } from "@faker-js/faker";
 import { fakeUsers } from "../../utils/fakeData/fakeUser";
 import { Avatar, Card, Collapse, List, Space, Typography } from "antd";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const userItems: User[] = fakeUsers(10);
 
 const Sidebar: React.FC = () => {
+  const [t] = useTranslation(["community"]);
+
   return (
     <Space size="large" direction="vertical" className="width-full">
       <Link to="/dinhnhutan">
@@ -43,7 +46,7 @@ const Sidebar: React.FC = () => {
               type="secondary"
               className="fz-16 text-500 d-block"
             >
-              Active partners
+              {t("active-partners")}
             </Typography.Text>
           }
           key="1"

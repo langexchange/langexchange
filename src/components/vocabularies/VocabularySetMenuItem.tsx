@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Button, Progress, Space, Tag, Typography } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 interface VocabularySet {
   owner?: {
@@ -14,12 +15,12 @@ interface VocabularySet {
   defineLanguage: string;
 }
 
-interface Props extends VocabularySet {
+interface VocabularySetMenuItemProps extends VocabularySet {
   progressHidden?: boolean;
   moreHidden?: boolean;
 }
 
-const VocabularySetMenuItem = ({
+const VocabularySetMenuItem: React.FC<VocabularySetMenuItemProps> = ({
   owner,
   title,
   descriptions,
@@ -27,7 +28,8 @@ const VocabularySetMenuItem = ({
   defineLanguage,
   progressHidden = false,
   moreHidden = false,
-}: Props) => {
+}) => {
+  const [t] = useTranslation(["vocabulary"]);
   return (
     <div className="d-flex align-items-center justify-space-between">
       <div className="d-flex flex-column" style={{ maxWidth: "210px" }}>
@@ -35,7 +37,9 @@ const VocabularySetMenuItem = ({
           {title}
         </Typography.Text>
         <div>
-          <Tag color="magenta">{descriptions} words</Tag>
+          <Tag color="magenta">
+            {descriptions} {t("words")}
+          </Tag>
         </div>
       </div>
       <Space>

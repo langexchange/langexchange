@@ -11,25 +11,25 @@ import {
   message,
   Popover,
   Row,
+  Select,
   Space,
 } from "antd";
 import {
   HomeOutlined,
-  // GroupOutlined,
   TeamOutlined,
   MessageOutlined,
   FileTextOutlined,
   LogoutOutlined,
-  // GlobalOutlined,
   SettingOutlined,
   BellOutlined,
-  TranslationOutlined,
 } from "@ant-design/icons";
 import { Link, NavLink } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import NotificationList from "../../components/NotificationList";
+import { useTranslation } from "react-i18next";
+import { VN } from "country-flag-icons/react/3x2";
 const { Header } = Layout;
 
 const handleMenuClick: MenuProps["onClick"] = (e) => {
@@ -37,66 +37,87 @@ const handleMenuClick: MenuProps["onClick"] = (e) => {
   console.log("click", e);
 };
 
-const dropdownItems: MenuProps["items"] = [
-  {
-    label: <Link to="/dinhnhutan/settings">Setting</Link>,
-    key: "setting",
-    icon: <SettingOutlined />,
-  },
-  {
-    label: <Link to="/">Logout</Link>,
-    key: "logout",
-    icon: <LogoutOutlined />,
-  },
-  { label: "Toggle theme", key: "toggle-theme" },
-];
-
-const menuDropdown = {
-  items: dropdownItems,
-  onClick: handleMenuClick,
-};
-
-const items: MenuProps["items"] = [
-  {
-    label: <NavLink to="/community">Community</NavLink>,
-    key: "community",
-    icon: <HomeOutlined />,
-  },
-  // {
-  //   label: <NavLink to="/study-spaces">Study space</NavLink>,
-  //   key: "study-spaces",
-  //   icon: <GroupOutlined />,
-  // },
-  {
-    label: <NavLink to="/partners">Partner</NavLink>,
-    key: "partners",
-    icon: <TeamOutlined />,
-  },
-  {
-    label: <NavLink to="chat">Chat</NavLink>,
-    key: "chat",
-    icon: <MessageOutlined />,
-  },
-  {
-    label: <NavLink to="vocabularies">Vocabulary</NavLink>,
-    key: "vocabularies",
-    icon: <FileTextOutlined />,
-  },
-  // {
-  //   label: <NavLink to="live-classes">Live class</NavLink>,
-  //   key: "live-classes",
-  //   icon: <GlobalOutlined />,
-  // },
-];
-
 const PageHeader = () => {
+  const { t, i18n } = useTranslation(["commons"]);
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+
+  const handleChangeLanguage = (value: string) => {
+    i18n.changeLanguage(value);
+    setSelectedLanguage(value);
+    message.success("Change language success");
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      label: <NavLink to="/community">{t("header-community")}</NavLink>,
+      key: "community",
+      icon: <HomeOutlined />,
+    },
+    {
+      label: <NavLink to="/partners">{t("header-partner")}</NavLink>,
+      key: "partners",
+      icon: <TeamOutlined />,
+    },
+    {
+      label: <NavLink to="chat">{t("header-chat")}</NavLink>,
+      key: "chat",
+      icon: <MessageOutlined />,
+    },
+    {
+      label: <NavLink to="vocabularies">{t("header-vocabulary")}</NavLink>,
+      key: "vocabularies",
+      icon: <FileTextOutlined />,
+    },
+  ];
+  const languages = [
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/English_language.svg"
+            width={24}
+            alt="EN"
+          />
+          EN
+        </div>
+      ),
+      value: "en",
+    },
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <div style={{ width: "24px" }} className="d-flex align-items-center">
+            <VN title="Vietnamese" style={{ width: "24px" }} />
+          </div>
+          VI
+        </div>
+      ),
+      value: "vi",
+    },
+  ];
+
+  const dropdownItems: MenuProps["items"] = [
+    {
+      label: <Link to="/dinhnhutan/settings">{t("settings")}</Link>,
+      key: "setting",
+      icon: <SettingOutlined />,
+    },
+    {
+      label: <Link to="/">{t("sign-out")}</Link>,
+      key: "sign-out",
+      icon: <LogoutOutlined />,
+    },
+    { label: "Toggle theme", key: "toggle-theme" },
+  ];
+
+  const menuDropdown = {
+    items: dropdownItems,
+    onClick: handleMenuClick,
+  };
+
   const [allRead, setAllRead] = useState(false);
   const activeKey: string = window.location.pathname.split("/")[1];
   const [open, setOpen] = useState(false);
-
-  const hide = () => {
-    setOpen(false);
-  };
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
@@ -138,14 +159,14 @@ const PageHeader = () => {
                   <div className="d-flex align-items-center justify-space-between">
                     <Space size={4} align="center">
                       <BellOutlined />
-                      Notifications
+                      {t("notifications")}
                     </Space>
                     <Button
                       type="link"
                       onClick={() => setAllRead(true)}
                       className="text-300 fz-12"
                     >
-                      Mark all read
+                      {t("mark-all-as-read")}
                     </Button>
                   </div>
                 }
@@ -154,7 +175,11 @@ const PageHeader = () => {
                 onOpenChange={handleOpenChange}
                 placement="bottomRight"
               >
-                <Button type="text" className="d-flex align-items-center">
+                <Button
+                  type="text"
+                  className="d-flex align-items-center px-4"
+                  size="large"
+                >
                   {allRead ? (
                     <div className="d-flex align-items-center">
                       <BellOutlined style={{ fontSize: "16px" }} />
@@ -181,15 +206,21 @@ const PageHeader = () => {
               >
                 <Button
                   type="text"
-                  className="d-flex align-items-center"
+                  className="d-flex align-items-center px-4"
                   size="large"
                 >
                   <Avatar src={faker.image.abstract(40, 40)}>T</Avatar>
                 </Button>
               </Dropdown>
-              <Button type="text" className="d-flex align-items-center">
-                <TranslationOutlined style={{ fontSize: "16px" }} />
-              </Button>
+              <Select
+                className="d-block"
+                options={languages}
+                bordered={false}
+                onChange={handleChangeLanguage}
+                defaultValue={i18n.language}
+                value={selectedLanguage}
+                dropdownMatchSelectWidth={false}
+              />
             </Space>
           </Col>
         </Row>

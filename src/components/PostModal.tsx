@@ -1,10 +1,11 @@
-import { Button, Col, Input, InputRef, message, Modal, Row } from "antd";
+import { Button, Col, InputRef, message, Modal, Row } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import CommentList from "./CommentList";
 import PostCard from "./PostCard";
 import { SendOutlined } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import CorrectionModal from "./CorrectionModal";
+import { useTranslation } from "react-i18next";
 
 const onTextInputChange = (
   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -13,6 +14,8 @@ const onTextInputChange = (
 };
 
 const InputComment: React.FC<any> = ({ inputRef, isOpenCorrectModal }) => {
+  const [t] = useTranslation(["commons"]);
+
   useEffect(() => {
     if (isOpenCorrectModal) return;
     inputRef.current?.focus();
@@ -22,10 +25,8 @@ const InputComment: React.FC<any> = ({ inputRef, isOpenCorrectModal }) => {
     <Row gutter={[12, 0]} className="px-4">
       <Col flex="auto">
         <TextArea
-          // showCount
-          // maxLength={100}
           onChange={onTextInputChange}
-          placeholder="Write your comment..."
+          placeholder={t("input-comment-placeholder").toString()}
           allowClear
           ref={inputRef}
           autoFocus
@@ -47,6 +48,7 @@ const InputComment: React.FC<any> = ({ inputRef, isOpenCorrectModal }) => {
 
 const PostModal = ({ post, isModalOpen, setIsModalOpen }: any) => {
   const [isOpenCorrectModal, setIsOpenCorrectModal] = useState(false);
+  const [t] = useTranslation(["commons"]);
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -92,7 +94,7 @@ const PostModal = ({ post, isModalOpen, setIsModalOpen }: any) => {
         <CommentList />
       </Modal>
       <CorrectionModal
-        title="Correct for the content of the post"
+        title={t("Correct content for this post")}
         originalText={post?.content || ""}
         open={isOpenCorrectModal}
         setOpen={setIsOpenCorrectModal}

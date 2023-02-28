@@ -3,6 +3,7 @@ import { List, arrayMove } from "react-movable";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import UploadImage from "../UploadImage";
+import { useTranslation } from "react-i18next";
 
 interface Vocabulary {
   term: string;
@@ -19,9 +20,9 @@ const initial = [
     define: "",
   },
 ];
-const ListCardAddVocabulary = () => {
+const ListCardAddVocabulary: React.FC = () => {
   const [items, setItems] = useState<Vocabulary[]>(initial);
-  console.log(items);
+  const [t] = useTranslation(["vocabulary", "commons"]);
 
   const updateTerm = (value: string, key: number) => {
     setItems((prev) => {
@@ -83,7 +84,7 @@ const ListCardAddVocabulary = () => {
                 <Col flex={1}>
                   <Input
                     size="large"
-                    placeholder="Term"
+                    placeholder={t("Term", { ns: "commons" }).toString()}
                     value={value.term}
                     onChange={(e) =>
                       updateTerm(e.target.value, Number(props.key))
@@ -93,7 +94,7 @@ const ListCardAddVocabulary = () => {
                 <Col flex={2}>
                   <Input.TextArea
                     size="large"
-                    placeholder="Define"
+                    placeholder={t("Define", { ns: "commons" }).toString()}
                     rows={1}
                     value={value.define}
                     onChange={(e) =>
@@ -115,7 +116,7 @@ const ListCardAddVocabulary = () => {
           <Typography.Text strong type="success">
             <PlusOutlined style={{ fontSize: "24px" }} />
           </Typography.Text>
-          <Typography.Text strong>Add card</Typography.Text>
+          <Typography.Text strong>{t("Add card")}</Typography.Text>
         </Space>
       </Card>
     </>

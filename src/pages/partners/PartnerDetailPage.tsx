@@ -7,6 +7,7 @@ import PostModal from "../../components/PostModal";
 import VocabularyModal from "../../components/VocabularyModal";
 import VocabularySet from "../../types/VocabularySet";
 import Post from "../../types/Post";
+import { useTranslation } from "react-i18next";
 
 const onChange = (key: string) => {
   console.log(key);
@@ -20,6 +21,7 @@ const PartnerDetailPage: React.FC = () => {
   );
   const [isModalVocabularyOpen, setIsModalVocabularyOpen] =
     useState<boolean>(false);
+  const [t] = useTranslation(["commons"]);
 
   const showModal = () => {
     console.log("show");
@@ -33,7 +35,7 @@ const PartnerDetailPage: React.FC = () => {
 
   const tabItems: TabsProps["items"] = [
     {
-      label: `Posts`,
+      label: t("Posts"),
       key: "posts",
       children: (
         <div className="px-3">
@@ -42,7 +44,7 @@ const PartnerDetailPage: React.FC = () => {
       ),
     },
     {
-      label: `Vocabularies`,
+      label: t("Vocabularies"),
       key: "vocabularies",
       children: (
         <div className="px-3">

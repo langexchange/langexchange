@@ -1,92 +1,97 @@
-import { Button, Col, Form, Row, Select, SelectProps, Space } from "antd";
-
-const options: SelectProps["options"] = [
-  {
-    value: "english",
-    label: "English",
-  },
-  {
-    value: "vietnamese",
-    label: "Vietnamese",
-  },
-  {
-    value: "chinese",
-    label: "Chinese",
-  },
-  {
-    value: "japanese",
-    label: "Japanese",
-  },
-  {
-    value: "korean",
-    label: "Korean",
-  },
-  {
-    value: "laos",
-    label: "Laos",
-  },
-];
-
-const countryOptions = [
-  { label: "Food", value: "1" },
-  { label: "Beauty", value: "2" },
-  { label: "Sport", value: "3" },
-  { label: "Technology", value: "4" },
-  { label: "Machine learning", value: "5" },
-  { label: "Girls", value: "6" },
-  { label: "Histories", value: "7" },
-  { label: "Travel", value: "8" },
-];
+import { Button, Form, Select, SelectProps, Space } from "antd";
+import { useTranslation } from "react-i18next";
 
 const handleChange = (value: string | string[]) => {
   console.log(`Selected: ${value}`);
 };
 
-const FilterLine = () => {
+const FilterLine: React.FC = () => {
+  const [t] = useTranslation(["vocabulary", "commons"]);
+  const options: SelectProps["options"] = [
+    {
+      value: "english",
+      label: t("English", { ns: "commons" }),
+    },
+    {
+      value: "vietnamese",
+      label: t("Vietnamese", { ns: "commons" }),
+    },
+    {
+      value: "chinese",
+      label: t("Chinese", { ns: "commons" }),
+    },
+    {
+      value: "japanese",
+      label: t("Japanese", { ns: "commons" }),
+    },
+    {
+      value: "korean",
+      label: t("Korean", { ns: "commons" }),
+    },
+    {
+      value: "laos",
+      label: t("Laos", { ns: "commons" }),
+    },
+  ];
+
+  const topicOptions = [
+    { label: t("Food"), value: "1" },
+    { label: t("Beauty"), value: "2" },
+    { label: t("Sport"), value: "3" },
+    { label: t("Technology"), value: "4" },
+    { label: t("Machine learning"), value: "5" },
+    { label: t("Girls"), value: "6" },
+    { label: t("Histories"), value: "7" },
+    { label: t("Travel"), value: "8" },
+  ];
+
   return (
     <Form className="width-full" layout="inline">
-      <Form.Item label="Natives">
+      <Form.Item label={t("Term", { ns: "commons" }).toString()}>
         <Select
           allowClear
           // mode="multiple"
           size="middle"
-          placeholder="Term languaes"
-          defaultValue={["english", "vietnamese"]}
+          placeholder={t("Term", { ns: "commons" })}
+          defaultValue={["english"]}
           onChange={handleChange}
           style={{ width: "100%" }}
           options={options}
+          dropdownMatchSelectWidth={false}
         />
       </Form.Item>
-      <Form.Item label="Targets">
+      <Form.Item label={t("Define", { ns: "commons" })}>
         <Select
           allowClear
           size="middle"
-          placeholder="Define languages"
-          defaultValue={["english", "vietnamese"]}
+          placeholder={t("Define", { ns: "commons" })}
+          defaultValue={["vietnamese"]}
           onChange={handleChange}
           options={options}
+          dropdownMatchSelectWidth={false}
         />
       </Form.Item>
-      <Form.Item label="Topic">
+      <Form.Item label={t("Topic", { ns: "commons" })}>
         <Select
           allowClear
           showSearch
-          placeholder="Select topic"
+          placeholder={t("Topic", { ns: "commons" })}
           optionFilterProp="children"
           // onChange={onChange}
           // onSearch={onSearch}
           filterOption={(input, option) =>
             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
           }
-          options={countryOptions}
+          options={topicOptions}
+          dropdownMatchSelectWidth={false}
         />
       </Form.Item>
       <Form.Item className="text-center">
         <Space>
-          <Button type="primary" htmlType="submit" className="btn-warning">
-            Filter
+          <Button type="primary" htmlType="submit">
+            {t("filter", { ns: "commons" })}
           </Button>
-          <Button htmlType="button">Reset</Button>
+          <Button htmlType="button">{t("reset", { ns: "commons" })}</Button>
         </Space>
       </Form.Item>
     </Form>

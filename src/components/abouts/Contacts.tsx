@@ -3,37 +3,36 @@ import MailSupportIcon from "../../assets/images/mail_support.png";
 import ChatSupportIcon from "../../assets/images/chat_support.png";
 import HandshakeIcon from "../../assets/images/handshake.png";
 import ContactItem from "./ContactItem";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
-const contactItems = [
-  {
-    image: ChatSupportIcon,
-    title: "General inquiries",
-    descriptions:
-      "Lorem ipsum dolor sit amet consectetur. Elit enim scelerisque vel vitae. Sollicitudin feugiat malesuada viverra nec. Mattis aliquam sit arcu feugiat. Lectus vel potenti aliquam nulla.",
-    type: "primary",
-    text_button: "Contact us",
-  },
-  {
-    image: MailSupportIcon,
-    title: "Customer support",
-    descriptions:
-      "Lorem ipsum dolor sit amet consectetur. Elit enim scelerisque vel vitae. Sollicitudin feugiat malesuada viverra nec. Mattis aliquam sit arcu feugiat. Lectus vel potenti aliquam nulla.",
-    type: "warning",
-    text_button: "Email support",
-  },
-  {
-    image: HandshakeIcon,
-    title: "Cooperate with us",
-    descriptions:
-      "Lorem ipsum dolor sit amet consectetur. Elit enim scelerisque vel vitae. Sollicitudin feugiat malesuada viverra nec. Mattis aliquam sit arcu feugiat. Lectus vel potenti aliquam nulla.",
-    type: "success",
-    text_button: "Get details",
-  },
-];
-
 const Contacts = () => {
+  const [t] = useTranslation("about");
+
+  const contactItems = [
+    {
+      image: ChatSupportIcon,
+      title: t("general-inquiries"),
+      descriptions: t("general-inquiries-description"),
+      type: "primary",
+      text_button: t("contact-us"),
+    },
+    {
+      image: MailSupportIcon,
+      title: t("customer-support"),
+      descriptions: t("customer-support-description"),
+      type: "warning",
+      text_button: t("email-support"),
+    },
+    {
+      image: HandshakeIcon,
+      title: t("cooperate-with-us"),
+      descriptions: t("cooperate-with-us-description"),
+      type: "success",
+      text_button: t("get-details"),
+    },
+  ];
   return (
     <div className="bg-white">
       <div className="container py-5">
@@ -44,7 +43,7 @@ const Contacts = () => {
           className="bg-white"
         >
           <Title level={2} className="m-0">
-            Contact to <span className="color-blue-logo">Lang</span>
+            {t("contact")} <span className="color-blue-logo">Lang</span>
             <span className="color-red-logo">Exchange</span>
           </Title>
           <div>

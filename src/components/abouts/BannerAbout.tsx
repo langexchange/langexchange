@@ -1,35 +1,43 @@
 import { Col, Image, Row, Space, Typography } from "antd";
-import MemeberImage from "../../assets/images/members.png";
+import { useTranslation } from "react-i18next";
+// import MemeberImage from "../../assets/images/members.png";
 
 const { Title, Paragraph } = Typography;
 
 const BannerAbout = () => {
+  const [t] = useTranslation("about");
   return (
     <div className="bg-white">
-      <Row className="container py-5" align="middle">
-        <Col span={12} className="d-flex justify-center">
-          <Space direction="vertical" size={16} align="center">
-            <Space direction="vertical" size={0} align="center">
-              <Title level={2} className="m-0">
-                <span className="color-blue-logo">Lang</span>
-                <span className="color-red-logo">Exchange</span> develop team
-              </Title>
-              <Paragraph className="text-center fz-20">
-                We are a group of software development students working on a
-                project at Ho Chi Minh city University of Technology
+      <div className="container py-5">
+        <Row align="middle" gutter={12}>
+          <Col span={12} className="d-flex justify-center">
+            <Space direction="vertical" size={16} align="center">
+              <Space direction="vertical" size={0} align="center">
+                <Title level={2} className="m-0">
+                  <span className="color-blue-logo">Lang</span>
+                  <span className="color-red-logo">Exchange</span>{" "}
+                  {t("develop-team")}
+                </Title>
+                <Paragraph
+                  className="text-center fz-18 text-400 mt-2"
+                  style={{ lineHeight: "24px" }}
+                >
+                  {t("banner-title")}
+                </Paragraph>
+              </Space>
+              <Paragraph type="secondary" className="text-300">
+                {t("banner-description")}
               </Paragraph>
             </Space>
-            <Paragraph type="secondary" className="text-300">
-              Lorem ipsum dolor sit amet consectetur. Scelerisque volutpat amet
-              mollis gravida elementum lorem consectetur. Sed cras et venenatis
-              feugiat malesuada interdum arcu orci.
-            </Paragraph>
-          </Space>
-        </Col>
-        <Col span={12} className="d-flex justify-center">
-          <Image src={MemeberImage} alt="Team's memebers" />
-        </Col>
-      </Row>
+          </Col>
+          <Col span={12} className="d-flex justify-center">
+            <Image
+              src="https://static.vecteezy.com/system/resources/previews/002/792/531/original/design-of-improve-behavior-literacy-in-managing-finances-people-saving-in-piggy-bank-for-financial-education-illustration-can-be-for-websites-posters-banners-mobile-apps-web-social-media-free-vector.jpg"
+              alt="Team's memebers"
+            />
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 };
