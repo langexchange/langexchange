@@ -1,38 +1,5 @@
-import { Select, SelectProps, Tag, TagProps } from "antd";
-import type { CustomTagProps } from "rc-select/lib/BaseSelect";
-
-const languages = [
-  {
-    value: "english",
-    label: "English",
-    color: "blue",
-  },
-  {
-    value: "vietnamese",
-    label: "Vietnamese",
-    color: "blue",
-  },
-  {
-    value: "chinese",
-    label: "Chinese",
-    color: "blue",
-  },
-  {
-    value: "japanese",
-    label: "Japanese",
-    color: "blue",
-  },
-  {
-    value: "korean",
-    label: "Korean",
-    color: "blue",
-  },
-  {
-    value: "laos",
-    label: "Laos",
-    color: "blue",
-  },
-];
+import { Select, SelectProps, Tag } from "antd";
+import { useTranslation } from "react-i18next";
 
 interface Props extends SelectProps {
   width?: string | number;
@@ -61,7 +28,40 @@ const tagRender = (props: any) => {
 
 const SeclectLanguageInput = ({ width, color = "blue", ...rest }: Props) => {
   const widthProperty = (typeof width === "number" && `${width}px`) || width;
+  const [t] = useTranslation(["commons"]);
 
+  const languages = [
+    {
+      value: "english",
+      label: t("English"),
+      color: "blue",
+    },
+    {
+      value: "vietnamese",
+      label: t("Vietnamese"),
+      color: "blue",
+    },
+    {
+      value: "chinese",
+      label: t("Chinese"),
+      color: "blue",
+    },
+    {
+      value: "japanese",
+      label: t("Japanese"),
+      color: "blue",
+    },
+    {
+      value: "korean",
+      label: t("Korean"),
+      color: "blue",
+    },
+    {
+      value: "laos",
+      label: t("Laos"),
+      color: "blue",
+    },
+  ];
   return (
     <Select
       {...rest}

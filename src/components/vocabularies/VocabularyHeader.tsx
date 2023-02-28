@@ -7,26 +7,33 @@ import {
 } from "@ant-design/icons";
 import { Link, NavLink } from "react-router-dom";
 import type { MenuProps } from "antd";
+import { useTranslation } from "react-i18next";
 
-const items: MenuProps["items"] = [
-  {
-    label: <NavLink to="vocabularies/explores">Explores</NavLink>,
-    key: "explores",
-    icon: <CompassOutlined />,
-  },
-  {
-    label: <NavLink to="vocabularies/yours">Your vocabularies</NavLink>,
-    key: "yours",
-    icon: <FileTextOutlined />,
-  },
-  {
-    label: <NavLink to="vocabularies/practice">Practice</NavLink>,
-    key: "practice",
-    icon: <StarOutlined />,
-  },
-];
+const VocabularyHeader: React.FC = () => {
+  const [t] = useTranslation(["vocabulary", "commons"]);
 
-const VocabularyHeader = () => {
+  const items: MenuProps["items"] = [
+    {
+      label: (
+        <NavLink to="vocabularies/explores">
+          {t("Explore", { ns: "commons" })}
+        </NavLink>
+      ),
+      key: "explores",
+      icon: <CompassOutlined />,
+    },
+    {
+      label: <NavLink to="vocabularies/yours">{t("Your vocabulary")}</NavLink>,
+      key: "yours",
+      icon: <FileTextOutlined />,
+    },
+    {
+      label: <NavLink to="vocabularies/practice">{t("Practice")}</NavLink>,
+      key: "practice",
+      icon: <StarOutlined />,
+    },
+  ];
+
   const activeKey: string = window.location.pathname.split("/")[2];
   return (
     <Layout.Header className="z-index-1 bg-white justify-space-between pos-sticky t-0 width-full with-header-height with-header-border-bottom">
@@ -34,7 +41,7 @@ const VocabularyHeader = () => {
         <Row className="height-full" align="middle" style={{}}>
           <Col span={6}>
             <Typography.Title level={4} className="m-0">
-              Vocabulary
+              {t("Vocabulary", { ns: "commons" })}
             </Typography.Title>
           </Col>
           <Col span={12} className="text-center">
@@ -50,7 +57,7 @@ const VocabularyHeader = () => {
           <Col span={6} className="text-right">
             <Link to="/vocabularies/create">
               <Button type="primary" icon={<PlusOutlined />}>
-                Create Vocabulary set
+                {t("Create vocabulary set")}
               </Button>
             </Link>
           </Col>

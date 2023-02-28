@@ -1,4 +1,4 @@
-import { Card, Menu, Space } from "antd";
+import { Card, Menu } from "antd";
 import type { MenuProps } from "antd";
 import {
   CompassOutlined,
@@ -6,26 +6,29 @@ import {
   UserAddOutlined,
 } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
-
-const items: MenuProps["items"] = [
-  {
-    label: <NavLink to="explores">Explore</NavLink>,
-    key: "explores",
-    icon: <CompassOutlined />,
-  },
-  {
-    label: <NavLink to="requests">Partner requests</NavLink>,
-    key: "requests",
-    icon: <UserAddOutlined />,
-  },
-  {
-    label: <NavLink to="all">Your partners</NavLink>,
-    key: "all",
-    icon: <TeamOutlined />,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
+  const [t] = useTranslation(["commons"]);
+
+  const items: MenuProps["items"] = [
+    {
+      label: <NavLink to="explores">{t("Explore")}</NavLink>,
+      key: "explores",
+      icon: <CompassOutlined />,
+    },
+    {
+      label: <NavLink to="requests">{t("Partner request")}</NavLink>,
+      key: "requests",
+      icon: <UserAddOutlined />,
+    },
+    {
+      label: <NavLink to="all">{t("Your partner")}</NavLink>,
+      key: "all",
+      icon: <TeamOutlined />,
+    },
+  ];
+
   let activeKey: string = window.location.pathname.split("/")[2] || "explores";
 
   const onClick: MenuProps["onClick"] = (e) => {

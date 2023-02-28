@@ -12,10 +12,12 @@ import {
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Outlet, useNavigate } from "react-router-dom";
 import MenuUserList from "../../components/partners/MenuUserList";
+import { useTranslation } from "react-i18next";
 
 const onSearch = (value: string) => console.log(value);
 
 const YourPartnerLayout = () => {
+  const [t] = useTranslation(["commons"]);
   const navigate = useNavigate();
   return (
     <Row
@@ -46,12 +48,15 @@ const YourPartnerLayout = () => {
                 onClick={() => navigate(-1)}
               />
               <Typography.Title level={3} className="m-0">
-                All partners
+                {t("All partners")}
               </Typography.Title>
             </Space>
-            <Input.Search placeholder="input search text" onSearch={onSearch} />
+            <Input.Search
+              placeholder={t("type-to-search").toString()}
+              onSearch={onSearch}
+            />
             <Divider orientation="left" plain>
-              100 partners
+              100 {t("partners")}
             </Divider>
           </Space>
           <div className="auto-hide-scroll scroll-style-1">

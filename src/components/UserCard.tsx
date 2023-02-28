@@ -1,4 +1,4 @@
-import { Button, Card, Image, Space, Tag, Typography } from "antd";
+import { Button, Card, Image, Space, Tag, Tooltip, Typography } from "antd";
 import {
   DeleteOutlined,
   TagOutlined,
@@ -7,6 +7,7 @@ import {
   CheckOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 type Type = "explore" | "request" | "partner";
 
@@ -19,45 +20,58 @@ interface UserProps {
   type: Type;
 }
 
-const UserCard = ({
+const UserCard: React.FC<UserProps> = ({
   name,
   natives,
   targets,
   country,
   image,
   type,
-}: UserProps) => {
+}) => {
+  const [t] = useTranslation(["commons"]);
   let actions;
 
   switch (type) {
     case "explore":
       actions = [
-        <Button
-          type="text"
-          icon={<UserAddOutlined />}
-          className="btn-text-success"
-        />,
-        <Button type="text" icon={<DeleteOutlined />} danger />,
+        <Tooltip title={t("Add to partner")}>
+          <Button
+            type="text"
+            icon={<UserAddOutlined />}
+            className="btn-text-success"
+          />
+        </Tooltip>,
+        <Tooltip title={t("Remove")}>
+          <Button type="text" icon={<DeleteOutlined />} danger />
+        </Tooltip>,
       ];
       break;
     case "request":
       actions = [
-        <Button
-          type="text"
-          icon={<CheckOutlined />}
-          className="btn-text-success"
-        />,
-        <Button type="text" icon={<DeleteOutlined />} danger />,
+        <Tooltip title={t("Approve")}>
+          <Button
+            type="text"
+            icon={<CheckOutlined />}
+            className="btn-text-success"
+          />
+        </Tooltip>,
+        <Tooltip title={t("Remove request")}>
+          <Button type="text" icon={<DeleteOutlined />} danger />
+        </Tooltip>,
       ];
       break;
     case "partner":
       actions = [
-        <Button
-          type="text"
-          icon={<MessageOutlined />}
-          className="btn-text-success"
-        />,
-        <Button type="text" icon={<DeleteOutlined />} danger />,
+        <Tooltip title={t("Chat")}>
+          <Button
+            type="text"
+            icon={<MessageOutlined />}
+            className="btn-text-success"
+          />
+        </Tooltip>,
+        <Tooltip title={t("Remove from partner")}>
+          <Button type="text" icon={<DeleteOutlined />} danger />
+        </Tooltip>,
       ];
       break;
 
@@ -83,7 +97,7 @@ const UserCard = ({
             {name}
           </Typography.Title>
           <Space size={4} wrap>
-            Natives:
+            {t("Native")}:
             {natives.map((item, index) => (
               <Tag
                 color="green"
@@ -96,7 +110,7 @@ const UserCard = ({
             ))}
           </Space>
           <Space size={4} wrap>
-            Targets:
+            {t("Target")}:
             {targets.map((item, index) => (
               <Tag
                 color="blue"

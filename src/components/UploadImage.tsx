@@ -4,6 +4,7 @@ import { message, Modal, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
+import { useTranslation } from "react-i18next";
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -18,7 +19,7 @@ const UploadImage: React.FC = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  console.log(fileList);
+  const [t] = useTranslation(["commons"]);
 
   const handleCancel = () => setPreviewOpen(false);
 
@@ -53,7 +54,7 @@ const UploadImage: React.FC = () => {
   const uploadButton = (
     <div style={{ width: "100%" }}>
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 8 }}>{t("Upload")}</div>
     </div>
   );
 

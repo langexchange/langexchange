@@ -6,9 +6,11 @@ import UserItem from "../../components/UserItem";
 import VocabularyList from "../../components/VocabularyList";
 import BackCircleButton from "../../components/BackCircleButton";
 import { fakeUser } from "../../utils/fakeData/fakeUser";
+import { useTranslation } from "react-i18next";
 
 const VocabularyDetailPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const [t] = useTranslation(["vocabulary", "commons"]);
 
   const handleCollect = () => {
     messageApi.open({
@@ -37,7 +39,7 @@ const VocabularyDetailPage = () => {
             icon={<PlusOutlined />}
             onClick={handleCollect}
           >
-            Collect this!
+            {t("Collect", { ns: "commons" })}
           </Button>
         </div>
         <div className="ma mb-3" style={{ width: "fit-content" }}>
@@ -71,7 +73,7 @@ const VocabularyDetailPage = () => {
 
         <div>
           <Typography.Title level={4}>
-            Terminology in this module
+            {t("Terminology in this module")}
           </Typography.Title>
           <VocabularyList />
         </div>

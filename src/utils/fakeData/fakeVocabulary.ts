@@ -7,7 +7,7 @@ export const fakeVocabulary = () => {
     term: faker.lorem.word(),
     define: faker.lorem.sentence(),
     image:
-      Number(faker.random.numeric(2)) % 2 == 0
+      Number(faker.random.numeric(2)) % 2 === 0
         ? faker.image.imageUrl()
         : undefined,
   };

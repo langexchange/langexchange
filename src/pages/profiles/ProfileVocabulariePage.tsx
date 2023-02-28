@@ -1,7 +1,6 @@
 import { useState } from "react";
 import VocabularyList from "../../components/partners/VocabularyList";
 import VocabularyModal from "../../components/VocabularyModal";
-import VocabularySetList from "../../components/VocabularySetList";
 import VocabularySet from "../../types/VocabularySet";
 
 const ProfileVocabulariesPage = () => {
