@@ -2,6 +2,7 @@ import { Button, Input, Modal, ModalProps, Space } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Diff from "./Diff";
 import type { InputRef } from "antd";
+import { useTranslation } from "react-i18next";
 
 interface CorrectionModalProps extends ModalProps {
   originalText: string;
@@ -37,6 +38,7 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
       rest.onOk(e);
     }
   };
+  const [t] = useTranslation(["commons"]);
 
   return (
     <Modal
@@ -44,7 +46,7 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
       onCancel={handleCancel}
       footer={[
         <Button key="back" onClick={handleCancel}>
-          Cancel
+          {t("cancel")}
         </Button>,
         <Button
           key="reset"
@@ -52,15 +54,15 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
           onClick={() => setText(originalText)}
           className="btn-warning"
         >
-          Reset
+          {t("reset")}
         </Button>,
         <Button key="submit" type="primary" onClick={handleOk}>
-          Submit
+          {t("submit")}
         </Button>,
       ]}
     >
       <Space direction="vertical">
-        Preview:
+        {t("Preview")}
         <Diff
           originalText={originalText}
           correctedText={text}
@@ -69,7 +71,7 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
         />
       </Space>
       <Space direction="vertical" className="width-full mt-2">
-        Correct here:
+        {`${t("Correct")} ${t("here")}`}
         <Input.TextArea
           onChange={(e) => setText(e.target.value)}
           value={text}

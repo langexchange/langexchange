@@ -5,8 +5,12 @@ import {
   GoogleSquareFilled,
 } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Space } from "antd";
+import Link from "antd/es/typography/Link";
+import { useTranslation } from "react-i18next";
 
 const SignupForm = () => {
+  const [t] = useTranslation(["commons"]);
+
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
   };
@@ -22,9 +26,9 @@ const SignupForm = () => {
         rules={[
           {
             type: "email",
-            message: "The input is not valid E-mail!",
+            message: t("email-invalid").toString(),
           },
-          { required: true, message: "Please input your E-mail!" },
+          { required: true, message: t("email-empty").toString() },
         ]}
       >
         <Input
@@ -36,12 +40,12 @@ const SignupForm = () => {
       </Form.Item>
       <Form.Item
         name="password"
-        rules={[{ required: true, message: "Please input your Password!" }]}
+        rules={[{ required: true, message: t("password-empty").toString() }]}
       >
         <Input
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
-          placeholder="Password"
+          placeholder={t("password").toString()}
           allowClear={true}
           autoComplete="on"
         />
@@ -53,7 +57,7 @@ const SignupForm = () => {
         rules={[
           {
             required: true,
-            message: "Please confirm your password!",
+            message: t("confirm-password-empty").toString(),
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
@@ -61,7 +65,7 @@ const SignupForm = () => {
                 return Promise.resolve();
               }
               return Promise.reject(
-                new Error("The two passwords that you entered do not match!")
+                new Error(t("password-not-match").toString())
               );
             },
           }),
@@ -69,7 +73,7 @@ const SignupForm = () => {
       >
         <Input
           type="password"
-          placeholder="Confirm password"
+          placeholder={t("confirm-password").toString()}
           prefix={<LockOutlined className="site-form-item-icon" />}
           allowClear={true}
           autoComplete="on"
@@ -84,18 +88,18 @@ const SignupForm = () => {
             validator: (_, value) =>
               value
                 ? Promise.resolve()
-                : Promise.reject(new Error("Should accept agreement")),
+                : Promise.reject(new Error(t("must-agree").toString())),
           },
         ]}
       >
         <Checkbox>
-          I have read the <a href="">agreement</a>
+          {t("read-agree")} <Link>{t("agree-terms")}</Link>
         </Checkbox>
       </Form.Item>
 
       <Form.Item>
         <Space>
-          Sign in with:
+          {t("signin-with")}
           <Space size="small">
             <Button type="default" shape="circle" icon={<FacebookFilled />} />
             <Button
@@ -106,7 +110,7 @@ const SignupForm = () => {
           </Space>
         </Space>
         <Button type="primary" htmlType="submit" className="float-right">
-          Sign in
+          {t("sign-up")}
         </Button>
       </Form.Item>
     </Form>

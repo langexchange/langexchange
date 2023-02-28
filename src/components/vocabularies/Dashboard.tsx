@@ -1,30 +1,33 @@
 import { Drawer, Typography } from "antd";
 import VocabularyList from "../VocabularyList";
+import { useTranslation } from "react-i18next";
 
 interface DashboardProps {
   onClose?: () => void;
   open: boolean;
 }
 
-const Dashboard = ({ onClose, open }: DashboardProps) => {
+const Dashboard: React.FC<DashboardProps> = ({ onClose, open }) => {
+  const [t] = useTranslation(["vocabulary"]);
+
   return (
     <Drawer
-      title="Dashboard"
+      title={t("Dashboard")}
       placement="right"
       onClose={onClose}
       open={open}
       width="50%"
     >
       <Typography.Title level={5} type="warning">
-        Inprogress (3)
+        {t("Inprogress")} (3)
       </Typography.Title>
       <VocabularyList type="hard" />
       <Typography.Title level={5} type="danger">
-        Unschooled (3)
+        {t("Unschooled")} (3)
       </Typography.Title>
       <VocabularyList />
       <Typography.Title level={5} type="success">
-        Schooled (3)
+        {t("Schooled")} (3)
       </Typography.Title>
       <VocabularyList type="known" />
     </Drawer>

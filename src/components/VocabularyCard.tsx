@@ -2,6 +2,7 @@ import { Button, Card, Image, Space, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import UserItem from "./UserItem";
 import VocabularySet from "../types/VocabularySet";
+import { useTranslation } from "react-i18next";
 
 interface VocabularyCardProps extends VocabularySet {
   editable?: boolean;
@@ -24,6 +25,7 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
   setVocabularySet,
   showModal,
 }) => {
+  const [t] = useTranslation(["commons"]);
   const onClick = () => {
     showModal && showModal();
     setVocabularySet &&
@@ -84,13 +86,13 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
         <Typography.Paragraph type="secondary">
           {description}
         </Typography.Paragraph>
-        <Space>
+        <Space wrap={true}>
           <Space>
-            Term:
+            {t("Term")}
             <Tag color="blue">{termLanguage}</Tag>
           </Space>
           <Space>
-            Define:
+            {t("Define")}
             <Tag color="green">{definitionLanguage}</Tag>
           </Space>
         </Space>

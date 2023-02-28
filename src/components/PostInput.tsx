@@ -9,6 +9,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import type { InputRef } from "antd";
 import { faker } from "@faker-js/faker";
+import { useTranslation } from "react-i18next";
 
 const PostInput = () => {
   const inputRef = useRef<InputRef>(null);
@@ -16,6 +17,7 @@ const PostInput = () => {
   const initialTags: string[] = [];
   const [tags, setTags] = useState(initialTags);
   const [open, setOpen] = useState(false);
+  const [t] = useTranslation(["commons"]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -32,10 +34,6 @@ const PostInput = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
-  };
-
-  const hide = () => {
-    setOpen(false);
   };
 
   const handleOpenChange = (newOpen: boolean) => {
@@ -57,7 +55,7 @@ const PostInput = () => {
             shape="round"
           >
             <span className="text-300 color-secondary">
-              Let's share something to practice together...
+              {t("post-input-holder")}
             </span>
           </Button>
         </div>
@@ -65,7 +63,7 @@ const PostInput = () => {
       <Modal
         title={
           <Row align="middle" gutter={8}>
-            <Col flex="none">New post</Col>
+            <Col flex="none">{t("New post")}</Col>
             <Col flex="none">
               <SeclectLanguageInput
                 bordered={false}
@@ -75,7 +73,7 @@ const PostInput = () => {
                 mode="multiple"
                 placeholder={
                   <span className="text-300 fz-14" style={{ color: "#bfbfbf" }}>
-                    Languages
+                    {t("languages")}
                   </span>
                 }
                 width="100%"
@@ -88,7 +86,7 @@ const PostInput = () => {
                 tags={tags}
                 setTags={setTags}
                 tagColor="green"
-                placeholder="Add topic"
+                placeholder={t("Add topic").toString()}
                 borderStyle="none"
                 placeholderStyle={{
                   fontSize: "14px",
@@ -108,7 +106,7 @@ const PostInput = () => {
         <Input.TextArea
           allowClear
           bordered={false}
-          placeholder="Share something here..."
+          placeholder={t("Share something here...").toString()}
           autoSize={{ minRows: 4, maxRows: 20 }}
           size="large"
           className="mb-3 input-font-large-placeholder"
@@ -139,7 +137,7 @@ const PostInput = () => {
         </div>
         <UploadImage />
         <Button size="large" block type="primary">
-          Create new posts
+          {t("New post")}
         </Button>
       </Modal>
     </>

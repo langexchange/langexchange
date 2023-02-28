@@ -1,5 +1,5 @@
 import { Layout } from "antd";
-import { Content, Footer } from "antd/es/layout/layout";
+import { Content } from "antd/es/layout/layout";
 import { Outlet } from "react-router-dom";
 import VocabularyHeader from "../components/vocabularies/VocabularyHeader";
 import PageHeader from "../parts/header/PageHeader";

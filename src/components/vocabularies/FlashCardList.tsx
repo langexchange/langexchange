@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { faker } from "@faker-js/faker";
 import FlashCard from "./FlashCard";
 import { Button, Space } from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import classes from "./FlashCardList.module.scss";
 import Vocabulary from "../../types/Vocabulary";
 import { fakeVocabularies } from "../../utils/fakeData/fakeVocabulary";
+import { useTranslation } from "react-i18next";
 
 const items: Vocabulary[] = fakeVocabularies(10);
 
@@ -14,6 +14,7 @@ interface FlashCardListProps {
 }
 
 const FlashCardList: React.FC<FlashCardListProps> = ({ type = "practice" }) => {
+  const [t] = useTranslation(["vocabulary"]);
   const cards = items.map((item: Vocabulary) => {
     return <FlashCard {...item} key={item.id} />;
   });
@@ -44,17 +45,20 @@ const FlashCardList: React.FC<FlashCardListProps> = ({ type = "practice" }) => {
         <Button
           onClick={previousCard}
           size="large"
-          disabled={current == 0}
+          disabled={current === 0}
           icon={<LeftOutlined />}
           className={classes.button}
         />
         {type === "practice" && (
           <>
+            <Button size="large" className="btn-outlined-warning">
+              {t("Medium")}
+            </Button>
             <Button size="large" danger>
-              Hard
+              {t("Hard")}
             </Button>
             <Button size="large" className="btn-outlined-success">
-              Known
+              {t("Known")}
             </Button>
           </>
         )}

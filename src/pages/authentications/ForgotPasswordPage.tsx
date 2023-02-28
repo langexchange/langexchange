@@ -1,7 +1,9 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message } from "antd";
+import { useTranslation } from "react-i18next";
 
 const ForgotPasswordPage = () => {
+  const { t } = useTranslation(["commons"]);
   const onFinish = (values: any) => {
     success();
     console.log("Received values of form: ", values);
@@ -29,20 +31,20 @@ const ForgotPasswordPage = () => {
         rules={[
           {
             type: "email",
-            message: "The input is not valid E-mail!",
+            message: t("email-invalid").toString(),
           },
-          { required: true, message: "Please input your E-mail!" },
+          { required: true, message: t("email-empty").toString() },
         ]}
       >
         <Input
           prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder="Email"
+          placeholder={t("reset-password-message").toString()}
           allowClear={true}
         />
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" className="d-block ma">
-          Submit
+          {t("send")}
         </Button>
       </Form.Item>
     </Form>

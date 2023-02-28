@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Button, List, message, Modal } from "antd";
+import { useTranslation } from "react-i18next";
 import VocabularySetMenuItem from "./VocabularySetMenuItem";
 
 interface ModalProps {
@@ -41,8 +42,14 @@ for (let i = 0; i < 20; i++) {
   sets.push(set);
 }
 
-const ModalAddToPracticeList = ({ open, onOk, onCancel }: ModalProps) => {
+const ModalAddToPracticeList: React.FC<ModalProps> = ({
+  open,
+  onOk,
+  onCancel,
+}) => {
   const [messageApi, contextHolder] = message.useMessage();
+  const [t] = useTranslation(["commons"]);
+
   const success = () => {
     messageApi.open({
       type: "success",
@@ -53,7 +60,7 @@ const ModalAddToPracticeList = ({ open, onOk, onCancel }: ModalProps) => {
     <>
       {contextHolder}
       <Modal
-        title="Add vocabulary set to practice list"
+        title={t("Add set to practice list", { ns: "vocabulary" })}
         open={open}
         onOk={onOk}
         onCancel={onCancel}
@@ -61,6 +68,7 @@ const ModalAddToPracticeList = ({ open, onOk, onCancel }: ModalProps) => {
         wrapClassName="pv-32"
         style={{ top: 0, maxHeight: "100%" }}
         className="d-flex flex-column modal-with-content-scroll"
+        footer={null}
       >
         <List
           itemLayout="horizontal"
@@ -71,7 +79,7 @@ const ModalAddToPracticeList = ({ open, onOk, onCancel }: ModalProps) => {
             <List.Item
               actions={[
                 <Button type="primary" onClick={success}>
-                  Add
+                  {t("Add")}
                 </Button>,
               ]}
             >

@@ -19,43 +19,7 @@ import {
   HeartOutlined,
 } from "@ant-design/icons";
 import { faker } from "@faker-js/faker";
-
-const inforItems = [
-  {
-    icon: <HomeOutlined />,
-    text: "Hanoi, Vietnam",
-  },
-  {
-    icon: <FormOutlined />,
-    text: "100 posts",
-  },
-  {
-    icon: <TeamOutlined />,
-    text: "50 partners",
-  },
-];
-
-const nativeLanguages = [
-  {
-    language: "Vietnamese",
-    rate: 4,
-  },
-  {
-    language: "English",
-    rate: 4,
-  },
-];
-
-const targetLanguages = [
-  {
-    language: "Chinese",
-    rate: 2,
-  },
-  {
-    language: "Japanese",
-    rate: 3,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 interface Language {
   language: string;
@@ -125,6 +89,43 @@ const InfoItem: React.FC<InfoItemProps> = ({ icon, text }) => {
 };
 
 const ProfileCard: React.FC = () => {
+  const [t] = useTranslation(["commons"]);
+  const inforItems = [
+    {
+      icon: <HomeOutlined />,
+      text: "Hanoi, Vietnam",
+    },
+    {
+      icon: <FormOutlined />,
+      text: `100 ${t("posts")}`,
+    },
+    {
+      icon: <TeamOutlined />,
+      text: `50 ${t("partners")}`,
+    },
+  ];
+
+  const nativeLanguages = [
+    {
+      language: "Vietnamese",
+      rate: 4,
+    },
+    {
+      language: "English",
+      rate: 4,
+    },
+  ];
+
+  const targetLanguages = [
+    {
+      language: "Chinese",
+      rate: 2,
+    },
+    {
+      language: "Japanese",
+      rate: 3,
+    },
+  ];
   return (
     <Card className="height-full pos-relative card-custome-scroll bg-white h-100 w-100">
       <div className="avatar and basic info">
@@ -160,13 +161,13 @@ const ProfileCard: React.FC = () => {
       <Space className="languages width-full" direction="vertical" size="large">
         {[
           {
-            title: "Native languages",
+            title: t("Native languages"),
             icon: <SketchOutlined />,
             color: "blue",
             languages: nativeLanguages,
           },
           {
-            title: "Target languages",
+            title: t("Target languages"),
             icon: <HeartOutlined />,
             color: "green",
             languages: targetLanguages,
@@ -182,7 +183,7 @@ const ProfileCard: React.FC = () => {
       </Typography.Paragraph>
       <div className="interest">
         <Divider orientation="left" plain>
-          Interests
+          {t("Interests")}
         </Divider>
         <Space size={[0, 8]} wrap>
           <Tag color="magenta">magenta</Tag>

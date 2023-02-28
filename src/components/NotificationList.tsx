@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { Avatar, Badge, Button, List, Space, Typography } from "antd";
+import { Avatar, List, Space, Typography } from "antd";
 import { useState } from "react";
 
 interface Notification {
@@ -23,7 +23,7 @@ for (let i = 0; i < 20; i++) {
   notifications.push(notification);
 }
 
-const Notification = ({ notification }: { notification: Notification }) => {
+const NotificationItem = ({ notification }: { notification: Notification }) => {
   return (
     <Space
       style={{
@@ -71,7 +71,7 @@ const NotificationList = ({ allRead }: NotificationListProps) => {
         split={false}
         renderItem={(item) => (
           <List.Item style={{ padding: 0 }}>
-            <Notification
+            <NotificationItem
               notification={{ ...item, read: allRead || item.read }}
             />
           </List.Item>

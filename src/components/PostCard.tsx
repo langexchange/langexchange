@@ -21,6 +21,7 @@ import Slider from "react-slick";
 import Post from "../types/Post";
 import User from "../types/User";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface PostProps extends Post {
   onClick?: (item: Post) => void;
@@ -42,22 +43,6 @@ const handleMenuClick: MenuProps["onClick"] = (e) => {
   e.domEvent.stopPropagation();
   message.info("Click on menu item.");
   console.log("click", e);
-};
-
-const items: MenuProps["items"] = [
-  {
-    label: <span>Collect this post</span>,
-    key: "0",
-  },
-  {
-    label: <span>Hide this post</span>,
-    key: "1",
-  },
-];
-
-const menuDropdown = {
-  items: items,
-  onClick: handleMenuClick,
 };
 
 const title = (owner: User, group: PostProps["group"], createdAt: string) => {
@@ -223,6 +208,7 @@ const PostCard: React.FC<PostProps> = ({
   inputRef,
   handleOpenCorrectModal,
 }) => {
+  const [t] = useTranslation(["commons"]);
   const headStyle: React.CSSProperties = {
     backgroundColor: "white",
     border: "none",
@@ -234,6 +220,22 @@ const PostCard: React.FC<PostProps> = ({
   const handleHeart = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      label: <span>{t("Collect this post")}</span>,
+      key: "0",
+    },
+    {
+      label: <span>{t("Hide this post")}</span>,
+      key: "1",
+    },
+  ];
+
+  const menuDropdown = {
+    items: items,
+    onClick: handleMenuClick,
   };
 
   return (
@@ -305,7 +307,7 @@ const PostCard: React.FC<PostProps> = ({
       </Space>
       {type === "inModal" && correctable && (
         <div className="position-absolute bottom-0 end-0 mb-2 me-4">
-          <Tooltip title="Correct for this post">
+          <Tooltip title={t("Correct content for this post")}>
             <Button
               type="primary"
               shape="circle"
