@@ -34,6 +34,7 @@ import VocabularyPracticeOverviewPage from "./pages/vocabularies/VocabularyPract
 import VocabularyPracticePage from "./pages/vocabularies/VocabularyPracticePage";
 import YourVocabularyPage from "./pages/vocabularies/YourVocabularyPage";
 import WelcomePage from "./pages/welcomes/WelcomePage";
+import ProtectedRoute from "./ProtectedRoute";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -52,54 +53,56 @@ const App: React.FC = () => {
             <Route path="/" element={<WelcomePage />} />
             <Route path="/abouts" element={<AboutPage />} />
           </Route>
-          <Route path="/initial" element={<InitialPage />} />
           <Route element={<AuthenticationLayout />}>
             <Route path="/sign-in" element={<SigninPage />} />
             <Route path="/sign-up" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           </Route>
-          <Route element={<AppSignedInLayout />}>
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/study-spaces">
-              <Route element={<StudySpaceLayout />}>
-                <Route index element={<StudySpacePage />} />
-                <Route path="recent" element={<StudySpacePage />} />
-                <Route path="all" element={<StudySpaceOwnPage />} />
-                <Route path="own" element={<StudySpaceOwnPage />} />
-                <Route path="joined" element={<StudySpaceOwnPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/initial" element={<InitialPage />} />
+            <Route element={<AppSignedInLayout />}>
+              <Route path="/community" element={<CommunityPage />} />
+              <Route path="/study-spaces">
+                <Route element={<StudySpaceLayout />}>
+                  <Route index element={<StudySpacePage />} />
+                  <Route path="recent" element={<StudySpacePage />} />
+                  <Route path="all" element={<StudySpaceOwnPage />} />
+                  <Route path="own" element={<StudySpaceOwnPage />} />
+                  <Route path="joined" element={<StudySpaceOwnPage />} />
+                </Route>
+                <Route path="explores" element={<StudySpaceExplorePage />} />
               </Route>
-              <Route path="explores" element={<StudySpaceExplorePage />} />
-            </Route>
-            <Route path="/partners">
-              <Route element={<PartnerLayout />}>
-                <Route index element={<PartnerExplorePage />} />
-                <Route path="explores" element={<PartnerExplorePage />} />
-                <Route path="requests" element={<PartnerRequestsPage />} />
+              <Route path="/partners">
+                <Route element={<PartnerLayout />}>
+                  <Route index element={<PartnerExplorePage />} />
+                  <Route path="explores" element={<PartnerExplorePage />} />
+                  <Route path="requests" element={<PartnerRequestsPage />} />
+                </Route>
+                <Route element={<YourPartnerLayout />}>
+                  <Route path="all" element={<YourPartnersPage />} />
+                  <Route path="detail" element={<PartnerDetailPage />} />
+                </Route>
               </Route>
-              <Route element={<YourPartnerLayout />}>
-                <Route path="all" element={<YourPartnersPage />} />
-                <Route path="detail" element={<PartnerDetailPage />} />
+              <Route path="/vocabularies" element={<MainVocabularyLayout />}>
+                <Route index element={<VocabularyExploresPage />} />
+                <Route path="explores" element={<VocabularyExploresPage />} />
+                <Route path="yours" element={<YourVocabularyPage />} />
+                <Route path="practice" element={<PracticeVocabularyLayout />}>
+                  <Route index element={<VocabularyPracticeOverviewPage />} />
+                  <Route path=":id" element={<VocabularyPracticePage />} />
+                </Route>
+                <Route path="details" element={<VocabularyDetailPage />} />
+                <Route path="create" element={<VocabularyCreatePage />} />
               </Route>
-            </Route>
-            <Route path="/vocabularies" element={<MainVocabularyLayout />}>
-              <Route index element={<VocabularyExploresPage />} />
-              <Route path="explores" element={<VocabularyExploresPage />} />
-              <Route path="yours" element={<YourVocabularyPage />} />
-              <Route path="practice" element={<PracticeVocabularyLayout />}>
-                <Route index element={<VocabularyPracticeOverviewPage />} />
-                <Route path=":id" element={<VocabularyPracticePage />} />
+              <Route path="/:userId" element={<ProfileLayout />}>
+                <Route index element={<ProfileWallPage />} />
+                <Route path="wall" element={<ProfileWallPage />} />
+                <Route
+                  path="vocabularies"
+                  element={<ProfileVocabulariesPage />}
+                />
+                <Route path="settings" element={<ProfileSettingsPage />} />
               </Route>
-              <Route path="details" element={<VocabularyDetailPage />} />
-              <Route path="create" element={<VocabularyCreatePage />} />
-            </Route>
-            <Route path="/:userId" element={<ProfileLayout />}>
-              <Route index element={<ProfileWallPage />} />
-              <Route path="wall" element={<ProfileWallPage />} />
-              <Route
-                path="vocabularies"
-                element={<ProfileVocabulariesPage />}
-              />
-              <Route path="settings" element={<ProfileSettingsPage />} />
             </Route>
           </Route>
           <Route path="/*" element={<NotFoundPage />} />
