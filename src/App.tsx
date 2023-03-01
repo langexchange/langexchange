@@ -15,6 +15,7 @@ import ForgotPasswordPage from "./pages/authentications/ForgotPasswordPage";
 import SigninPage from "./pages/authentications/SigninPage";
 import SignupPage from "./pages/authentications/SignupPage";
 import CommunityPage from "./pages/communitys/CommunityPage";
+import InitialPage from "./pages/InitialPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PartnerDetailPage from "./pages/partners/PartnerDetailPage";
 import PartnerExplorePage from "./pages/partners/PartnerExplorePage";
@@ -51,6 +52,7 @@ const App: React.FC = () => {
             <Route path="/" element={<WelcomePage />} />
             <Route path="/abouts" element={<AboutPage />} />
           </Route>
+          <Route path="/initial" element={<InitialPage />} />
           <Route element={<AuthenticationLayout />}>
             <Route path="/sign-in" element={<SigninPage />} />
             <Route path="/sign-up" element={<SignupPage />} />
