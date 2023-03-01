@@ -4,116 +4,143 @@ import {
   FacebookFilled,
   GoogleSquareFilled,
 } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Space } from "antd";
+import { Button, Checkbox, Form, Input, notification, Space, Spin } from "antd";
 import Link from "antd/es/typography/Link";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import {
+  AuthRequest,
+  useRegisterMutation,
+} from "../../services/auth/authServices";
 
-const SignupForm = () => {
+const SignupForm: React.FC = () => {
   const [t] = useTranslation(["commons"]);
+  const [register, { isLoading }] = useRegisterMutation();
+  const navigate = useNavigate();
 
-  const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+  const handleRegister = async (data: AuthRequest) => {
+    try {
+      await register(data).unwrap();
+      notification.success({
+        message: "Register successfully!",
+      });
+      navigate("/sign-in");
+    } catch (err) {
+      notification.error({
+        message: "Register fail!",
+      });
+    }
   };
+  const onFinish = async (values: any) => {
+    const data = {
+      email: values.email.toLowerCase(),
+      password: values.password,
+    };
+    await handleRegister(data);
+  };
+
   return (
-    <Form
-      name="normal_login"
-      className="login-form"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-    >
-      <Form.Item
-        name="email"
-        rules={[
-          {
-            type: "email",
-            message: t("email-invalid").toString(),
-          },
-          { required: true, message: t("email-empty").toString() },
-        ]}
+    <Spin spinning={isLoading} delay={500}>
+      <Form
+        name="normal_login"
+        className="login-form"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
       >
-        <Input
-          prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder="Email"
-          allowClear={true}
-          autoComplete="on"
-        />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: t("password-empty").toString() }]}
-      >
-        <Input
-          prefix={<LockOutlined className="site-form-item-icon" />}
-          type="password"
-          placeholder={t("password").toString()}
-          allowClear={true}
-          autoComplete="on"
-        />
-      </Form.Item>
-      <Form.Item
-        name="confirm"
-        dependencies={["password"]}
-        hasFeedback
-        rules={[
-          {
-            required: true,
-            message: t("confirm-password-empty").toString(),
-          },
-          ({ getFieldValue }) => ({
-            validator(_, value) {
-              if (!value || getFieldValue("password") === value) {
-                return Promise.resolve();
-              }
-              return Promise.reject(
-                new Error(t("password-not-match").toString())
-              );
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              type: "email",
+              message: t("email-invalid").toString(),
             },
-          }),
-        ]}
-      >
-        <Input
-          type="password"
-          placeholder={t("confirm-password").toString()}
-          prefix={<LockOutlined className="site-form-item-icon" />}
-          allowClear={true}
-          autoComplete="on"
-        />
-      </Form.Item>
+            { required: true, message: t("email-empty").toString() },
+          ]}
+        >
+          <Input
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="Email"
+            allowClear={true}
+            autoComplete="on"
+          />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[{ required: true, message: t("password-empty").toString() }]}
+        >
+          <Input
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            placeholder={t("password").toString()}
+            allowClear={true}
+            autoComplete="on"
+          />
+        </Form.Item>
+        <Form.Item
+          name="confirm"
+          dependencies={["password"]}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: t("confirm-password-empty").toString(),
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error(t("password-not-match").toString())
+                );
+              },
+            }),
+          ]}
+        >
+          <Input
+            type="password"
+            placeholder={t("confirm-password").toString()}
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            allowClear={true}
+            autoComplete="on"
+          />
+        </Form.Item>
 
-      <Form.Item
-        name="agreement"
-        valuePropName="checked"
-        rules={[
-          {
-            validator: (_, value) =>
-              value
-                ? Promise.resolve()
-                : Promise.reject(new Error(t("must-agree").toString())),
-          },
-        ]}
-      >
-        <Checkbox>
-          {t("read-agree")} <Link>{t("agree-terms")}</Link>
-        </Checkbox>
-      </Form.Item>
+        <Form.Item
+          name="agreement"
+          valuePropName="checked"
+          rules={[
+            {
+              validator: (_, value) =>
+                value
+                  ? Promise.resolve()
+                  : Promise.reject(new Error(t("must-agree").toString())),
+            },
+          ]}
+        >
+          <Checkbox>
+            {t("read-agree")} <Link>{t("agree-terms")}</Link>
+          </Checkbox>
+        </Form.Item>
 
-      <Form.Item>
-        <Space>
-          {t("signin-with")}
-          <Space size="small">
-            <Button type="default" shape="circle" icon={<FacebookFilled />} />
-            <Button
-              type="default"
-              shape="circle"
-              icon={<GoogleSquareFilled />}
-            />
+        <Form.Item>
+          <Space>
+            {t("signin-with")}
+            <Space size="small">
+              <Button type="default" shape="circle" icon={<FacebookFilled />} />
+              <Button
+                type="default"
+                shape="circle"
+                icon={<GoogleSquareFilled />}
+              />
+            </Space>
           </Space>
-        </Space>
-        <Button type="primary" htmlType="submit" className="float-right">
-          {t("sign-up")}
-        </Button>
-      </Form.Item>
-    </Form>
+          <Button type="primary" htmlType="submit" className="float-right">
+            {t("sign-up")}
+          </Button>
+        </Form.Item>
+      </Form>
+    </Spin>
   );
 };
 
