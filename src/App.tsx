@@ -35,6 +35,7 @@ import VocabularyPracticePage from "./pages/vocabularies/VocabularyPracticePage"
 import YourVocabularyPage from "./pages/vocabularies/YourVocabularyPage";
 import WelcomePage from "./pages/welcomes/WelcomePage";
 import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -49,14 +50,16 @@ const App: React.FC = () => {
     >
       <div className="App">
         <Routes location={location}>
-          <Route element={<NoSignedInLayout />}>
-            <Route path="/" element={<WelcomePage />} />
-            <Route path="/abouts" element={<AboutPage />} />
-          </Route>
-          <Route element={<AuthenticationLayout />}>
-            <Route path="/sign-in" element={<SigninPage />} />
-            <Route path="/sign-up" element={<SignupPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route element={<PublicRoute />}>
+            <Route element={<NoSignedInLayout />}>
+              <Route path="/" element={<WelcomePage />} />
+              <Route path="/abouts" element={<AboutPage />} />
+            </Route>
+            <Route element={<AuthenticationLayout />}>
+              <Route path="/sign-in" element={<SigninPage />} />
+              <Route path="/sign-up" element={<SignupPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            </Route>
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/initial" element={<InitialPage />} />

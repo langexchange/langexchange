@@ -19,13 +19,41 @@ const authSlice = createSlice({
     setCredentials: (state, { payload }) => {
       state.user = payload.user;
       state.token = payload.token;
+      if (payload.persist) {
+        localStorage.setItem("user", JSON.stringify(payload.user));
+        localStorage.setItem("token", payload.token);
+      }
+    },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
     },
   },
 });
 
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 
 export default authSlice.reducer;
 
 export const selectCurrentUser = (state: RootState) => state.auth.user;
 export const selectCurrentToken = (state: RootState) => state.auth.token;
+export const selectCredentials = (state: RootState) => {
+  if (state.auth.user && state.auth.token) {
+    return {
+      user: state.auth.user,
+      token: state.auth.token,
+    };
+  }
+
+  const user = localStorage.getItem("user");
+  const token = localStorage.getItem("token");
+  if (user && token) {
+    return {
+      user: JSON.parse(user),
+      token,
+    };
+  }
+  return null;
+};
