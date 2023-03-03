@@ -5,6 +5,7 @@ const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 
 export interface User {
   id: string;
+  incId: number;
   firstName: string;
   lastName: string;
 }
@@ -39,14 +40,14 @@ export const authApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    register: builder.mutation<LoginResponse, AuthRequest>({
+    register: builder.mutation<RegisterResponse, AuthRequest>({
       query: (credentials) => ({
         url: "api/auth/register",
         method: "POST",
         body: credentials,
       }),
     }),
-    login: builder.mutation<RegisterResponse, AuthRequest>({
+    login: builder.mutation<LoginResponse, AuthRequest>({
       query: (credentials) => ({
         url: "api/auth/login",
         method: "POST",

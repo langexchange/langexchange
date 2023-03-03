@@ -25,17 +25,16 @@ const SigninForm = () => {
         password: values.password,
       };
 
-      const user = await login(data).unwrap();
-      dispatch(setCredentials(user));
+      const { token, ...user } = await login(data).unwrap();
+      const credentials = { user, token };
+      dispatch(setCredentials({ ...credentials, persist: values.remember }));
       notification.success({
         message: "Login success!",
       });
       navigate("/initial");
     } catch (err) {
-      console.log(err);
       notification.error({
         message: "Login fail!",
-        // description: ,
       });
     }
   };
