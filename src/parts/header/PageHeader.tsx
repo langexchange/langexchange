@@ -23,23 +23,23 @@ import {
   SettingOutlined,
   BellOutlined,
 } from "@ant-design/icons";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import NotificationList from "../../components/NotificationList";
 import { useTranslation } from "react-i18next";
 import { VN } from "country-flag-icons/react/3x2";
-const { Header } = Layout;
+import { useAppDispatch } from "../../hooks/hooks";
+import { logout } from "../../features/auth/authSlice";
 
-const handleMenuClick: MenuProps["onClick"] = (e) => {
-  message.info("Click on menu item.");
-  console.log("click", e);
-};
+const { Header } = Layout;
 
 const PageHeader = () => {
   const { t, i18n } = useTranslation(["commons"]);
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleChangeLanguage = (value: string) => {
     i18n.changeLanguage(value);
@@ -47,6 +47,13 @@ const PageHeader = () => {
     message.success("Change language success");
   };
 
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
+    console.log(e.key);
+    if (e.key === "sign-out") {
+      dispatch(logout());
+      navigate("/");
+    }
+  };
   const items: MenuProps["items"] = [
     {
       label: <NavLink to="/community">{t("header-community")}</NavLink>,
@@ -103,7 +110,7 @@ const PageHeader = () => {
       icon: <SettingOutlined />,
     },
     {
-      label: <Link to="/">{t("sign-out")}</Link>,
+      label: t("sign-out"),
       key: "sign-out",
       icon: <LogoutOutlined />,
     },

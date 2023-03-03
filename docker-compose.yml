@@ -12,5 +12,8 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
+    tty: true
+    stdin_open: true
+    command: sh -c "yarn && yarn start"
 volumes:
   node_modules:
