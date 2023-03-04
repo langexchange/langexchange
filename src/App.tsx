@@ -41,13 +41,7 @@ const App: React.FC = () => {
   const location = useLocation();
 
   return (
-    <Suspense
-      fallback={
-        <Spin tip="Loading" size="large">
-          <div className="content" />
-        </Spin>
-      }
-    >
+    <Suspense fallback={<Spin size="large" />}>
       <div className="App">
         <Routes location={location}>
           <Route element={<PublicRoute />}>

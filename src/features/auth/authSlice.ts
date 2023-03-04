@@ -5,6 +5,7 @@ import { RootState } from "../../stores/store";
 interface AuthState {
   user: User | null;
   token: string | null;
+  persist?: boolean;
 }
 
 const initialState: AuthState = {
@@ -17,11 +18,17 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, { payload }) => {
-      state.user = payload.user;
-      state.token = payload.token;
-      if (payload.persist) {
+      if (payload.user) {
+        state.user = payload.user;
+      }
+      if (payload.token) {
+        state.token = payload.token;
+      }
+      if (payload.persist || state.persist) {
+        state.persist = payload.persist;
         localStorage.setItem("user", JSON.stringify(payload.user));
         localStorage.setItem("token", payload.token);
+        localStorage.setItem("persist", "true");
       }
     },
     logout: (state) => {
@@ -44,16 +51,19 @@ export const selectCredentials = (state: RootState) => {
     return {
       user: state.auth.user,
       token: state.auth.token,
+      persist: state.auth.persist,
     };
   }
 
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
+  const persist = localStorage.getItem("persist") === "true";
   if (user && token) {
     return {
       user: JSON.parse(user),
       token,
+      persist,
     };
   }
-  return null;
+  return { user: null, token: null };
 };
