@@ -1,46 +1,48 @@
-import { message, Spin } from "antd";
+import { message } from "antd";
 import { useEffect } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { selectCredentials, setCredentials } from "./features/auth/authSlice";
+import LoadingPage from "./pages/LoadingPage";
+import { selectCredentials } from "./features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
-import { useGetProfileMutation } from "./services/profile/profileServices";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import {
+  selectCredentalProfile,
+  setCredentialProfile,
+} from "./features/profile/profileSlice";
+import { useGetProfileQuery } from "./services/profile/profileServices";
 
 const ProtectedRoute = () => {
   const credentials = useAppSelector(selectCredentials);
+  const currentProfile = useAppSelector(selectCredentalProfile);
   const dispatch = useAppDispatch();
   const location = useLocation();
   const isInitial = location.pathname === "/initial";
-  const [getProfile, { isLoading }] = useGetProfileMutation();
+
+  const {
+    data: profile,
+    isLoading,
+    isFetching,
+    isError,
+  } = useGetProfileQuery(credentials.userId?.toString(), {
+    skip: !credentials.token || !credentials.userId,
+  });
 
   useEffect(() => {
-    async function fetchProfile() {
-      try {
-        const profile = await getProfile(credentials.user.id).unwrap();
-        dispatch(
-          setCredentials({
-            ...credentials,
-            user: {
-              ...credentials.user,
-              firstName: profile.firstName,
-              lastName: profile.lastName,
-            },
-          })
-        );
-      } catch (error) {
-        console.log(error);
-        message.error("Oops! Something went wrong. Please try again.");
+    if (profile) {
+      dispatch(setCredentialProfile(profile));
+      if (isError) {
+        message.error("Something went wrong when fetching profile");
       }
     }
-    fetchProfile();
-  }, []);
+  }, [profile]);
+  console.log(currentProfile);
 
-  if (isLoading) return <Spin size="large" spinning={isLoading} />;
+  if (isLoading || isFetching) return <LoadingPage size="large" />;
 
-  if (!credentials.user || !credentials.token)
+  if (!credentials.token)
     return <Navigate to="/sign-in" state={{ from: location }} replace />;
-  if (!credentials.user.firstName && !isInitial)
+  if (!profile?.firstName && !isInitial && !currentProfile?.firstName)
     return <Navigate to="/initial" state={{ from: location }} replace />;
-  if (credentials.user.firstName && isInitial)
+  if (profile?.firstName && isInitial)
     return <Navigate to="/community" state={{ from: location }} replace />;
 
   return <Outlet />;

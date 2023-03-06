@@ -1,6 +1,8 @@
-import { Spin } from "antd";
-import { Suspense } from "react";
+import { message, Spin } from "antd";
+import { Suspense, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { setLanguages } from "./features/languages/languageSlice";
+import { useAppDispatch } from "./hooks/hooks";
 import AppSignedInLayout from "./layouts/AppSignedInLayout";
 import AuthenticationLayout from "./layouts/authentications/AuthenticationLayout";
 import NoSignedInLayout from "./layouts/NoSignedInLayout";
@@ -16,6 +18,7 @@ import SigninPage from "./pages/authentications/SigninPage";
 import SignupPage from "./pages/authentications/SignupPage";
 import CommunityPage from "./pages/communitys/CommunityPage";
 import InitialPage from "./pages/InitialPage";
+import LoadingPage from "./pages/LoadingPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PartnerDetailPage from "./pages/partners/PartnerDetailPage";
 import PartnerExplorePage from "./pages/partners/PartnerExplorePage";
@@ -36,12 +39,29 @@ import YourVocabularyPage from "./pages/vocabularies/YourVocabularyPage";
 import WelcomePage from "./pages/welcomes/WelcomePage";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
+import { useGetLanguagesQuery } from "./services/languages/languageService";
 
 const App: React.FC = () => {
   const location = useLocation();
 
+  const {
+    data: languages,
+    isFetching,
+    isError,
+  } = useGetLanguagesQuery(undefined);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (languages) {
+      dispatch(setLanguages(languages));
+      if (isError) {
+        message.error("Something went wrong when fetching languages");
+      }
+    }
+  }, [languages, isFetching]);
+
   return (
-    <Suspense fallback={<Spin size="large" />}>
+    <Suspense fallback={<LoadingPage size="large" />}>
       <div className="App">
         <Routes location={location}>
           <Route element={<PublicRoute />}>
@@ -91,7 +111,7 @@ const App: React.FC = () => {
                 <Route path="details" element={<VocabularyDetailPage />} />
                 <Route path="create" element={<VocabularyCreatePage />} />
               </Route>
-              <Route path="/:userId" element={<ProfileLayout />}>
+              <Route path="/profile/:id" element={<ProfileLayout />}>
                 <Route index element={<ProfileWallPage />} />
                 <Route path="wall" element={<ProfileWallPage />} />
                 <Route
