@@ -63,7 +63,7 @@ const PartnerDetailPage: React.FC = () => {
       <Col span={18} className="height-full pos-relative">
         <Row className="height-full pos-relative">
           <Col span={10} className="height-full pos-relative">
-            <ProfileCard />
+            {/* <ProfileCard /> */}
           </Col>
           <Col span={14} className="height-full pos-relative">
             <Tabs

@@ -3,8 +3,9 @@ import { RootState } from "../../stores/store";
 
 const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 
-interface Language {
-  name: string;
+export interface Language {
+  id: string;
+  name?: string;
   level: number;
 }
 
@@ -22,11 +23,11 @@ export interface ProfileRequest {
   };
 }
 
-interface GetProfileResponse {
+export interface GetProfileResponse {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
-  gender: string;
+  gender?: string;
   introduction: string;
   nativeLanguage: Language;
   targetLanguages: Language[];
@@ -52,7 +53,7 @@ export const profileApi = createApi({
         body: data.body,
       }),
     }),
-    getProfile: builder.mutation<GetProfileResponse, string>({
+    getProfile: builder.query<GetProfileResponse, string | undefined>({
       query: (id) => ({
         url: `api/users/${id}/basic-information`,
         method: "GET",
@@ -61,4 +62,8 @@ export const profileApi = createApi({
   }),
 });
 
-export const { useUpdateProfileMutation, useGetProfileMutation } = profileApi;
+export const {
+  useUpdateProfileMutation,
+  useGetProfileQuery,
+  useLazyGetProfileQuery,
+} = profileApi;

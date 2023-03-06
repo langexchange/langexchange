@@ -29,9 +29,10 @@ import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import NotificationList from "../../components/NotificationList";
 import { useTranslation } from "react-i18next";
-import { VN } from "country-flag-icons/react/3x2";
+import { CN, FR, VN } from "country-flag-icons/react/3x2";
 import { useAppDispatch } from "../../hooks/hooks";
 import { logout } from "../../features/auth/authSlice";
+import { setCredentialProfile } from "../../features/profile/profileSlice";
 
 const { Header } = Layout;
 
@@ -51,6 +52,7 @@ const PageHeader = () => {
     console.log(e.key);
     if (e.key === "sign-out") {
       dispatch(logout());
+      dispatch(setCredentialProfile(null));
       navigate("/");
     }
   };
@@ -100,6 +102,28 @@ const PageHeader = () => {
         </div>
       ),
       value: "vi",
+    },
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <div style={{ width: "24px" }} className="d-flex align-items-center">
+            <CN title="Chinese" style={{ width: "24px" }} />
+          </div>
+          CN
+        </div>
+      ),
+      value: "cn",
+    },
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <div style={{ width: "24px" }} className="d-flex align-items-center">
+            <FR title="france" style={{ width: "24px" }} />
+          </div>
+          FR
+        </div>
+      ),
+      value: "fr",
     },
   ];
 

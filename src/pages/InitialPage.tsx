@@ -6,19 +6,23 @@ import {
   message,
   Row,
   Select,
-  SelectProps,
   Spin,
   Steps,
   theme,
   Typography,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import { VN } from "country-flag-icons/react/3x2";
+import { CN, FR, VN } from "country-flag-icons/react/3x2";
 import AuthenBackgroundImage from "../assets/images/authen_bg.png";
 import { useUpdateProfileMutation } from "../services/profile/profileServices";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { selectCurrentUser, setCredentials } from "../features/auth/authSlice";
+import {
+  selectCurrentUserId,
+  setCredentials,
+} from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import SeclectLanguageInput from "../components/SeclectLanguageInput";
+import { setCredentialProfile } from "../features/profile/profileSlice";
 
 interface BasicInfo {
   firstName: string;
@@ -76,32 +80,6 @@ const SetupLanguagesForm: React.FC<ItemStepProps> = (props) => {
     setBasicInfo,
   } = props;
   const [t] = useTranslation(["initial"]);
-  const options: SelectProps["options"] = [
-    {
-      value: "english",
-      label: t("English", { ns: "commons" }),
-    },
-    {
-      value: "vietnamese",
-      label: t("Vietnamese", { ns: "commons" }),
-    },
-    {
-      value: "chinese",
-      label: t("Chinese", { ns: "commons" }),
-    },
-    {
-      value: "japanese",
-      label: t("Japanese", { ns: "commons" }),
-    },
-    {
-      value: "korean",
-      label: t("Korean", { ns: "commons" }),
-    },
-    {
-      value: "laos",
-      label: t("Laos", { ns: "commons" }),
-    },
-  ];
   return (
     <div className="text-center w-100">
       <Row gutter={32}>
@@ -110,12 +88,10 @@ const SetupLanguagesForm: React.FC<ItemStepProps> = (props) => {
             {t("Your native languages?")}
           </Typography.Title>
           <br />
-          <Select
-            // mode="multiple"
+          <SeclectLanguageInput
             size="large"
             placeholder={t("input-native-placeholder")}
             style={{ width: "100%" }}
-            options={options}
             className="has-background-color rounded-3"
             bordered={false}
             value={nativeLanguage || null}
@@ -129,12 +105,11 @@ const SetupLanguagesForm: React.FC<ItemStepProps> = (props) => {
             {t("You want to improve...")}
           </Typography.Title>
           <br />
-          <Select
+          <SeclectLanguageInput
             mode="multiple"
             size="large"
             placeholder={t("input-target-placeholder")}
             style={{ width: "100%" }}
-            options={options}
             className="has-background-color rounded-3"
             bordered={false}
             showArrow
@@ -142,6 +117,7 @@ const SetupLanguagesForm: React.FC<ItemStepProps> = (props) => {
             onChange={(value) => {
               setBasicInfo("targetLanguages", value);
             }}
+            useCustomTagRender={false}
           />
         </Col>
       </Row>
@@ -204,7 +180,7 @@ const InitialPage: React.FC = () => {
   const { t, i18n } = useTranslation(["initial", "commons"]);
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const currentUser = useAppSelector(selectCurrentUser);
+  const currentUserId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
 
   const handleChangeLanguage = (value: string) => {
@@ -225,19 +201,18 @@ const InitialPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    if (currentUser?.id) {
+    if (currentUserId) {
       const data = {
-        id: currentUser.id,
+        id: currentUserId,
         body: {
           nativeLanguage: {
-            name: basicInfo.nativeLanguage,
+            id: basicInfo.nativeLanguage,
             level: 4,
           },
-          // targetLanguages: basicInfo.targetLanguages.map((item) => ({
-          //   name: item,
-          //   level: 1,
-          // })),
-          targetLanguages: [],
+          targetLanguages: basicInfo.targetLanguages.map((item) => ({
+            id: item,
+            level: 1,
+          })),
           userInfo: {
             firstName: basicInfo.firstName,
             lastName: basicInfo.lastName,
@@ -249,13 +224,21 @@ const InitialPage: React.FC = () => {
       try {
         await updateProfile(data).unwrap();
         message.success("Update profile success");
+
         dispatch(
-          setCredentials({
-            user: {
-              ...currentUser,
-              firstName: basicInfo.firstName,
-              lastName: basicInfo.lastName,
+          setCredentialProfile({
+            nativeLanguage: {
+              id: basicInfo.nativeLanguage,
+              level: 4,
             },
+            targetLanguages: basicInfo.targetLanguages.map((item) => ({
+              id: item,
+              level: 1,
+            })),
+            firstName: basicInfo.firstName,
+            lastName: basicInfo.lastName,
+            gender: null,
+            introduction: basicInfo.introduction,
           })
         );
         navigate("/community");
@@ -362,6 +345,28 @@ const InitialPage: React.FC = () => {
         </div>
       ),
       value: "vi",
+    },
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <div style={{ width: "24px" }} className="d-flex align-items-center">
+            <CN title="Chinese" style={{ width: "24px" }} />
+          </div>
+          CN
+        </div>
+      ),
+      value: "cn",
+    },
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <div style={{ width: "24px" }} className="d-flex align-items-center">
+            <FR title="French" style={{ width: "24px" }} />
+          </div>
+          FR
+        </div>
+      ),
+      value: "fr",
     },
   ];
 

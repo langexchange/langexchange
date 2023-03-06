@@ -6,7 +6,7 @@ const PublicRoute = () => {
   const credentials = useAppSelector(selectCredentials);
   const location = useLocation();
 
-  return credentials?.user && credentials?.token ? (
+  return credentials?.userId && credentials?.token ? (
     <Navigate to="/community" state={{ from: location }} replace />
   ) : (
     <Outlet />

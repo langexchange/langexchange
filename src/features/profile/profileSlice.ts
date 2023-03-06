@@ -1,23 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User } from "../../services/auth/authServices";
+import { GetProfileResponse } from "../../services/profile/profileServices";
 import { RootState } from "../../stores/store";
 
 interface ProfileState {
-  user: User | null;
-  token: string | null;
+  credentialProfile?: GetProfileResponse;
 }
 
-const initialState: ProfileState = {
-  user: null,
-  token: null,
-};
+const initialState: ProfileState = {};
 
 const profileSlice = createSlice({
-  name: "auth",
+  name: "profile",
   initialState,
-  reducers: {},
+  reducers: {
+    setCredentialProfile: (state, { payload }) => {
+      state.credentialProfile = {
+        ...state.credentialProfile,
+        ...payload,
+      };
+    },
+  },
 });
 
-export const { } = profileSlice.actions;
+export const { setCredentialProfile } = profileSlice.actions;
 
 export default profileSlice.reducer;
+export const selectCredentalProfile = (state: RootState) =>
+  state.profile.credentialProfile;
