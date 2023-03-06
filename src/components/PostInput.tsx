@@ -1,5 +1,16 @@
 import { SmileOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Col, Input, Modal, Popover, Row } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Input,
+  Modal,
+  Popover,
+  Row,
+  Space,
+  Switch,
+} from "antd";
 import { useRef, useState } from "react";
 import SeclectLanguageInput from "./SeclectLanguageInput";
 import TagsInput from "./TagsInput";
@@ -112,7 +123,7 @@ const PostInput = () => {
           className="mb-3 input-font-large-placeholder"
           ref={inputRef}
         />
-        <div className="pos-relative text-left mb-3">
+        <div className="pos-relative text-right mb-3">
           <UploadAudio />
           <Popover
             content={
@@ -129,11 +140,35 @@ const PostInput = () => {
             <Button
               type="text"
               shape="circle"
-              style={{ top: 0, left: "40px", zIndex: 2 }}
+              style={{ top: 0, right: "40px", zIndex: 2 }}
               className="btn-text-warning"
-              icon={<SmileOutlined style={{ fontSize: "24px" }} />}
+              icon={<SmileOutlined style={{ fontSize: "18px" }} />}
             />
           </Popover>
+          <Space
+            className="pos-absolute"
+            style={{
+              left: 0,
+              top: "4px",
+              // transform: "translateY(-50%)",
+            }}
+          >
+            <Switch
+              checkedChildren="Public"
+              unCheckedChildren="Private"
+              defaultChecked
+            />
+            <Switch
+              checkedChildren="Correct on"
+              unCheckedChildren="Correct off"
+              defaultChecked
+            />
+            <Switch
+              checkedChildren="Share on"
+              unCheckedChildren="Share off"
+              defaultChecked
+            />
+          </Space>
         </div>
         <UploadImage />
         <Button size="large" block type="primary">

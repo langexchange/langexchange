@@ -33,7 +33,7 @@ const UploadAudio: React.FC = () => (
   <Upload {...props}>
     <Button
       type="text"
-      icon={<AudioOutlined style={{ fontSize: "22px" }} />}
+      icon={<AudioOutlined style={{ fontSize: "18px" }} />}
       shape="circle"
       className="btn-text-success"
     />
