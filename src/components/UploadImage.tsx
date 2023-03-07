@@ -14,16 +14,30 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-const UploadImage: React.FC = () => {
+interface UploadImageProps extends UploadProps {
+  setFileList?: (fileList: UploadFile[]) => void;
+}
+
+const UploadImage: React.FC<UploadImageProps> = ({
+  fileList,
+  setFileList,
+  ...props
+}) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [fileListAlt, setFileListAlt] = useState<UploadFile[]>([]);
+
+  if (!fileList && !setFileList) {
+    fileList = fileListAlt;
+    setFileList = setFileListAlt;
+  }
   const [t] = useTranslation(["commons"]);
 
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file: UploadFile) => {
+    console.log("onpreview");
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as RcFile);
     }
@@ -39,7 +53,8 @@ const UploadImage: React.FC = () => {
     file,
     fileList: newFileList,
   }) => {
-    setFileList(newFileList);
+    console.log("onchange");
+    if (setFileList) setFileList(newFileList);
 
     if (file.status !== "uploading") {
       console.log(file, fileList);
@@ -62,13 +77,13 @@ const UploadImage: React.FC = () => {
     <>
       <ImgCrop rotate>
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           listType="picture-card"
           fileList={fileList}
           onPreview={handlePreview}
-          onChange={handleChange}
+          // onChange={handleChange}
+          {...props}
         >
-          {fileList.length >= 8 ? null : uploadButton}
+          {Number(fileList?.length) >= 8 ? null : uploadButton}
         </Upload>
       </ImgCrop>
 
