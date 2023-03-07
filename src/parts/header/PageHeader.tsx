@@ -23,23 +23,23 @@ import {
   SettingOutlined,
   BellOutlined,
 } from "@ant-design/icons";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import NotificationList from "../../components/NotificationList";
 import { useTranslation } from "react-i18next";
-import { VN } from "country-flag-icons/react/3x2";
+import { CN, FR, VN } from "country-flag-icons/react/3x2";
+import { useAppDispatch } from "../../hooks/hooks";
+import { logout } from "../../features/auth/authSlice";
+import { setCredentialProfile } from "../../features/profile/profileSlice";
 const { Header } = Layout;
-
-const handleMenuClick: MenuProps["onClick"] = (e) => {
-  message.info("Click on menu item.");
-  console.log("click", e);
-};
 
 const PageHeader = () => {
   const { t, i18n } = useTranslation(["commons"]);
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleChangeLanguage = (value: string) => {
     i18n.changeLanguage(value);
@@ -47,6 +47,14 @@ const PageHeader = () => {
     message.success("Change language success");
   };
 
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
+    console.log(e.key);
+    if (e.key === "sign-out") {
+      dispatch(logout());
+      dispatch(setCredentialProfile(null));
+      navigate("/");
+    }
+  };
   const items: MenuProps["items"] = [
     {
       label: <NavLink to="/community">{t("header-community")}</NavLink>,
@@ -94,6 +102,28 @@ const PageHeader = () => {
       ),
       value: "vi",
     },
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <div style={{ width: "24px" }} className="d-flex align-items-center">
+            <CN title="Chinese" style={{ width: "24px" }} />
+          </div>
+          CN
+        </div>
+      ),
+      value: "cn",
+    },
+    {
+      label: (
+        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+          <div style={{ width: "24px" }} className="d-flex align-items-center">
+            <FR title="france" style={{ width: "24px" }} />
+          </div>
+          FR
+        </div>
+      ),
+      value: "fr",
+    },
   ];
 
   const dropdownItems: MenuProps["items"] = [
@@ -103,7 +133,7 @@ const PageHeader = () => {
       icon: <SettingOutlined />,
     },
     {
-      label: <Link to="/">{t("sign-out")}</Link>,
+      label: t("sign-out"),
       key: "sign-out",
       icon: <LogoutOutlined />,
     },

@@ -130,5 +130,7 @@
   "Title": "Title",
   "Description": "Description",
   "Public": "Public",
-  "Wall": "Wall"
+  "Wall": "Wall",
+  "Done": "Done",
+  "Previous": "Previous",
 }

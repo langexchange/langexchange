@@ -10,9 +10,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const SidebarNavigation = () => {
+interface SidebarNavigationProps {
+  canSeeSettings?: boolean;
+}
+
+const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
+  canSeeSettings = false,
+}) => {
   const [t] = useTranslation(["commons"]);
-  const activeKey = window.location.pathname.split("/")[2] || "wall";
+  const activeKey = window.location.pathname.split("/")[3] || "wall";
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -51,7 +57,7 @@ const SidebarNavigation = () => {
         mode="inline"
         selectedKeys={[activeKey]}
         className="border-0"
-        items={items}
+        items={canSeeSettings ? items : items.slice(0, 2)}
         inlineCollapsed={collapsed}
         style={{ flex: 1 }}
       />
