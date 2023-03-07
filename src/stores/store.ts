@@ -2,9 +2,12 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
 import profileReducer from "../features/profile/profileSlice";
 import languageReducer from "../features/languages/languageSlice";
+import postReducer from "../features/post/postSlice";
 import { authApi } from "../services/auth/authServices";
 import { profileApi } from "../services/profile/profileServices";
 import { languageApi } from "../services/languages/languageService";
+import { postApi } from "../services/post/postService";
+import { uploadApi } from "../services/upload/uploadService";
 
 export const store = configureStore({
   reducer: {
@@ -14,12 +17,17 @@ export const store = configureStore({
     profile: profileReducer,
     [languageApi.reducerPath]: languageApi.reducer,
     language: languageReducer,
+    [postApi.reducerPath]: postApi.reducer,
+    post: postReducer,
+    [uploadApi.reducerPath]: uploadApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authApi.middleware,
       profileApi.middleware,
-      languageApi.middleware
+      languageApi.middleware,
+      postApi.middleware,
+      uploadApi.middleware
     ),
 });
 

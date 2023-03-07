@@ -13,6 +13,7 @@ interface Props {
   setTags: React.Dispatch<SetStateAction<string[]>>;
   tagColor?: TagProps["color"];
   placeholderStyle?: React.CSSProperties;
+  limit?: number;
 }
 const TagsInput = ({
   width = "100%",
@@ -24,6 +25,7 @@ const TagsInput = ({
   tagColor,
   tags,
   setTags,
+  limit = 2000,
 }: Props) => {
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -86,8 +88,8 @@ const TagsInput = ({
   };
 
   return (
-    <Space size={[0, 8]} wrap>
-      <Space size={[0, 8]} wrap>
+    <Space size={[0, 8]} wrap align="center" className="h-100">
+      <Space size={[0, 8]} wrap align="center">
         {tags.map((tag, index) => {
           if (editInputIndex === index) {
             return (
@@ -143,7 +145,7 @@ const TagsInput = ({
           onBlur={handleInputConfirm}
           onPressEnter={handleInputConfirm}
         />
-      ) : (
+      ) : tags.length >= limit ? null : (
         <Tag style={tagPlusStyle} onClick={showInput}>
           <span style={placeholderStyle}>
             <PlusOutlined /> {placeholder}

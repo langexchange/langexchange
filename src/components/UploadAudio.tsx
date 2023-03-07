@@ -1,14 +1,14 @@
 import React from "react";
-import { AudioOutlined } from "@ant-design/icons";
-import type { UploadProps } from "antd";
+import { AudioOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { Space, UploadProps } from "antd";
 import { Button, message, Upload } from "antd";
 
-const props: UploadProps = {
+const defaultProps: UploadProps = {
   name: "file",
-  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-  headers: {
-    authorization: "authorization-text",
-  },
+  // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+  // headers: {
+  //   authorization: "authorization-text",
+  // },
   onChange(info) {
     if (info.file.status !== "uploading") {
       console.log(info.file, info.fileList);
@@ -29,12 +29,17 @@ const props: UploadProps = {
   },
 };
 
-const UploadAudio: React.FC = () => (
-  <Upload {...props}>
+const UploadAudio: React.FC<UploadProps> = (props) => (
+  <Upload {...defaultProps} {...props}>
     <Button
       type="text"
-      icon={<AudioOutlined style={{ fontSize: "18px" }} />}
-      shape="circle"
+      icon={
+        <Space size="small">
+          <AudioOutlined className="fz-16" />
+          <VideoCameraOutlined className="fz-16" />
+        </Space>
+      }
+      shape="round"
       className="btn-text-success"
     />
   </Upload>
