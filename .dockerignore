@@ -2,7 +2,6 @@
 .vscode
 .dockerignore
 .gitignore
-.env
 config
 build
 node_modules
@@ -10,3 +9,5 @@ docker-compose.yml
 Dockerfile
 Makefile
 README.md
+bin
+test/
