@@ -41,9 +41,7 @@ const options: SelectProps["options"] = [
 
 const onSearch = (value: string) => console.log(value);
 
-const handleChange = (value: string | string[]) => {
-  console.log(`Selected: ${value}`);
-};
+const handleChange = (value: string | string[]) => { };
 
 const PostSearchCard = () => {
   return (

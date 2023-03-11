@@ -11,7 +11,6 @@ const ProfileVocabulariesPage = () => {
     useState<boolean>(false);
 
   const showModalVocabulary = () => {
-    console.log("show");
     setIsModalVocabularyOpen(true);
   };
   return (

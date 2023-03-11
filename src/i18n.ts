@@ -28,7 +28,7 @@ i18n
     fallbackLng: "en",
 
     ns: ["common", "welcom", "about", "authentication"],
-    debug: true,
+    debug: false,
 
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default

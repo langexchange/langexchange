@@ -25,14 +25,17 @@ import {
 } from "@ant-design/icons";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
-import { faker } from "@faker-js/faker";
-import { useState } from "react";
+import { UserOutlined } from "@ant-design/icons";
+import { useMemo, useState } from "react";
 import NotificationList from "../../components/NotificationList";
 import { useTranslation } from "react-i18next";
 import { CN, FR, VN } from "country-flag-icons/react/3x2";
-import { useAppDispatch } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { logout } from "../../features/auth/authSlice";
-import { setCredentialProfile } from "../../features/profile/profileSlice";
+import {
+  selectCredentalProfile,
+  setCredentialProfile,
+} from "../../features/profile/profileSlice";
 const { Header } = Layout;
 
 const PageHeader = () => {
@@ -48,13 +51,13 @@ const PageHeader = () => {
   };
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
-    console.log(e.key);
     if (e.key === "sign-out") {
       dispatch(logout());
       dispatch(setCredentialProfile(null));
       navigate("/");
     }
   };
+
   const items: MenuProps["items"] = [
     {
       label: <NavLink to="/community">{t("header-community")}</NavLink>,
@@ -148,11 +151,11 @@ const PageHeader = () => {
   const [allRead, setAllRead] = useState(false);
   const activeKey: string = window.location.pathname.split("/")[1];
   const [open, setOpen] = useState(false);
+  const currentUserProfile = useAppSelector(selectCredentalProfile);
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
   };
-
   return (
     <Header className="z-index-1 bg-white d-flex justify-space-between align-items-center pos-sticky t-0 width-full with-header-height with-header-border-bottom">
       <div className="container">
@@ -173,7 +176,6 @@ const PageHeader = () => {
             <Menu
               theme="light"
               mode="horizontal"
-              // defaultSelectedKeys={["community"]}
               selectedKeys={[activeKey]}
               items={items}
               className="d-block"
@@ -239,7 +241,10 @@ const PageHeader = () => {
                   className="d-flex align-items-center px-4"
                   size="large"
                 >
-                  <Avatar src={faker.image.abstract(40, 40)}>T</Avatar>
+                  <Avatar
+                    src={currentUserProfile?.avatar || undefined}
+                    icon={<UserOutlined />}
+                  />
                 </Button>
               </Dropdown>
               <Select

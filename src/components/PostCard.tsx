@@ -6,6 +6,7 @@ import {
   Image,
   MenuProps,
   message,
+  Skeleton,
   Space,
   Tag,
   Tooltip,
@@ -14,14 +15,23 @@ import {
 import {
   MoreOutlined,
   HeartOutlined,
+  HeartFilled,
   CommentOutlined,
   EditOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import Slider from "react-slick";
-import Post from "../types/Post";
-import User from "../types/User";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  AttachedFile,
+  Post,
+  useInteractPostMutation,
+  useLazyGetNumOfInteractQuery,
+} from "../services/post/postService";
+import ReactPlayer from "react-player";
+import { useAppSelector } from "../hooks/hooks";
+import { selectCredentials } from "../features/auth/authSlice";
 
 interface PostProps extends Post {
   onClick?: (item: Post) => void;
@@ -42,40 +52,52 @@ const handleMenuClick: MenuProps["onClick"] = (e) => {
   e.domEvent.preventDefault();
   e.domEvent.stopPropagation();
   message.info("Click on menu item.");
-  console.log("click", e);
 };
 
-const title = (owner: User, group: PostProps["group"], createdAt: string) => {
+const title = (
+  owner: any,
+  group: PostProps["group"],
+  createdAt: string,
+  languages: ReactNode
+) => {
+  if (!owner) return <Skeleton.Input style={{ width: 100 }} active={true} />;
   return (
-    <Space>
-      <Avatar
-        style={{
-          verticalAlign: "middle",
-        }}
-        size="large"
-        src={<Image src={owner.avatar} />}
-      />
-      <Space size={0} direction="vertical">
-        <Typography.Title level={5} className="m-0">
-          {group ? group.name : owner.fullname}
-        </Typography.Title>
-        {group ? (
-          <Space>
-            <Typography.Text type="secondary">{owner.fullname}</Typography.Text>
-            <Typography.Text type="secondary">-</Typography.Text>
+    <div className="d-flex gap-3">
+      <Space>
+        <Avatar
+          style={{
+            verticalAlign: "middle",
+          }}
+          size="large"
+          src={owner?.avatar ? <Image src={owner.avatar} /> : undefined}
+          icon={<UserOutlined />}
+        />
+        <Space size={0} direction="vertical">
+          <Typography.Title level={5} className="m-0">
+            {group ? group.name : [owner.firstName, owner.lastName].join(" ")}
+          </Typography.Title>
+          {group ? (
+            <Space>
+              <Typography.Text type="secondary">
+                {owner.firstName + " " + owner.lastName}
+              </Typography.Text>
+              <Typography.Text type="secondary">-</Typography.Text>
+              <Typography.Text type="secondary" className="text-400">
+                {createdAt}
+              </Typography.Text>
+            </Space>
+          ) : (
             <Typography.Text type="secondary" className="text-400">
               {createdAt}
             </Typography.Text>
-          </Space>
-        ) : (
-          <Typography.Text type="secondary" className="text-400">
-            {createdAt}
-          </Typography.Text>
-        )}
+          )}
+        </Space>
       </Space>
-    </Space>
+      <Space align="end">{languages}</Space>
+    </div>
   );
 };
+
 function SampleNextArrow(props: any) {
   const { className, style, onClick } = props;
   return (
@@ -126,13 +148,16 @@ function SamplePrevArrow(props: any) {
 }
 
 interface CarouselProps {
-  images?: string[];
+  images?: AttachedFile[];
+  videos?: AttachedFile[];
   type?: "normal" | "inModal";
 }
 
-const Carousel: React.FC<CarouselProps> = ({ images, type = "normal" }) => {
-  const [visible, setVisible] = useState<boolean>(false);
-
+const Carousel: React.FC<CarouselProps> = ({
+  images,
+  videos,
+  type = "normal",
+}) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -141,6 +166,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, type = "normal" }) => {
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
+    adaptiveHeight: true,
     appendDots: (dots: any) => (
       <div
         style={{ position: "absolute", zIndex: 3, bottom: "8px" }}
@@ -156,49 +182,37 @@ const Carousel: React.FC<CarouselProps> = ({ images, type = "normal" }) => {
 
   return images ? (
     <>
-      <div>
+      <div style={{ background: "#ebedf0" }}>
         <Slider {...settings}>
           {images.map((item, index) => (
             <div key={index} className="text-center px-4">
               <Image
-                preview={(type === "inModal" && { visible: false }) || false}
-                src={item}
-                width="100%"
+                preview={type === "inModal"}
+                src={item.url}
                 className="w-100"
-                onClick={() => {
-                  if (type === "inModal") {
-                    setVisible(true);
-                  }
-                }}
+                width="auto"
+                height="auto"
+              />
+            </div>
+          ))}
+          {videos?.map((item, index) => (
+            <div key={index} className="text-center px-4">
+              <ReactPlayer
+                url={item.url}
+                controls={true}
+                width="100%"
+                height="auto"
               />
             </div>
           ))}
         </Slider>
-      </div>
-      <div style={{ display: "none" }}>
-        <Image.PreviewGroup
-          preview={{ visible, onVisibleChange: (vis) => setVisible(vis) }}
-        >
-          {images.map((item, index) => (
-            <Image src={item} key={index} />
-          ))}
-        </Image.PreviewGroup>
       </div>
     </>
   ) : null;
 };
 
 const PostCard: React.FC<PostProps> = ({
-  id,
   group,
-  owner,
-  images,
-  content,
-  languages,
-  numHearts,
-  numComments,
-  comments,
-  createdAt,
   onClick,
   hoverable = true,
   bordered = true,
@@ -207,19 +221,44 @@ const PostCard: React.FC<PostProps> = ({
   correctable = false,
   inputRef,
   handleOpenCorrectModal,
+  ...props
 }) => {
   const [t] = useTranslation(["commons"]);
   const headStyle: React.CSSProperties = {
     backgroundColor: "white",
     border: "none",
     paddingBottom: "12px",
-    // paddingLeft: type === "inModal" ? "0" : "24px",
     paddingTop: type === "inModal" ? "0" : "12px",
   };
 
-  const handleHeart = (e: React.MouseEvent) => {
+  const credentials = useAppSelector(selectCredentials);
+  const [numOfLikes, setNumOfLikes] = useState(props.numOfInteract);
+  const [isLike, setIsLike] = useState(props.isUserInteracted);
+  const [interactPost, { isLoading: isInteractingPost }] =
+    useInteractPostMutation();
+  const [getNumOfInteract, { isLoading: isGettingNumOfInteract }] =
+    useLazyGetNumOfInteractQuery();
+
+  const handleHeart = async (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+
+    try {
+      if (!credentials.userId) return;
+      let mode = 0;
+      if (isLike) mode = 1;
+
+      await interactPost({
+        userId: credentials.userId,
+        postId: props.postId,
+        mode: mode as 0 | 1,
+      }).unwrap();
+      const numOfInteract = await getNumOfInteract(props.postId).unwrap();
+      setNumOfLikes(numOfInteract);
+      setIsLike(!isLike);
+    } catch (error) {
+      message.error("Error when interacting post");
+    }
   };
 
   const items: MenuProps["items"] = [
@@ -247,12 +286,27 @@ const PostCard: React.FC<PostProps> = ({
           : "width-full post-card shadow-none action-with-no-border action-with-padding"
       }
       hoverable={hoverable}
-      title={title(owner, group, createdAt)}
-      cover={<Carousel images={images} type={type} />}
+      title={title(
+        props.userInfo,
+        group,
+        new Date(props.createdAt).toLocaleString(),
+        [props.langName].map((item, index) => (
+          <Tag color="green" key={index}>
+            {item}
+          </Tag>
+        ))
+      )}
+      cover={
+        <Carousel
+          images={props.imagePost}
+          videos={props.videoPost}
+          type={type}
+        />
+      }
       actions={[
         <Button type="text" danger block onClick={handleHeart}>
-          <Space size="small">
-            <HeartOutlined /> {numHearts}
+          <Space size={4}>
+            {isLike ? <HeartFilled /> : <HeartOutlined />} {numOfLikes}
           </Space>
         </Button>,
         <Button
@@ -263,8 +317,8 @@ const PostCard: React.FC<PostProps> = ({
             if (inputRef) inputRef.current.focus();
           }}
         >
-          <Space size="small">
-            <CommentOutlined /> {numComments}
+          <Space size={4}>
+            <CommentOutlined /> {props.numOfCmt}
           </Space>
         </Button>,
         <Dropdown menu={menuDropdown} trigger={["click"]}>
@@ -281,39 +335,37 @@ const PostCard: React.FC<PostProps> = ({
         </Dropdown>,
       ]}
       headStyle={headStyle}
-      bodyStyle={{ position: "relative" }}
-      onClick={() =>
-        onClick &&
-        onClick({
-          id,
-          owner,
-          images,
-          content,
-          languages,
-          numHearts,
-          numComments,
-          comments,
-          createdAt,
-        })
-      }
+      bodyStyle={{ position: "relative", paddingBottom: "12px" }}
+      onClick={() => onClick && onClick(props)}
     >
-      <Typography.Paragraph>{content}</Typography.Paragraph>
-      <Space>
-        {languages.map((item, index) => (
-          <Tag color="green" key={index}>
-            {item}
-          </Tag>
+      <Typography.Paragraph>{props.text}</Typography.Paragraph>
+      <div className="mb-2">
+        {props.audioPost?.map((item, index) => (
+          <audio
+            src={item.url}
+            controls
+            key={index}
+            style={{ width: "100%", height: "40px" }}
+          />
         ))}
-      </Space>
+      </div>
       {type === "inModal" && correctable && (
-        <div className="position-absolute bottom-0 end-0 mb-2 me-4">
+        <div
+          className="position-absolute end-0 mb-2 me-4"
+          style={{ bottom: "-28px" }}
+        >
           <Tooltip title={t("Correct content for this post")}>
             <Button
               type="primary"
+              size="large"
               shape="circle"
               icon={<EditOutlined />}
-              className="btn-warning"
+              className="btn-success"
               onClick={handleOpenCorrectModal}
+              style={{
+                boxShadow: "0 0 0 4px #f1f1f1, 0 0 0 4px #fff",
+                zIndex: 3,
+              }}
             />
           </Tooltip>
         </div>

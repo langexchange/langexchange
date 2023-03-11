@@ -10,7 +10,6 @@ const VocabularyModal = ({
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleCollect = () => {
-    console.log(vocabularySet);
     setIsModalVocabularyOpen(false);
     messageApi.open({
       type: "success",

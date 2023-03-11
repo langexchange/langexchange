@@ -6,7 +6,6 @@ const ForgotPasswordPage = () => {
   const { t } = useTranslation(["commons"]);
   const onFinish = (values: any) => {
     success();
-    console.log("Received values of form: ", values);
   };
 
   const [messageApi, contextHolder] = message.useMessage();

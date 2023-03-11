@@ -1,21 +1,31 @@
-import { Button, Input, Modal, ModalProps, Space } from "antd";
+import { Button, Input, message, Modal, ModalProps, Space, Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Diff from "./Diff";
 import type { InputRef } from "antd";
 import { useTranslation } from "react-i18next";
+import { useCreateCommentMutation } from "../services/comment/commentService";
+import { useAppSelector } from "../hooks/hooks";
+import { selectCredentials } from "../features/auth/authSlice";
 
 interface CorrectionModalProps extends ModalProps {
   originalText: string;
   setOpen: (isOpen: boolean) => void;
+  postId: string;
+  refetch: () => void;
 }
 
 const CorrectionModal: React.FC<CorrectionModalProps> = ({
   originalText,
   setOpen,
+  postId,
+  refetch,
   ...rest
 }) => {
   const [text, setText] = useState<string>(originalText);
   const inputRef = useRef<InputRef>(null);
+  const [createComment, { isLoading: isCreatingComment }] =
+    useCreateCommentMutation();
+  const credentials = useAppSelector(selectCredentials);
 
   useEffect(() => {
     setText(originalText);
@@ -30,11 +40,40 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
     setText(originalText);
   };
 
-  const handleOk = (
+  const handleOk = async (
     e: React.MouseEvent<HTMLAnchorElement> & React.MouseEvent<HTMLButtonElement>
   ) => {
-    setText(originalText);
+    if (!credentials?.userId) return;
+
+    if (!text) {
+      message.error("Please enter your correction");
+      return;
+    }
+
+    if (text === originalText) {
+      message.error("WTF!!! You didn't correct anything");
+      return;
+    }
+
+    try {
+      const commentId = await createComment({
+        userId: credentials.userId,
+        postId: postId,
+        body: {
+          text: text,
+          correctcmt: originalText,
+          audiocmts: [],
+          imagecmts: [],
+        },
+      });
+      refetch();
+      message.success("Correction submitted");
+    } catch (error) {
+      message.error("Correct for this post failed");
+    }
+
     if (rest.onOk) {
+      setText(originalText);
       rest.onOk(e);
     }
   };
@@ -56,7 +95,12 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
         >
           {t("reset")}
         </Button>,
-        <Button key="submit" type="primary" onClick={handleOk}>
+        <Button
+          key="submit"
+          type="primary"
+          onClick={handleOk}
+          loading={isCreatingComment}
+        >
           {t("submit")}
         </Button>,
       ]}

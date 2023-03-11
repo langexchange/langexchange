@@ -16,11 +16,13 @@ const getBase64 = (file: RcFile): Promise<string> =>
 
 interface UploadImageProps extends UploadProps {
   setFileList?: (fileList: UploadFile[]) => void;
+  limit?: number;
 }
 
 const UploadImage: React.FC<UploadImageProps> = ({
   fileList,
   setFileList,
+  limit,
   ...props
 }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -37,7 +39,6 @@ const UploadImage: React.FC<UploadImageProps> = ({
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file: UploadFile) => {
-    console.log("onpreview");
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as RcFile);
     }
@@ -53,12 +54,8 @@ const UploadImage: React.FC<UploadImageProps> = ({
     file,
     fileList: newFileList,
   }) => {
-    console.log("onchange");
     if (setFileList) setFileList(newFileList);
 
-    if (file.status !== "uploading") {
-      console.log(file, fileList);
-    }
     if (file.status === "done") {
       message.success(`${file.name} file uploaded successfully`);
     } else if (file.status === "error") {
@@ -83,7 +80,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
           // onChange={handleChange}
           {...props}
         >
-          {Number(fileList?.length) >= 8 ? null : uploadButton}
+          {Number(fileList?.length) >= (limit || 8) ? null : uploadButton}
         </Upload>
       </ImgCrop>
 

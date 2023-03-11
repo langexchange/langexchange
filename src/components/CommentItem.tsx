@@ -1,58 +1,196 @@
-import { Avatar, Button, Col, Row, Space, Typography } from "antd";
-import { HeartOutlined, EditOutlined, MoreOutlined } from "@ant-design/icons";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Col,
+  Image,
+  message,
+  Popconfirm,
+  Row,
+  Space,
+  Spin,
+  Typography,
+} from "antd";
+import {
+  HeartOutlined,
+  EditOutlined,
+  UserOutlined,
+  HeartFilled,
+  DeleteOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 import Diff from "./Diff";
-import Comment from "../types/Comment";
+import {
+  Comment,
+  useDeleteCommentMutation,
+  useInteractCommentMutation,
+} from "../services/comment/commentService";
+import { useAppSelector } from "../hooks/hooks";
+import { selectCredentials } from "../features/auth/authSlice";
+import { useState } from "react";
+import { useLazyGetNumOfInteractQuery } from "../services/comment/commentService";
 
-const CommentItem: React.FC<Comment> = ({
-  id,
-  owner,
-  numHearts,
-  content,
-  createdAt,
-  type,
-}) => {
-  return (
+interface CommentProps extends Comment {
+  ownerPostId?: string;
+  openEditModal: () => void;
+  setEditComment: (v: Comment) => void;
+  deleteCommentInList: (id: string) => void;
+}
+
+const checkIsLiked = (
+  userId: string | null,
+  listUserIdInteracted: string[]
+) => {
+  if (!userId || !listUserIdInteracted) return false;
+  if (listUserIdInteracted.includes(userId)) return true;
+  return false;
+};
+
+const CommentItem: React.FC<CommentProps> = (comment) => {
+  const credentials = useAppSelector(selectCredentials);
+  const [deleteComment, { isLoading: isDeletingComment }] =
+    useDeleteCommentMutation();
+  const [isLiked, setIsLiked] = useState(
+    checkIsLiked(credentials?.userId, comment.usersInteract)
+  );
+  const [numOfInteract, setNumOfInteract] = useState(comment.numOfInteract);
+
+  const handleEdit = () => {
+    comment.openEditModal();
+    comment.setEditComment(comment);
+  };
+
+  const handleDeleteComment = async () => {
+    try {
+      const res = await deleteComment({
+        commentId: comment.commentId,
+        postId: comment.postId,
+        userId: comment.userId,
+      });
+      comment.deleteCommentInList(comment.commentId);
+    } catch (error) {
+      message.error("Something went wrong");
+    }
+  };
+
+  const [interactComment, { isLoading: isInteractingComment }] =
+    useInteractCommentMutation();
+  const [getNumOfInteract, { isLoading: isGettingNumOfInteract }] =
+    useLazyGetNumOfInteractQuery();
+
+  const handleInteract = async () => {
+    try {
+      if (!credentials.userId) return;
+      let mode = 0;
+      if (isLiked) mode = 1;
+
+      await interactComment({
+        userId: credentials.userId,
+        commentId: comment.commentId,
+        mode: mode as 0 | 1,
+      }).unwrap();
+
+      const numOfInteract = await getNumOfInteract(comment.commentId).unwrap();
+      setNumOfInteract(numOfInteract);
+      setIsLiked(!isLiked);
+    } catch (error) {
+      message.error("Error when interacting post");
+    }
+  };
+
+  const content = (
     <Space align="start">
-      <Avatar size="large" src={owner.avatar} />
+      <Avatar
+        size="large"
+        src={comment?.userInfo?.avatar || undefined}
+        icon={<UserOutlined />}
+      />
       <Space
         className="has-background-color py-2 px-3 rounded-4"
         direction="vertical"
       >
-        <Typography.Text strong={true}>{owner.fullname}</Typography.Text>
-        <Typography.Paragraph>
-          {type === "corrected" ? (
+        <Typography.Text strong={true}>
+          {[comment.userInfo.firstName, comment.userInfo.lastName].join(" ")}
+        </Typography.Text>
+        <Typography.Paragraph className="m-0">
+          {comment.correctcmt ? (
             <Diff
-              originalText={content}
-              correctedText={content.replace("A", "abcdedit")}
+              originalText={comment.correctcmt}
+              correctedText={comment.text}
+              code
+              style={{
+                margin: 0,
+                background: "#fefff8",
+                borderRadius: "8px",
+                border: "none",
+              }}
+              strikeThrough={true}
             />
           ) : (
-            <span>content</span>
+            <span>{comment.text}</span>
           )}
         </Typography.Paragraph>
+        {comment.audiocmts?.map((item, index) => (
+          <audio
+            src={item.url}
+            controls
+            key={index}
+            style={{ width: "100%", height: "40px" }}
+          />
+        ))}
+        <div className="d-flex gap-2">
+          {comment.imagecmts.map((item, index) => (
+            <Image
+              src={item.url}
+              key={index}
+              width="300px"
+              style={{ display: "inline" }}
+            />
+          ))}
+        </div>
         <Row align="middle">
           <Col flex="auto">
-            <Space>
+            <Space size={16}>
               <Space size={0}>
                 <Button
                   type="text"
-                  icon={<HeartOutlined />}
+                  onClick={handleInteract}
+                  icon={isLiked ? <HeartFilled /> : <HeartOutlined />}
                   shape="circle"
                   danger
+                  size="small"
                 />
-                <Typography.Text type="danger">{numHearts}</Typography.Text>
+                <Typography.Text type="danger">{numOfInteract}</Typography.Text>
               </Space>
-              <Button
-                type="text"
-                icon={<EditOutlined />}
-                className="btn-text-warning"
-                shape="circle"
-              />
-              <Button
-                type="text"
-                icon={<MoreOutlined rotate={90} />}
-                shape="circle"
-                className="btn-text-secondary secondary-color"
-              />
+              {credentials?.userId === comment.userId && (
+                <Button
+                  type="text"
+                  icon={<EditOutlined />}
+                  className="btn-text-success"
+                  shape="circle"
+                  size="small"
+                  onClick={handleEdit}
+                />
+              )}
+              {(credentials?.userId === comment.ownerPostId ||
+                credentials?.userId === comment.userId) && (
+                  <Popconfirm
+                    title="Delete the comment"
+                    description="Are you sure to delete this comment?"
+                    onConfirm={handleDeleteComment}
+                    okText="Yes"
+                    cancelText="No"
+                    icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+                  >
+                    <Button
+                      type="text"
+                      icon={<DeleteOutlined />}
+                      shape="circle"
+                      className="btn-text-secondary secondary-color"
+                      size="small"
+                    />
+                  </Popconfirm>
+                )}
             </Space>
           </Col>
           <Col flex="none">
@@ -60,13 +198,24 @@ const CommentItem: React.FC<Comment> = ({
               type="secondary"
               className="float-right ms-4 fz-12 text-500"
             >
-              {createdAt}
+              {new Date(
+                comment.updatedAt || comment.createdAt
+              ).toLocaleString()}
             </Typography.Text>
           </Col>
         </Row>
       </Space>
     </Space>
   );
+  if (comment.correctcmt)
+    return (
+      <Spin spinning={isDeletingComment} tip="Deleting...">
+        <Badge.Ribbon text="Correction" color="green">
+          {content}
+        </Badge.Ribbon>
+      </Spin>
+    );
+  return content;
 };
 
 export default CommentItem;
