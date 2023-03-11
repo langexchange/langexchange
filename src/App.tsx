@@ -79,16 +79,16 @@ const App: React.FC = () => {
             <Route path="/initial" element={<InitialPage />} />
             <Route element={<AppSignedInLayout />}>
               <Route path="/community" element={<CommunityPage />} />
-              <Route path="/study-spaces">
-                <Route element={<StudySpaceLayout />}>
-                  <Route index element={<StudySpacePage />} />
-                  <Route path="recent" element={<StudySpacePage />} />
-                  <Route path="all" element={<StudySpaceOwnPage />} />
-                  <Route path="own" element={<StudySpaceOwnPage />} />
-                  <Route path="joined" element={<StudySpaceOwnPage />} />
-                </Route>
-                <Route path="explores" element={<StudySpaceExplorePage />} />
-              </Route>
+              {/* <Route path="/study-spaces"> */}
+              {/*   <Route element={<StudySpaceLayout />}> */}
+              {/*     <Route index element={<StudySpacePage />} /> */}
+              {/*     <Route path="recent" element={<StudySpacePage />} /> */}
+              {/*     <Route path="all" element={<StudySpaceOwnPage />} /> */}
+              {/*     <Route path="own" element={<StudySpaceOwnPage />} /> */}
+              {/*     <Route path="joined" element={<StudySpaceOwnPage />} /> */}
+              {/*   </Route> */}
+              {/*   <Route path="explores" element={<StudySpaceExplorePage />} /> */}
+              {/* </Route> */}
               <Route path="/partners">
                 <Route element={<PartnerLayout />}>
                   <Route index element={<PartnerExplorePage />} />

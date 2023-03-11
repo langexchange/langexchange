@@ -192,3 +192,23 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.ant-upload-d-block.ant-upload-wrapper {
+  display: block !important;
+  .ant-upload {
+    display: block !important;
+  }
+}
+.ant-upload-d-block.ant-hidden-action {
+  .ant-upload.ant-upload-select {
+    display: none !important;
+  }
+}
+.ant-select.input-select-comment-sort-title {
+  .ant-select-selector {
+    .ant-select-selection-item {
+      font-weight: 600;
+      color: #8c8c8c;
+    }
+  }
+}

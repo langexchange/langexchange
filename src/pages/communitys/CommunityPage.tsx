@@ -1,18 +1,33 @@
-import { Col, Row } from "antd";
+import { Col, Row, Skeleton } from "antd";
 import { useState } from "react";
 import PostList from "../../components/community/PostList";
 import RightSidebar from "../../components/community/RightSidebar";
 import Sidebar from "../../components/community/Sidebar";
 import PostInput from "../../components/PostInput";
 import PostModal from "../../components/PostModal";
-import Post from "../../types/Post";
+import { selectCredentials } from "../../features/auth/authSlice";
+import { useAppSelector } from "../../hooks/hooks";
+import {
+  Post,
+  useGetAllPostOfUserQuery,
+} from "../../services/post/postService";
+// import Post from "../../types/Post";
 
 const CommunityPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [post, setPost] = useState<Post | null>(null);
+  const credentials = useAppSelector(selectCredentials);
+
+  const {
+    data: postList,
+    isFetching,
+    isLoading,
+    isError,
+  } = useGetAllPostOfUserQuery(credentials?.userId, {
+    skip: !credentials?.userId,
+  });
 
   const showModal = () => {
-    console.log("show");
     setIsModalOpen(true);
   };
 
@@ -35,7 +50,13 @@ const CommunityPage = () => {
             <div className="mb-3">
               <PostInput />
             </div>
-            <PostList setPost={setPost} showModal={showModal} />
+            <Skeleton loading={isLoading} avatar active>
+              <PostList
+                setPost={setPost}
+                showModal={showModal}
+                postList={postList}
+              />
+            </Skeleton>
           </Col>
           <Col span={6}>
             <RightSidebar />

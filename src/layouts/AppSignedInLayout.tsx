@@ -8,7 +8,6 @@ import { getElementInPathnameAt } from "../utils/extractPathname";
 const AppSignedInLayout = () => {
   const pathname = getElementInPathnameAt(1);
   const isVocabulary = pathname === "vocabularies";
-  console.log(pathname);
   return (
     <>
       <Layout>

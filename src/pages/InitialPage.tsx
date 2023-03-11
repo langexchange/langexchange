@@ -20,9 +20,10 @@ import {
   selectCurrentUserId,
   setCredentials,
 } from "../features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import SeclectLanguageInput from "../components/SeclectLanguageInput";
 import { setCredentialProfile } from "../features/profile/profileSlice";
+import CountrySelectInput from "../components/CountrySelectInput";
 
 interface BasicInfo {
   firstName: string;
@@ -147,7 +148,7 @@ const MoreInformation: React.FC<ItemStepProps> = (props) => {
       <Typography.Title level={2} className="text-300">
         {t("Your country")}
       </Typography.Title>
-      <Select
+      <CountrySelectInput
         size="large"
         placeholder={t("Country")}
         style={{ width: "100%" }}
@@ -199,6 +200,7 @@ const InitialPage: React.FC = () => {
   });
 
   const navigate = useNavigate();
+  const outletContext: any = useOutletContext();
 
   const handleSubmit = async () => {
     if (currentUserId) {
@@ -215,9 +217,13 @@ const InitialPage: React.FC = () => {
           })),
           userInfo: {
             firstName: basicInfo.firstName,
+            middleName: "",
             lastName: basicInfo.lastName,
             gender: null,
+            labels: [],
             introduction: basicInfo.introduction,
+            country: basicInfo.country,
+            hobbies: [],
           },
         },
       };
@@ -225,22 +231,7 @@ const InitialPage: React.FC = () => {
         await updateProfile(data).unwrap();
         message.success("Update profile success");
 
-        dispatch(
-          setCredentialProfile({
-            nativeLanguage: {
-              id: basicInfo.nativeLanguage,
-              level: 4,
-            },
-            targetLanguages: basicInfo.targetLanguages.map((item) => ({
-              id: item,
-              level: 1,
-            })),
-            firstName: basicInfo.firstName,
-            lastName: basicInfo.lastName,
-            gender: null,
-            introduction: basicInfo.introduction,
-          })
-        );
+        outletContext.credentialsProfile.refetch();
         navigate("/community");
       } catch (err) {
         message.error(

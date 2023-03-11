@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../../stores/store";
+import { AttachedFile } from "../post/postService";
 
 const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 
@@ -19,18 +20,32 @@ export interface ProfileRequest {
       lastName: string;
       gender?: string | null;
       introduction?: string;
+      hobbies?: string[];
+      country?: string;
     };
   };
 }
 
-export interface GetProfileResponse {
+export interface Profile {
   firstName: string;
-  middleName?: string;
+  middleName: string;
   lastName: string;
-  gender?: string;
+  gender: string;
   introduction: string;
+  country: string;
   nativeLanguage: Language;
   targetLanguages: Language[];
+  hobbies: string[];
+  numOfPosts: number;
+  numOfPartners: number;
+  avatar: string | null;
+}
+
+export interface GetProfileResponse extends Profile { }
+
+export interface UpdateAvatarRequest {
+  id: string;
+  avatar: string;
 }
 
 export const profileApi = createApi({
@@ -53,6 +68,14 @@ export const profileApi = createApi({
         body: data.body,
       }),
     }),
+    updateAvatar: builder.mutation<null, UpdateAvatarRequest>({
+      query: (data) => ({
+        url: `api/users/${data.id}/change-avatar?avatar=${encodeURIComponent(
+          data.avatar
+        )}`,
+        method: "POST",
+      }),
+    }),
     getProfile: builder.query<GetProfileResponse, string | undefined>({
       query: (id) => ({
         url: `api/users/${id}/basic-information`,
@@ -66,4 +89,5 @@ export const {
   useUpdateProfileMutation,
   useGetProfileQuery,
   useLazyGetProfileQuery,
+  useUpdateAvatarMutation,
 } = profileApi;

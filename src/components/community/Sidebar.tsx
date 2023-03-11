@@ -1,6 +1,5 @@
 import UserItem from "../UserItem";
 import User from "../../types/User";
-import { faker } from "@faker-js/faker";
 import { fakeUsers } from "../../utils/fakeData/fakeUser";
 import { Avatar, Card, Collapse, List, Space, Typography } from "antd";
 import { Link } from "react-router-dom";
@@ -8,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../hooks/hooks";
 import { selectCurrentUserId } from "../../features/auth/authSlice";
 import { selectCredentalProfile } from "../../features/profile/profileSlice";
+import { UserOutlined } from "@ant-design/icons";
 
 const userItems: User[] = fakeUsers(10);
 
@@ -31,7 +31,8 @@ const Sidebar: React.FC = () => {
             <Avatar
               style={{ verticalAlign: "middle" }}
               size="large"
-              src={faker.image.abstract(50, 50)}
+              src={currentUserProfile?.avatar}
+              icon={!currentUserProfile?.avatar && <UserOutlined />}
             />
             <Typography.Title level={3} className="m-0 color-primary">
               {currentUserProfile?.firstName} {currentUserProfile?.lastName}

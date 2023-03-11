@@ -29,7 +29,7 @@ const GroupPostList: React.FC = () => {
     <Row gutter={[0, 24]}>
       {items.map((item, index) => (
         <Col span={24} key={index}>
-          <PostCard {...item} />
+          {/* <PostCard {...item} /> */}
         </Col>
       ))}
     </Row>

@@ -51,9 +51,7 @@ for (let set of sets) {
   });
 }
 
-const onClick: MenuProps["onClick"] = (e) => {
-  console.log("click ", e);
-};
+const onClick: MenuProps["onClick"] = (e) => { };
 
 const PracticeSidebar = () => {
   const activeKey = getElementInPathnameAt(3);

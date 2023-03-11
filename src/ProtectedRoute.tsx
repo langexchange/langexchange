@@ -22,6 +22,7 @@ const ProtectedRoute = () => {
     isLoading,
     isFetching,
     isError,
+    refetch,
   } = useGetProfileQuery(credentials.userId?.toString(), {
     skip: !credentials.token || !credentials.userId,
   });
@@ -33,8 +34,7 @@ const ProtectedRoute = () => {
         message.error("Something went wrong when fetching profile");
       }
     }
-  }, [profile]);
-  console.log(currentProfile);
+  }, [profile, isLoading]);
 
   if (isLoading || isFetching) return <LoadingPage size="large" />;
 
@@ -45,7 +45,15 @@ const ProtectedRoute = () => {
   if (profile?.firstName && isInitial)
     return <Navigate to="/community" state={{ from: location }} replace />;
 
-  return <Outlet />;
+  return (
+    <Outlet
+      context={{
+        credentialsProfile: {
+          refetch,
+        },
+      }}
+    />
+  );
 };
 
 export default ProtectedRoute;
