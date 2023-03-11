@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Divider,
+  Image,
   Rate,
   Skeleton,
   Space,
@@ -13,13 +14,13 @@ import {
 import {
   UserDeleteOutlined,
   MessageOutlined,
-  HomeOutlined,
   FormOutlined,
   TeamOutlined,
   SketchOutlined,
   HeartOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { faker } from "@faker-js/faker";
+import getUnicodeFlagIcon from "country-flag-icons/unicode";
 import { useTranslation } from "react-i18next";
 import {
   Language,
@@ -44,13 +45,28 @@ const LanguageRate: React.FC<LanguageRateProps> = ({
   name: language,
   level: rate,
 }) => {
+  const { t } = useTranslation(["commons"]);
   return (
     <div className="d-flex align-items-center justify-space-between">
-      <Tag color={color}>{language}</Tag>
+      <Tag color={color}>{t(`${language}`)}</Tag>
       <Rate disabled value={rate} />
     </div>
   );
 };
+
+const colors = [
+  "magenta",
+  "red",
+  "cyan",
+  "volcano",
+  "blue",
+  "geekblue",
+  "orange",
+  "gold",
+  "lime",
+  "green",
+  "purple",
+];
 
 const LanguageRateList: React.FC<LanguageRateListProps> = ({
   title,
@@ -108,22 +124,7 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
     skip: isCurrentUser,
   });
 
-  const [t] = useTranslation(["commons"]);
-  const inforItems = [
-    {
-      icon: <HomeOutlined />,
-      text: "Hanoi, Vietnam",
-    },
-    {
-      icon: <FormOutlined />,
-      text: `100 ${t("posts")}`,
-    },
-    {
-      icon: <TeamOutlined />,
-      text: `50 ${t("partners")}`,
-    },
-  ];
-  console.log("render");
+  const [t] = useTranslation(["commons", "countries"]);
 
   if (isError) return <div>Something went wrong</div>;
   const profile = isCurrentUser ? currentUserProfile : fetchProfile;
@@ -133,31 +134,60 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
       <Card className="height-full pos-relative card-custome-scroll bg-white h-100 w-100">
         <div className="avatar and basic info">
           <div className="d-flex align-items-center justify-space-between">
-            <Space>
-              <Avatar size={100} src={faker.image.avatar()} />
+            <Space size="middle">
+              <Avatar
+                size={100}
+                src={
+                  profile?.avatar ? <Image src={profile.avatar} /> : undefined
+                }
+                icon={<UserOutlined />}
+                style={{
+                  border: "solid 1px #f8f8f8",
+                  boxShadow: "0 0 0 4px #f1f1f1, 0 0 0 6px #f1f1ff",
+                }}
+              />
               <Space direction="vertical" size={0}>
                 <Typography.Title level={3} className="m-0">
                   {[profile?.firstName, profile?.lastName].join(" ")}
                 </Typography.Title>
-                {inforItems.map((item, index) => (
+                {[
+                  {
+                    icon: profile?.country && (
+                      <span style={{ color: "black", fontSize: "16px" }}>
+                        {getUnicodeFlagIcon(profile?.country || "")}
+                      </span>
+                    ),
+                    text: t(`${profile?.country}`, { ns: "countries" }),
+                  },
+                  {
+                    icon: <FormOutlined />,
+                    text: `${profile?.numOfPosts} ${t("posts")}`,
+                  },
+                  {
+                    icon: <TeamOutlined />,
+                    text: `${profile?.numOfPartners} ${t("partners")}`,
+                  },
+                ].map((item, index) => (
                   <InfoItem {...item} key={index} />
                 ))}
               </Space>
             </Space>
-            <Space direction="vertical">
-              <Button
-                type="primary"
-                shape="round"
-                icon={<UserDeleteOutlined />}
-                danger
-              />
-              <Button
-                type="primary"
-                shape="round"
-                icon={<MessageOutlined />}
-                className="btn-success"
-              />
-            </Space>
+            {!isCurrentUser && (
+              <Space direction="vertical">
+                <Button
+                  type="primary"
+                  shape="round"
+                  icon={<UserDeleteOutlined />}
+                  danger
+                />
+                <Button
+                  type="primary"
+                  shape="round"
+                  icon={<MessageOutlined />}
+                  className="btn-success"
+                />
+              </Space>
+            )}
           </div>
         </div>
         <br />
@@ -195,18 +225,11 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
             {t("Interests")}
           </Divider>
           <Space size={[0, 8]} wrap>
-            <Tag color="magenta">magenta</Tag>
-            <Tag color="red">red</Tag>
-            <Tag color="volcano">volcano</Tag>
-            <Tag color="orange">orange</Tag>
-            <Tag color="gold">gold</Tag>
-            <Tag color="lime">lime</Tag>
-            <Tag color="green">green</Tag>
-            <Tag color="cyan">cyan</Tag>
-            <Tag color="blue">blue</Tag>
-            <Tag color="geekblue">geekblue</Tag>
-            <Tag color="purple">purple</Tag>
-            <Tag color="magenta">magenta</Tag>
+            {profile?.hobbies?.map((item, index) => (
+              <Tag color={colors[index % 11]} key={index}>
+                {item}
+              </Tag>
+            ))}
           </Space>
         </div>
         <div className="topics"></div>

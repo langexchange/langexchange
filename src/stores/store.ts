@@ -8,6 +8,7 @@ import { profileApi } from "../services/profile/profileServices";
 import { languageApi } from "../services/languages/languageService";
 import { postApi } from "../services/post/postService";
 import { uploadApi } from "../services/upload/uploadService";
+import { commentApi } from "../services/comment/commentService";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     [postApi.reducerPath]: postApi.reducer,
     post: postReducer,
     [uploadApi.reducerPath]: uploadApi.reducer,
+    [commentApi.reducerPath]: commentApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -27,7 +29,8 @@ export const store = configureStore({
       profileApi.middleware,
       languageApi.middleware,
       postApi.middleware,
-      uploadApi.middleware
+      uploadApi.middleware,
+      commentApi.middleware
     ),
 });
 

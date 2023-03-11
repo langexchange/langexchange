@@ -1,4 +1,4 @@
-import { SmileOutlined } from "@ant-design/icons";
+import { SmileOutlined, UserOutlined } from "@ant-design/icons";
 import {
   Avatar,
   Button,
@@ -8,7 +8,6 @@ import {
   Modal,
   Popover,
   Space,
-  Spin,
   Switch,
   Upload,
   UploadFile,
@@ -21,7 +20,6 @@ import UploadImage from "./UploadImage";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import type { InputRef } from "antd";
-import { faker } from "@faker-js/faker";
 import { useTranslation } from "react-i18next";
 import { RcFile } from "antd/lib/upload/interface";
 import { useUploadFileMutation } from "../services/upload/uploadService";
@@ -31,6 +29,7 @@ import {
   AttachedFile,
   useCreatePostMutation,
 } from "../services/post/postService";
+import { selectCredentalProfile } from "../features/profile/profileSlice";
 
 const initialPost = {
   langId: "",
@@ -57,6 +56,7 @@ const PostInput = () => {
   const [post, setPost] = useState(initialPost);
   const [uploading, setUploading] = useState(false);
   const credentials = useAppSelector(selectCredentials);
+  const currentUserProfile = useAppSelector(selectCredentalProfile);
 
   const handleUpload = async () => {
     if (!credentials?.incId) return;
@@ -154,16 +154,14 @@ const PostInput = () => {
     try {
       const files = await handleUpload();
       setUploading(false);
-      console.log(files);
       const postId = await createPost({
         userId: credentials.userId,
         body: {
           ...post,
           ...files,
-          label: tags[0],
+          labels: tags,
         },
       }).unwrap();
-      console.log(postId);
       message.success("Create post successfully!");
       setIsModalOpen(false);
       setPost(initialPost);
@@ -211,7 +209,11 @@ const PostInput = () => {
       <Card hoverable size="small" onClick={showModal}>
         <div className="d-flex justify-space-between align-items-center py-1">
           <div className="me-2">
-            <Avatar size={44} src={faker.image.abstract()} />
+            <Avatar
+              size={44}
+              src={currentUserProfile?.avatar}
+              icon={<UserOutlined />}
+            />
           </div>
           <Button
             block

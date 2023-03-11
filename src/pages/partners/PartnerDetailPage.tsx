@@ -9,9 +9,7 @@ import VocabularySet from "../../types/VocabularySet";
 import Post from "../../types/Post";
 import { useTranslation } from "react-i18next";
 
-const onChange = (key: string) => {
-  console.log(key);
-};
+const onChange = (key: string) => { };
 
 const PartnerDetailPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -24,12 +22,10 @@ const PartnerDetailPage: React.FC = () => {
   const [t] = useTranslation(["commons"]);
 
   const showModal = () => {
-    console.log("show");
     setIsModalOpen(true);
   };
 
   const showModalVocabulary = () => {
-    console.log("show");
     setIsModalVocabularyOpen(true);
   };
 
@@ -39,7 +35,7 @@ const PartnerDetailPage: React.FC = () => {
       key: "posts",
       children: (
         <div className="px-3">
-          <PostList setPost={setPost} showModal={showModal} />
+          {/* <PostList setPost={setPost} showModal={showModal} /> */}
         </div>
       ),
     },

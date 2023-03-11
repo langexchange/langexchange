@@ -7,18 +7,8 @@ interface Props {
   style?: React.CSSProperties;
   className?: string;
   code?: boolean;
+  strikeThrough?: boolean;
 }
-
-const styles = {
-  added: {
-    color: "#53c51a",
-    backgroundColor: "#f6ffec",
-  },
-  removed: {
-    color: "#ff4d4f",
-    backgroundColor: "#fff2f0",
-  },
-};
 
 const Diff = ({
   originalText = "",
@@ -27,7 +17,19 @@ const Diff = ({
   className,
   style,
   code = false,
+  strikeThrough = false,
 }: Props) => {
+  const styles = {
+    added: {
+      color: "#53c51a",
+      backgroundColor: "#f6ffec",
+    },
+    removed: {
+      color: "#ff4d4f",
+      backgroundColor: "#fff2f0",
+      textDecoration: strikeThrough ? "line-through" : "none",
+    },
+  };
   const diff = require("diff");
   let groups = [];
 
