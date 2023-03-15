@@ -11,12 +11,12 @@ import {
   Post,
   useGetAllPostOfUserQuery,
 } from "../../services/post/postService";
-// import Post from "../../types/Post";
 
 const CommunityPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [post, setPost] = useState<Post | null>(null);
+  const [postId, setPostId] = useState<string | null>(null);
   const credentials = useAppSelector(selectCredentials);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const {
     data: postList,
@@ -52,7 +52,7 @@ const CommunityPage = () => {
             </div>
             <Skeleton loading={isLoading} avatar active>
               <PostList
-                setPost={setPost}
+                setPostId={setPostId}
                 showModal={showModal}
                 postList={postList}
               />
@@ -64,7 +64,8 @@ const CommunityPage = () => {
         </Row>
       </div>
       <PostModal
-        post={post}
+        postId={postId}
+        setPostId={setPostId}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />

@@ -13,7 +13,7 @@ export interface Comment {
   audiocmts: AttachedFile[] | [];
   imagecmts: AttachedFile[] | [];
   numOfInteract: number;
-  usersInteract: string[];
+  isUserInteracted: boolean;
   userInfo: {
     id: string;
     firstName: string;
@@ -64,7 +64,7 @@ export const commentApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getComments: builder.query<Comment[], string | undefined>({
+    getComments: builder.query<Comment[], string | null>({
       query: (postId) => ({
         url: `api/posts/${postId}/comments`,
         method: "GET",

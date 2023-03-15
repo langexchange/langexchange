@@ -21,7 +21,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import Slider from "react-slick";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   AttachedFile,
@@ -33,8 +33,12 @@ import ReactPlayer from "react-player";
 import { useAppSelector } from "../hooks/hooks";
 import { selectCredentials } from "../features/auth/authSlice";
 
-interface PostProps extends Post {
-  onClick?: (item: Post) => void;
+interface PostProps {
+  setEditPostId?: (v: string | null) => void;
+  showEditModal?: () => void;
+  post: Post;
+  setPostId?: (v: string | null) => void;
+  onClick?: (item: string) => void;
   hoverable?: boolean;
   bordered?: boolean;
   boxShadow?: boolean;
@@ -47,12 +51,6 @@ interface PostProps extends Post {
   inputRef?: any;
   handleOpenCorrectModal?: () => void;
 }
-
-const handleMenuClick: MenuProps["onClick"] = (e) => {
-  e.domEvent.preventDefault();
-  e.domEvent.stopPropagation();
-  message.info("Click on menu item.");
-};
 
 const title = (
   owner: any,
@@ -212,6 +210,7 @@ const Carousel: React.FC<CarouselProps> = ({
 };
 
 const PostCard: React.FC<PostProps> = ({
+  post,
   group,
   onClick,
   hoverable = true,
@@ -221,7 +220,8 @@ const PostCard: React.FC<PostProps> = ({
   correctable = false,
   inputRef,
   handleOpenCorrectModal,
-  ...props
+  setEditPostId,
+  showEditModal,
 }) => {
   const [t] = useTranslation(["commons"]);
   const headStyle: React.CSSProperties = {
@@ -232,12 +232,17 @@ const PostCard: React.FC<PostProps> = ({
   };
 
   const credentials = useAppSelector(selectCredentials);
-  const [numOfLikes, setNumOfLikes] = useState(props.numOfInteract);
-  const [isLike, setIsLike] = useState(props.isUserInteracted);
+  const [numOfLikes, setNumOfLikes] = useState(post.numOfInteract);
+  const [isLike, setIsLike] = useState(post.isUserInteracted);
   const [interactPost, { isLoading: isInteractingPost }] =
     useInteractPostMutation();
   const [getNumOfInteract, { isLoading: isGettingNumOfInteract }] =
     useLazyGetNumOfInteractQuery();
+
+  useEffect(() => {
+    setNumOfLikes(post.numOfInteract);
+    setIsLike(post.isUserInteracted);
+  }, [post.numOfInteract, post.isUserInteracted]);
 
   const handleHeart = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -250,10 +255,10 @@ const PostCard: React.FC<PostProps> = ({
 
       await interactPost({
         userId: credentials.userId,
-        postId: props.postId,
+        postId: post.postId,
         mode: mode as 0 | 1,
       }).unwrap();
-      const numOfInteract = await getNumOfInteract(props.postId).unwrap();
+      const numOfInteract = await getNumOfInteract(post.postId).unwrap();
       setNumOfLikes(numOfInteract);
       setIsLike(!isLike);
     } catch (error) {
@@ -263,14 +268,27 @@ const PostCard: React.FC<PostProps> = ({
 
   const items: MenuProps["items"] = [
     {
-      label: <span>{t("Collect this post")}</span>,
+      label: <span>{t("Edit this post")}</span>,
       key: "0",
     },
     {
-      label: <span>{t("Hide this post")}</span>,
+      label: <span>{t("Collect this post")}</span>,
       key: "1",
     },
+    {
+      label: <span>{t("Hide this post")}</span>,
+      key: "2",
+    },
   ];
+
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
+    e.domEvent.preventDefault();
+    e.domEvent.stopPropagation();
+    if (e.key === "0") {
+      setEditPostId && setEditPostId(post.postId);
+      showEditModal && showEditModal();
+    }
+  };
 
   const menuDropdown = {
     items: items,
@@ -287,21 +305,17 @@ const PostCard: React.FC<PostProps> = ({
       }
       hoverable={hoverable}
       title={title(
-        props.userInfo,
+        post.userInfo,
         group,
-        new Date(props.createdAt).toLocaleString(),
-        [props.langName].map((item, index) => (
+        new Date(post.createdAt).toLocaleString(),
+        [post.langName].map((item, index) => (
           <Tag color="green" key={index}>
             {item}
           </Tag>
         ))
       )}
       cover={
-        <Carousel
-          images={props.imagePost}
-          videos={props.videoPost}
-          type={type}
-        />
+        <Carousel images={post.imagePost} videos={post.videoPost} type={type} />
       }
       actions={[
         <Button type="text" danger block onClick={handleHeart}>
@@ -318,7 +332,7 @@ const PostCard: React.FC<PostProps> = ({
           }}
         >
           <Space size={4}>
-            <CommentOutlined /> {props.numOfCmt}
+            <CommentOutlined /> {post.numOfCmt}
           </Space>
         </Button>,
         <Dropdown menu={menuDropdown} trigger={["click"]}>
@@ -336,11 +350,11 @@ const PostCard: React.FC<PostProps> = ({
       ]}
       headStyle={headStyle}
       bodyStyle={{ position: "relative", paddingBottom: "12px" }}
-      onClick={() => onClick && onClick(props)}
+      onClick={() => onClick && onClick(post.postId)}
     >
-      <Typography.Paragraph>{props.text}</Typography.Paragraph>
+      <Typography.Paragraph>{post.text}</Typography.Paragraph>
       <div className="mb-2">
-        {props.audioPost?.map((item, index) => (
+        {post.audioPost?.map((item, index) => (
           <audio
             src={item.url}
             controls

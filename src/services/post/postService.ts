@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "../../stores/store";
 
 const baseUrl = process.env.REACT_APP_API_URL_ROOT;
+console.log(baseUrl);
 
 export interface AttachedFile {
   type: "image" | "audio" | "video";
@@ -52,6 +54,10 @@ export interface CreateLanguageRequest {
   };
 }
 
+export interface UpdateLanguageRequest extends CreateLanguageRequest {
+  postId: string;
+}
+
 export interface InteractPostRequest {
   userId: string;
   postId: string;
@@ -62,11 +68,24 @@ export const postApi = createApi({
   reducerPath: "postApi ",
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
     getAllPostOfUser: builder.query<Post[], string | null>({
       query: (userId) => ({
         url: `api/users/${userId}/posts`,
+        method: "GET",
+      }),
+    }),
+    getPost: builder.query<Post, string | null>({
+      query: (postId) => ({
+        url: `api/posts/${postId}`,
         method: "GET",
       }),
     }),
@@ -83,6 +102,13 @@ export const postApi = createApi({
         body: data.body,
       }),
     }),
+    updatePost: builder.mutation<string, UpdateLanguageRequest>({
+      query: (data) => ({
+        url: `api/users/${data.userId}/posts/${data.postId}/update`,
+        method: "PUT",
+        body: data.body,
+      }),
+    }),
     interactPost: builder.mutation<string, InteractPostRequest>({
       query: (data) => ({
         url: `/api/users/${data.userId}/interact/${data.mode}/posts/${data.postId}`,
@@ -94,7 +120,9 @@ export const postApi = createApi({
 
 export const {
   useCreatePostMutation,
+  useGetPostQuery,
   useGetAllPostOfUserQuery,
   useInteractPostMutation,
   useLazyGetNumOfInteractQuery,
+  useUpdatePostMutation,
 } = postApi;
