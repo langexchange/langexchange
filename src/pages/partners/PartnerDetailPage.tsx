@@ -13,7 +13,7 @@ const onChange = (key: string) => { };
 
 const PartnerDetailPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [post, setPost] = useState<Post | null>(null);
+  const [postId, setPostId] = useState<string | null>(null);
   const [vocabularySet, setVocabularySet] = useState<VocabularySet | null>(
     null
   );
@@ -74,7 +74,8 @@ const PartnerDetailPage: React.FC = () => {
         </Row>
       </Col>
       <PostModal
-        post={post}
+        postId={postId}
+        setPostId={setPostId}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />

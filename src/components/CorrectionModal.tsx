@@ -10,7 +10,7 @@ import { selectCredentials } from "../features/auth/authSlice";
 interface CorrectionModalProps extends ModalProps {
   originalText: string;
   setOpen: (isOpen: boolean) => void;
-  postId: string;
+  postId: string | null;
   refetch: () => void;
 }
 
@@ -44,6 +44,7 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
     e: React.MouseEvent<HTMLAnchorElement> & React.MouseEvent<HTMLButtonElement>
   ) => {
     if (!credentials?.userId) return;
+    if (!postId) return;
 
     if (!text) {
       message.error("Please enter your correction");

@@ -35,9 +35,14 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { useAppSelector } from "../hooks/hooks";
 import { selectCredentials } from "../features/auth/authSlice";
-import { AttachedFile } from "../services/post/postService";
+import {
+  AttachedFile,
+  Post,
+  useGetPostQuery,
+} from "../services/post/postService";
 import { RcFile } from "antd/es/upload";
 import { useUploadFileMutation } from "../services/upload/uploadService";
+import PostFormModal from "./PostFormModal";
 
 const InputComment: React.FC<any> = ({
   inputRef,
@@ -277,10 +282,36 @@ const InputComment: React.FC<any> = ({
   );
 };
 
-const PostModal = ({ post, isModalOpen, setIsModalOpen }: any) => {
+interface PostModalProps {
+  postId: string | null;
+  isModalOpen: boolean;
+  setIsModalOpen: (v: boolean) => void;
+  setPostId: (v: string | null) => void;
+}
+const PostModal: React.FC<PostModalProps> = ({
+  postId,
+  isModalOpen,
+  setIsModalOpen,
+  setPostId,
+}) => {
   const [isOpenCorrectModal, setIsOpenCorrectModal] = useState(false);
   const [t] = useTranslation(["commons"]);
   const [commentList, setCommentList] = useState<Comment[]>([]);
+  const [post, setPost] = useState<Post | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editPostId, setEditPostId] = useState<string | null>(null);
+
+  const showEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditOk = () => {
+    setIsEditModalOpen(false);
+  };
+
+  const handleEditCancel = () => {
+    setIsEditModalOpen(false);
+  };
 
   const deleteCommentInList = (id: string) => {
     setCommentList((prev) => prev.filter((item) => item.commentId !== id));
@@ -290,11 +321,32 @@ const PostModal = ({ post, isModalOpen, setIsModalOpen }: any) => {
     data: comments,
     isLoading,
     refetch,
-  } = useGetCommentsQuery(post?.postId, {
-    skip: !post?.postId,
+    isFetching: isCommentFetching,
+  } = useGetCommentsQuery(postId, {
+    // pollingInterval: 20000,
+    refetchOnMountOrArgChange: true,
+    skip: !postId,
   });
 
+  const {
+    data: fetchPost,
+    isLoading: isPostDetailLoading,
+    refetch: refetchPostDetail,
+    isFetching: isPostDetailFetching,
+  } = useGetPostQuery(postId, {
+    refetchOnMountOrArgChange: true,
+    skip: !postId,
+  });
+
+  useEffect(() => {
+    if (!fetchPost) return;
+    setPost(fetchPost);
+  }, [fetchPost, isPostDetailLoading, isPostDetailFetching]);
+
   const handleCancel = () => {
+    setCommentList([]);
+    setPostId(null);
+    setPost(null);
     setIsModalOpen(false);
   };
 
@@ -308,16 +360,16 @@ const PostModal = ({ post, isModalOpen, setIsModalOpen }: any) => {
   const inputRef = useRef<InputRef>(null);
 
   useEffect(() => {
-    if (comments) {
-      const sortedComment = [...comments].sort(
-        (a, b) =>
-          new Date(b.updatedAt || b.createdAt).getTime() -
-          new Date(a.updatedAt || a.createdAt).getTime()
-      );
+    if (!comments) return;
 
-      setCommentList(sortedComment);
-    }
-  }, [comments, isLoading]);
+    const sortedComment = [...comments].sort(
+      (a, b) =>
+        new Date(b.updatedAt || b.createdAt).getTime() -
+        new Date(a.updatedAt || a.createdAt).getTime()
+    );
+
+    setCommentList(sortedComment);
+  }, [comments, isLoading, isCommentFetching]);
 
   const sortComments = (value: any) => {
     if (!comments) return;
@@ -369,21 +421,31 @@ const PostModal = ({ post, isModalOpen, setIsModalOpen }: any) => {
             key="input-comment"
             inputRef={inputRef}
             isOpenCorrectModal={isOpenCorrectModal}
-            postId={post?.postId}
+            postId={postId}
             refetch={refetch}
           />,
         ]}
       >
-        <PostCard
-          {...post}
-          hoverable={false}
-          bordered={false}
-          boxShadow={false}
-          correctable={true}
-          type="inModal"
-          inputRef={inputRef}
-          handleOpenCorrectModal={handleOpenCorrectModal}
-        />
+        <Skeleton
+          loading={isPostDetailLoading || isPostDetailFetching}
+          active
+          avatar
+        >
+          {post && (
+            <PostCard
+              setEditPostId={setEditPostId}
+              showEditModal={showEditModal}
+              post={post}
+              hoverable={false}
+              bordered={false}
+              boxShadow={false}
+              correctable={true}
+              type="inModal"
+              inputRef={inputRef}
+              handleOpenCorrectModal={handleOpenCorrectModal}
+            />
+          )}
+        </Skeleton>
         <div className="px-4">
           <div className="text-right" style={{ zIndex: 4 }}>
             <Select
@@ -419,8 +481,16 @@ const PostModal = ({ post, isModalOpen, setIsModalOpen }: any) => {
         setOpen={setIsOpenCorrectModal}
         onOk={handleSubmitCorrection}
         width={700}
-        postId={post?.postId}
+        postId={postId}
         refetch={refetch}
+      />
+      <PostFormModal
+        editPostId={editPostId}
+        setEditPostId={setEditPostId}
+        isModalOpen={isEditModalOpen}
+        setIsModalOpen={setIsEditModalOpen}
+        handleOk={handleEditOk}
+        handleCancel={handleEditCancel}
       />
     </>
   );

@@ -37,22 +37,11 @@ interface CommentProps extends Comment {
   deleteCommentInList: (id: string) => void;
 }
 
-const checkIsLiked = (
-  userId: string | null,
-  listUserIdInteracted: string[]
-) => {
-  if (!userId || !listUserIdInteracted) return false;
-  if (listUserIdInteracted.includes(userId)) return true;
-  return false;
-};
-
 const CommentItem: React.FC<CommentProps> = (comment) => {
   const credentials = useAppSelector(selectCredentials);
   const [deleteComment, { isLoading: isDeletingComment }] =
     useDeleteCommentMutation();
-  const [isLiked, setIsLiked] = useState(
-    checkIsLiked(credentials?.userId, comment.usersInteract)
-  );
+  const [isLiked, setIsLiked] = useState(comment.isUserInteracted);
   const [numOfInteract, setNumOfInteract] = useState(comment.numOfInteract);
 
   const handleEdit = () => {

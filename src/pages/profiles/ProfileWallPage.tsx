@@ -10,7 +10,7 @@ import {
 
 const ProfileWallPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [post, setPost] = useState<Post | null>(null);
+  const [postId, setPostId] = useState<string | null>(null);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -30,10 +30,15 @@ const ProfileWallPage = () => {
   return (
     <>
       <Skeleton loading={isLoading} avatar active>
-        <PostList setPost={setPost} showModal={showModal} postList={postList} />
+        <PostList
+          setPostId={setPostId}
+          showModal={showModal}
+          postList={postList}
+        />
       </Skeleton>
       <PostModal
-        post={post}
+        postId={postId}
+        setPostId={setPostId}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
