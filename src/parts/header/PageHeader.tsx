@@ -22,20 +22,22 @@ import {
   LogoutOutlined,
   SettingOutlined,
   BellOutlined,
+  SwapOutlined,
 } from "@ant-design/icons";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import NotificationList from "../../components/NotificationList";
 import { useTranslation } from "react-i18next";
 import { CN, FR, VN } from "country-flag-icons/react/3x2";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { logout } from "../../features/auth/authSlice";
+import { logout, selectCredentials } from "../../features/auth/authSlice";
 import {
   selectCredentalProfile,
   setCredentialProfile,
 } from "../../features/profile/profileSlice";
+import { toggleTheme } from "../../features/themes/themeSlice";
 const { Header } = Layout;
 
 const PageHeader = () => {
@@ -55,6 +57,8 @@ const PageHeader = () => {
       dispatch(logout());
       dispatch(setCredentialProfile(null));
       navigate("/");
+    } else if (e.key === "toggle-theme") {
+      dispatch(toggleTheme());
     }
   };
 
@@ -129,9 +133,20 @@ const PageHeader = () => {
     },
   ];
 
+  const [allRead, setAllRead] = useState(false);
+  const activeKey: string = window.location.pathname.split("/")[1];
+  const [open, setOpen] = useState(false);
+  const currentUserProfile = useAppSelector(selectCredentalProfile);
+  const credentials = useAppSelector(selectCredentials);
+
   const dropdownItems: MenuProps["items"] = [
     {
-      label: <Link to="/dinhnhutan/settings">{t("settings")}</Link>,
+      label: (
+        <Link to={`profile/${credentials.userId}/settings`}>
+          {" "}
+          {t("settings")}
+        </Link>
+      ),
       key: "setting",
       icon: <SettingOutlined />,
     },
@@ -140,19 +155,13 @@ const PageHeader = () => {
       key: "sign-out",
       icon: <LogoutOutlined />,
     },
-    { label: "Toggle theme", key: "toggle-theme" },
+    { label: "Toggle theme", key: "toggle-theme", icon: <SwapOutlined /> },
   ];
 
   const menuDropdown = {
     items: dropdownItems,
     onClick: handleMenuClick,
   };
-
-  const [allRead, setAllRead] = useState(false);
-  const activeKey: string = window.location.pathname.split("/")[1];
-  const [open, setOpen] = useState(false);
-  const currentUserProfile = useAppSelector(selectCredentalProfile);
-
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
   };

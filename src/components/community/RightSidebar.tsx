@@ -40,7 +40,7 @@ const RightSidebar: React.FC = () => {
   ];
 
   return (
-    <div className="has-background-color pt-1">
+    <div className=" pt-1">
       <Space direction="vertical" className="width-full" size="middle">
         <Input.Search
           placeholder={`${t("type-to-search")} ${t("post")}...`}
