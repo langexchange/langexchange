@@ -1,20 +1,29 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, notification } from "antd";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useForgotPasswordMutation } from "../../services/auth/authServices";
 
-const ForgotPasswordPage = () => {
+const ForgotPasswordPage: React.FC = () => {
   const { t } = useTranslation(["commons"]);
-  const onFinish = (values: any) => {
-    success();
-  };
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const navigate = useNavigate();
 
-  const [messageApi, contextHolder] = message.useMessage();
-
-  const success = () => {
-    messageApi.open({
-      type: "success",
-      content: "This is a success message",
-    });
+  const onFinish = async (values: any) => {
+    try {
+      await forgotPassword(values.email).unwrap();
+      notification.success({
+        message: "Successfully!",
+        description:
+          "Please check your email to reset your password. Thank you!",
+      });
+      navigate("/sign-in");
+    } catch (error) {
+      notification.error({
+        message: "Failed!",
+        description: "Something went wrong. Please try again later. Thank you!",
+      });
+    }
   };
 
   return (
@@ -24,7 +33,6 @@ const ForgotPasswordPage = () => {
       initialValues={{ remember: true }}
       onFinish={onFinish}
     >
-      {contextHolder}
       <Form.Item
         name="email"
         rules={[
@@ -42,7 +50,12 @@ const ForgotPasswordPage = () => {
         />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="d-block ma">
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="d-block ma"
+          loading={isLoading}
+        >
           {t("send")}
         </Button>
       </Form.Item>

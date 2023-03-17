@@ -1,16 +1,19 @@
 import { List } from "antd";
 import { useState } from "react";
-import { Comment } from "../services/comment/commentService";
 import CommentItem from "./CommentItem";
 import UpdateCommentModal from "./UpdateCommentModal";
-
-const items = [] as Comment[];
+import { Comment } from "../services/comment/commentService";
 
 interface CommentListProps {
   commentList?: Comment[];
   ownerPostId?: string;
   refetch: () => void;
   deleteCommentInList: (id: string) => void;
+  setInteractCommentInList: (
+    id: string,
+    isLiked: boolean,
+    numOfInteract: number
+  ) => void;
 }
 
 const CommentList: React.FC<CommentListProps> = ({
@@ -18,20 +21,18 @@ const CommentList: React.FC<CommentListProps> = ({
   ownerPostId,
   refetch,
   deleteCommentInList,
+  setInteractCommentInList,
 }) => {
   const [editComment, setEditComment] = useState<Comment | null>(null);
   const [open, setOpen] = useState<boolean>(false);
-  const openEditModal = () => {
-    setOpen(true);
-  };
-
+  const openEditModal = () => setOpen(true);
   return (
     <>
       <List
         itemLayout="horizontal"
-        dataSource={commentList || items}
+        dataSource={commentList || []}
         split={false}
-        renderItem={(item, index) => (
+        renderItem={(item) => (
           <List.Item key={item.commentId}>
             <CommentItem
               {...item}
@@ -39,6 +40,7 @@ const CommentList: React.FC<CommentListProps> = ({
               openEditModal={openEditModal}
               setEditComment={setEditComment}
               deleteCommentInList={deleteCommentInList}
+              setInteractCommentInList={setInteractCommentInList}
             />
           </List.Item>
         )}

@@ -35,14 +35,19 @@ interface CommentProps extends Comment {
   openEditModal: () => void;
   setEditComment: (v: Comment) => void;
   deleteCommentInList: (id: string) => void;
+  setInteractCommentInList: (
+    id: string,
+    isLiked: boolean,
+    numOfInteract: number
+  ) => void;
 }
 
 const CommentItem: React.FC<CommentProps> = (comment) => {
   const credentials = useAppSelector(selectCredentials);
   const [deleteComment, { isLoading: isDeletingComment }] =
     useDeleteCommentMutation();
-  const [isLiked, setIsLiked] = useState(comment.isUserInteracted);
-  const [numOfInteract, setNumOfInteract] = useState(comment.numOfInteract);
+  // const [isLiked, setIsLiked] = useState(comment.isUserInteracted);
+  // const [numOfInteract, setNumOfInteract] = useState(comment.numOfInteract);
 
   const handleEdit = () => {
     comment.openEditModal();
@@ -71,7 +76,8 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
     try {
       if (!credentials.userId) return;
       let mode = 0;
-      if (isLiked) mode = 1;
+      // if (isLiked) mode = 1;
+      if (comment.isUserInteracted) mode = 1;
 
       await interactComment({
         userId: credentials.userId,
@@ -80,8 +86,13 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
       }).unwrap();
 
       const numOfInteract = await getNumOfInteract(comment.commentId).unwrap();
-      setNumOfInteract(numOfInteract);
-      setIsLiked(!isLiked);
+      // setNumOfInteract(numOfInteract);
+      // setIsLiked(!isLiked);
+      comment.setInteractCommentInList(
+        comment.commentId,
+        !comment.isUserInteracted,
+        numOfInteract
+      );
     } catch (error) {
       message.error("Error when interacting post");
     }
@@ -144,12 +155,20 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
                 <Button
                   type="text"
                   onClick={handleInteract}
-                  icon={isLiked ? <HeartFilled /> : <HeartOutlined />}
+                  icon={
+                    comment.isUserInteracted ? (
+                      <HeartFilled />
+                    ) : (
+                      <HeartOutlined />
+                    )
+                  }
                   shape="circle"
                   danger
                   size="small"
                 />
-                <Typography.Text type="danger">{numOfInteract}</Typography.Text>
+                <Typography.Text type="danger">
+                  {comment.numOfInteract}
+                </Typography.Text>
               </Space>
               {credentials?.userId === comment.userId && (
                 <Button
