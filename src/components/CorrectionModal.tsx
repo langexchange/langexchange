@@ -113,6 +113,7 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
           correctedText={text}
           className="fz-20 text-300 rounded-3 my-0"
           code
+          strikeThrough={true}
         />
       </Space>
       <Space direction="vertical" className="width-full mt-2">

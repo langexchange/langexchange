@@ -83,6 +83,15 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
   });
 
   useEffect(() => {
+    if (!isModalOpen || !inputRef.current) return;
+    setTimeout(() => {
+      inputRef.current!.focus({
+        cursor: "end",
+      });
+    }, 200);
+  }, [isModalOpen, inputRef.current]);
+
+  useEffect(() => {
     if (!fetchPost) return;
     setPost(fetchPost);
     setTags(fetchPost.labels);

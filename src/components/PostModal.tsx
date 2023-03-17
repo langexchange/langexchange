@@ -317,6 +317,25 @@ const PostModal: React.FC<PostModalProps> = ({
     setCommentList((prev) => prev.filter((item) => item.commentId !== id));
   };
 
+  const setInteractCommentInList = (
+    id: string,
+    isLiked: boolean,
+    numOfInteract: number
+  ) => {
+    setCommentList((prev) => {
+      let newList = [...prev];
+      const index = newList.findIndex((item) => item.commentId === id);
+      if (index !== -1) {
+        newList[index] = {
+          ...newList[index],
+          numOfInteract,
+          isUserInteracted: isLiked,
+        };
+      }
+      return newList;
+    });
+  };
+
   const {
     data: comments,
     isLoading,
@@ -368,12 +387,12 @@ const PostModal: React.FC<PostModalProps> = ({
         new Date(a.updatedAt || a.createdAt).getTime()
     );
 
-    setCommentList(sortedComment);
+    setCommentList([...sortedComment]);
   }, [comments, isLoading, isCommentFetching]);
 
   const sortComments = (value: any) => {
-    if (!comments) return;
-    let sortComments = [...comments];
+    if (!commentList) return;
+    let sortComments = [...commentList];
     switch (value) {
       case "newest_first":
         sortComments.sort(
@@ -470,6 +489,7 @@ const PostModal: React.FC<PostModalProps> = ({
               ownerPostId={post?.userId}
               refetch={refetch}
               deleteCommentInList={deleteCommentInList}
+              setInteractCommentInList={setInteractCommentInList}
             />
           </Skeleton>
         </div>
