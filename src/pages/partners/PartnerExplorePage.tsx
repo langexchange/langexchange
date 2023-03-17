@@ -1,11 +1,15 @@
-import { Col } from "antd";
+import { Col, Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
 import ContentTitleWithSearch from "../../components/partners/ContentTitleWithSearch";
 import ExplorePartnerList from "../../components/partners/ExplorePartnerList";
 import FilterLine from "../../components/partners/FilterLine";
+import { useGetAllProfilesQuery } from "../../services/profile/profileServices";
 
-const PartnerExplorePage = () => {
+const PartnerExplorePage: React.FC = () => {
   const [t] = useTranslation(["commons"]);
+  const { data: allProfiles, isLoading: isGettingAllProfiles } =
+    useGetAllProfilesQuery();
+
   return (
     <Col
       span={18}
@@ -13,7 +17,9 @@ const PartnerExplorePage = () => {
     >
       <ContentTitleWithSearch title={t("You may know")} />
       <FilterLine />
-      <ExplorePartnerList colSpan={8} />
+      <Skeleton loading={isGettingAllProfiles} active>
+        <ExplorePartnerList colSpan={8} partnerList={allProfiles} />
+      </Skeleton>
     </Col>
   );
 };

@@ -30,11 +30,11 @@ const PartnerRequestList = ({ colSpan = 6 }: PartnerRequestListProps) => {
   return (
     <div>
       <Row gutter={[24, 24]}>
-        {items.map((item, index) => (
-          <Col span={colSpan} key={index}>
-            <UserCard {...item} type="request" />
-          </Col>
-        ))}
+        {/* {items.map((item, index) => ( */}
+        {/*   <Col span={colSpan} key={index}> */}
+        {/*     <UserCard {...item} type="request" /> */}
+        {/*   </Col> */}
+        {/* ))} */}
       </Row>
     </div>
   );

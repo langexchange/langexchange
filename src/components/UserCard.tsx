@@ -8,27 +8,17 @@ import {
   MessageOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { Profile } from "../services/profile/profileServices";
+import getUnicodeFlagIcon from "country-flag-icons/unicode";
 
 type Type = "explore" | "request" | "partner";
 
-interface UserProps {
-  name: string;
-  natives: string[];
-  targets: string[];
-  country: string;
-  image: string;
+interface UserProps extends Profile {
   type: Type;
 }
 
-const UserCard: React.FC<UserProps> = ({
-  name,
-  natives,
-  targets,
-  country,
-  image,
-  type,
-}) => {
-  const [t] = useTranslation(["commons"]);
+const UserCard: React.FC<UserProps> = ({ type, ...profile }) => {
+  const [t] = useTranslation(["commons", "countries"]);
   let actions;
 
   switch (type) {
@@ -82,9 +72,9 @@ const UserCard: React.FC<UserProps> = ({
   return (
     <Card
       hoverable
-      cover={<Image src={image} />}
+      cover={profile?.avatar ? <Image src={profile.avatar} /> : undefined}
       actions={actions}
-      style={{ height: "100%", flexDirection: "column" }}
+      style={{ flexDirection: "column" }}
       bodyStyle={{ flex: 1 }}
       className="d-flex"
     >
@@ -93,36 +83,48 @@ const UserCard: React.FC<UserProps> = ({
         style={{ flexDirection: "column", height: "100%" }}
       >
         <Space direction="vertical">
-          <Typography.Title level={5} className="m-0">
-            {name}
-          </Typography.Title>
+          <Space wrap>
+            <Typography.Title level={4} className="m-0">
+              {[profile.firstName, profile.lastName].join(" ")}
+            </Typography.Title>
+            <Space
+              align="center"
+              className="has-background-color rounded-4 px-2"
+            >
+              <span className="fz-18">
+                {profile?.country && getUnicodeFlagIcon(profile.country)}
+              </span>
+              <Typography.Text>
+                {t(profile.country, { ns: "countries" })}
+              </Typography.Text>
+            </Space>
+          </Space>
           <Space size={4} wrap>
-            {t("Native")}:
-            {natives.map((item, index) => (
+            <span className="me-2 text-500 secondary-color">{t("Native")}</span>
+            {[profile.nativeLanguage].map((item) => (
               <Tag
                 color="green"
-                key={index}
+                key={item.id}
                 icon={<TranslationOutlined />}
                 className="m-0"
               >
-                {item}
+                {item.name}
               </Tag>
             ))}
           </Space>
           <Space size={4} wrap>
-            {t("Target")}:
-            {targets.map((item, index) => (
+            <span className="me-2 text-500 secondary-color">{t("Target")}</span>
+            {profile.targetLanguages.map((item) => (
               <Tag
                 color="blue"
-                key={index}
+                key={item.id}
                 icon={<TagOutlined />}
                 className="m-0"
               >
-                {item}
+                {item.name}
               </Tag>
             ))}
           </Space>
-          <Typography.Text type="secondary">{country}</Typography.Text>
         </Space>
       </div>
     </Card>

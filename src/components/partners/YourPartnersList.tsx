@@ -34,11 +34,11 @@ const YourParnersList = ({
   return (
     <div>
       <Row gutter={gutter}>
-        {items.map((item, index) => (
-          <Col span={colSpan} key={index}>
-            <UserCard {...item} type="partner" />
-          </Col>
-        ))}
+        {/* {items.map((item, index) => ( */}
+        {/*   <Col span={colSpan} key={index}> */}
+        {/*     <UserCard {...item} type="partner" /> */}
+        {/*   </Col> */}
+        {/* ))} */}
       </Row>
     </div>
   );

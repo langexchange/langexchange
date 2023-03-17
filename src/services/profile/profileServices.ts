@@ -81,6 +81,12 @@ export const profileApi = createApi({
         method: "GET",
       }),
     }),
+    getAllProfiles: builder.query<GetProfileResponse[], void>({
+      query: () => ({
+        url: `api/users`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -89,4 +95,5 @@ export const {
   useGetProfileQuery,
   useLazyGetProfileQuery,
   useUpdateAvatarMutation,
+  useGetAllProfilesQuery,
 } = profileApi;
