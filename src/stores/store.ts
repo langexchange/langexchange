@@ -3,6 +3,7 @@ import authReducer from "../features/auth/authSlice";
 import profileReducer from "../features/profile/profileSlice";
 import languageReducer from "../features/languages/languageSlice";
 import postReducer from "../features/post/postSlice";
+import themeReducer from "../features/themes/themeSlice";
 import { authApi } from "../services/auth/authServices";
 import { profileApi } from "../services/profile/profileServices";
 import { languageApi } from "../services/languages/languageService";
@@ -22,6 +23,7 @@ export const store = configureStore({
     post: postReducer,
     [uploadApi.reducerPath]: uploadApi.reducer,
     [commentApi.reducerPath]: commentApi.reducer,
+    theme: themeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
