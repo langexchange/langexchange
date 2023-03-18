@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../../stores/store";
-import { AttachedFile } from "../post/postService";
 
 const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 

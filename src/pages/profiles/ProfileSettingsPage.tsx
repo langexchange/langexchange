@@ -3,6 +3,7 @@ import {
   Col,
   Form,
   Input,
+  InputRef,
   message,
   Radio,
   Rate,
@@ -12,7 +13,7 @@ import {
   Upload,
   UploadFile,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import SeclectLanguageInput from "../../components/SeclectLanguageInput";
 import TagsInput from "../../components/TagsInput";
@@ -43,6 +44,7 @@ import CountrySelectInput from "../../components/CountrySelectInput";
 import UploadImage from "../../components/UploadImage";
 import { useUploadFileMutation } from "../../services/upload/uploadService";
 import { RcFile } from "antd/lib/upload/interface";
+import { TextAreaRef } from "antd/es/input/TextArea";
 
 const initialValues = {
   firstName: "",
@@ -62,128 +64,145 @@ const initialValues = {
   numOfPartners: 0,
 };
 
-const onFinishFailed = (errorInfo: any) => { };
-
-const ProfileSettingsPage = () => {
-  const currentUserId = useAppSelector(selectCurrentUserId);
+const ProfileSettingsPage: React.FC = () => {
   let { id: userId } = useParams();
-  const currentUserProfile = useAppSelector(selectCredentalProfile);
-  const [profile, setProfile] = useState<GetProfileResponse>(initialValues);
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isRefetch, setIsRefetch] = useState(false);
+  const credentials = useAppSelector(selectCredentials);
+  const currentUserId = useAppSelector(selectCurrentUserId);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const { t } = useTranslation(["settings", "commons", "initial"]);
+  const currentUserProfile = useAppSelector(selectCredentalProfile);
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [profile, setProfile] = useState<GetProfileResponse>(initialValues);
+  const [uploadFiles, { isLoading: isLoadingUpload }] = useUploadFileMutation();
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const firstNameRef = useRef<InputRef>(null);
+  const lastNameRef = useRef<InputRef>(null);
+  const bioRef = useRef<TextAreaRef>(null);
+  const [updateAvatar, { isLoading: isLoadingUpdateAvatar }] =
+    useUpdateAvatarMutation();
   const {
     data: fetchProfile,
+    refetch,
     isFetching,
     isLoading: isLoadingProfile,
     isSuccess,
   } = useGetProfileQuery(userId, {
-    refetchOnMountOrArgChange: true,
-    skip: !isRefetch,
+    skip: !userId,
   });
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   useEffect(() => {
     if (isSuccess) {
-      setIsRefetch(false);
       dispatch(setCredentialProfile(fetchProfile));
     }
   }, [fetchProfile, isFetching]);
 
-  const dispatch = useAppDispatch();
   useEffect(() => {
-    if (currentUserProfile) {
-      setProfile(currentUserProfile);
-      if (currentUserProfile.avatar)
-        setFileList([
-          {
-            uid: "langexchange",
-            name: "Avatar",
-            status: "done",
-            url: currentUserProfile.avatar,
-            thumbUrl: currentUserProfile.avatar,
-          },
-        ]);
-      setIsLoaded(true);
-    }
+    if (!currentUserProfile) return;
+
+    setProfile(currentUserProfile);
+    setSelectedLanguages([
+      ...currentUserProfile.targetLanguages.map((lang) => lang.id),
+      currentUserProfile.nativeLanguage.id,
+    ]);
+    if (currentUserProfile.avatar)
+      setFileList([
+        {
+          uid: "langexchange",
+          name: "Avatar",
+          status: "done",
+          url: currentUserProfile.avatar,
+          thumbUrl: currentUserProfile.avatar,
+        },
+      ]);
+    setIsLoaded(true);
   }, [currentUserProfile]);
-  const credentials = useAppSelector(selectCredentials);
-  const [uploadFiles, { isLoading: isLoadingUpload }] = useUploadFileMutation();
 
   const handleUploadAvatar = async () => {
     if (!credentials?.incId) return;
+    if (fileList.length === 0) return;
 
-    if (fileList.length > 0) {
-      const formData = new FormData();
-      fileList.forEach((file) => {
-        if (file.status === "done") return;
-        formData.append("files[]", file as RcFile);
-      });
+    const formData = new FormData();
+    fileList.forEach((file) => {
+      if (file.status === "done") return;
+      formData.append("files[]", file as RcFile);
+    });
 
-      if (!formData || formData.getAll("files[]").length === 0) return;
+    if (!formData || formData.getAll("files[]").length === 0) return;
 
-      try {
-        const result = await uploadFiles({
-          type: "image",
-          userId: credentials.incId,
-          body: formData,
-        }).unwrap();
-        return result[0].url;
-      } catch (error) {
-        message.error("Upload image failed");
-      }
+    try {
+      const result = await uploadFiles({
+        type: "image",
+        userId: credentials.incId,
+        body: formData,
+      }).unwrap();
+      return result[0].url;
+    } catch (error) {
+      message.error("Upload image failed");
     }
+
     return;
   };
-  const [updateAvatar, { isLoading: isLoadingUpdateAvatar }] =
-    useUpdateAvatarMutation();
 
-  const handleSubmit = async (values: any) => {
-    if (currentUserId) {
-      try {
-        const uploadedUrl = await handleUploadAvatar();
-        if (uploadedUrl)
-          await updateAvatar({
-            id: currentUserId,
-            avatar: uploadedUrl,
-          }).unwrap();
-
-        const data = {
+  const handleSubmit = async (
+    values: any,
+    firstName: string = "",
+    lastName: string = "",
+    bio: string = ""
+  ) => {
+    if (!currentUserId) return;
+    try {
+      const uploadedUrl = await handleUploadAvatar();
+      if (uploadedUrl)
+        await updateAvatar({
           id: currentUserId,
-          body: {
-            nativeLanguage: values.nativeLanguage,
-            targetLanguages: values.targetLanguages,
-            userInfo: {
-              firstName: profile.firstName,
-              middleName: profile.middleName,
-              lastName: profile.lastName,
-              gender: profile.gender,
-              introduction: profile.introduction,
-              country: profile.country,
-              hobbies: profile.hobbies,
-            },
+          avatar: uploadedUrl,
+        }).unwrap();
+
+      const data = {
+        id: currentUserId,
+        body: {
+          nativeLanguage: values.nativeLanguage,
+          targetLanguages: values.targetLanguages,
+          userInfo: {
+            firstName: firstName,
+            middleName: "",
+            lastName: lastName,
+            gender: profile.gender,
+            introduction: bio,
+            country: profile.country,
+            hobbies: profile.hobbies,
           },
-        };
-        await updateProfile(data).unwrap();
-        setIsRefetch(true);
-        message.success("Update profile success");
-      } catch (err) {
-        message.error(
-          "Sorry, something went wrong. Please refresh the page and try again."
-        );
-      }
+        },
+      };
+      await updateProfile(data).unwrap();
+      await refetch();
+      message.success("Update profile success");
+    } catch (err) {
+      message.error(
+        "Sorry, something went wrong. Please refresh the page and try again."
+      );
     }
   };
 
   const onFinish = (values: any) => {
-    handleSubmit(values);
+    const firstName = firstNameRef.current?.input?.value;
+    const lastName = lastNameRef.current?.input?.value;
+    if (!firstName && !lastName)
+      return message.error("First name or last name is required");
+    const bio = bioRef.current?.resizableTextArea?.textArea.value;
+    if (values.targetLanguages.length === 0)
+      return message.error("Target language is required");
+    values.targetLanguages = values.targetLanguages.filter(
+      (lang: any) => lang.id
+    );
+    handleSubmit(values, firstName, lastName, bio);
   };
 
   const setProfileValue = (key: string, value: any) => {
     setProfile({ ...profile, [key]: value });
   };
-
-  const { t } = useTranslation(["settings", "commons", "initial"]);
 
   if (currentUserId) {
     const isCurrentUser = userId === currentUserId;
@@ -228,10 +247,8 @@ const ProfileSettingsPage = () => {
           name="basic"
           style={{ width: "100%" }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
           className="pt-3"
-          // labelCol={{ span: 8 }}
           layout="vertical"
         >
           <Row gutter={12}>
@@ -242,10 +259,8 @@ const ProfileSettingsPage = () => {
                   placeholder={t("First name", { ns: "initial" }).toString()}
                   name="firstName"
                   status={profile.firstName.length === 0 ? "error" : undefined}
-                  value={profile.firstName}
-                  onChange={(e) => {
-                    setProfileValue(e.target.name, e.target.value);
-                  }}
+                  defaultValue={profile.firstName}
+                  ref={firstNameRef}
                 />
               </Form.Item>
             </Col>
@@ -258,11 +273,9 @@ const ProfileSettingsPage = () => {
                   allowClear
                   name="lastName"
                   placeholder={t("Last name", { ns: "initial" }).toString()}
-                  value={profile.lastName}
-                  onChange={(e) =>
-                    setProfileValue(e.target.name, e.target.value)
-                  }
                   status={profile.lastName.length === 0 ? "error" : undefined}
+                  defaultValue={profile.lastName}
+                  ref={lastNameRef}
                 />
               </Form.Item>
             </Col>
@@ -276,7 +289,11 @@ const ProfileSettingsPage = () => {
                   initialValue={profile.nativeLanguage.id || null}
                   className="mb-0"
                 >
-                  <SeclectLanguageInput placeholder={t("Native language")} />
+                  <SeclectLanguageInput
+                    placeholder={t("Native language")}
+                    exceptLanguages={selectedLanguages}
+                    setExceptLanguages={setSelectedLanguages}
+                  />
                 </Form.Item>
               </Col>
               <Col>
@@ -307,15 +324,14 @@ const ProfileSettingsPage = () => {
                   <Row key={key}>
                     <Col span={16}>
                       <Form.Item
-                        initialValue={"english"}
+                        // initialValue={"english"}
                         {...restField}
                         name={[name, "id"]}
-                      // label={index === 0 ? t("Target languages") : ""}
-                      // labelCol={{ span: 12 }}
-                      // wrapperCol={{ span: 12, offset: index === 0 ? 0 : 12 }}
                       >
                         <SeclectLanguageInput
                           placeholder={t("Target Language")}
+                          exceptLanguages={selectedLanguages}
+                          setExceptLanguages={setSelectedLanguages}
                         />
                       </Form.Item>
                     </Col>
@@ -340,10 +356,7 @@ const ProfileSettingsPage = () => {
                   </Row>
                 ))}
 
-                <Form.Item
-                // label={fields.length === 0 ? "Target languages" : ""}
-                // wrapperCol={{ span: 16, offset: fields.length === 0 ? 0 : 8 }}
-                >
+                <Form.Item>
                   <Button
                     type="dashed"
                     onClick={() => add()}
@@ -388,8 +401,8 @@ const ProfileSettingsPage = () => {
             <Input.TextArea
               placeholder={t("Bio", { ns: "initial" }).toString()}
               name="introduction"
-              value={profile.introduction}
-              onChange={(e) => setProfileValue(e.target.name, e.target.value)}
+              defaultValue={profile.introduction}
+              ref={bioRef}
             />
           </Form.Item>
 

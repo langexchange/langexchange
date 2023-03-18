@@ -27,7 +27,17 @@ i18n
 
     fallbackLng: "en",
 
-    ns: ["common", "welcom", "about", "authentication"],
+    ns: [
+      "about",
+      "authentication",
+      "commons",
+      "community",
+      "countries",
+      "initial",
+      "settings",
+      "vocabulary",
+      "welcome",
+    ],
     debug: false,
 
     interpolation: {

@@ -36,15 +36,15 @@ const CommunityPage = () => {
       <div>
         <Row
           justify="space-between"
-          className="full-height-minus-header py-3"
+          className="full-height-minus-header"
           gutter={24}
         >
-          <Col span={6}>
+          <Col span={6} className="py-3">
             <Sidebar />
           </Col>
           <Col
             span={12}
-            className="height-full px-3 pb-5 auto-hide-scroll scroll-style-1"
+            className="height-full py-3 px-4 pb-5 auto-hide-scroll scroll-style-1"
             id="style-1"
           >
             <div className="mb-3">
@@ -58,7 +58,7 @@ const CommunityPage = () => {
               />
             </Skeleton>
           </Col>
-          <Col span={6}>
+          <Col span={6} className="py-3">
             <RightSidebar />
           </Col>
         </Row>

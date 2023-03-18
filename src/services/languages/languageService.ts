@@ -23,7 +23,13 @@ export const languageApi = createApi({
         method: "GET",
       }),
     }),
+    getLanguageByUser: builder.query<Language[], string>({
+      query: (userId) => ({
+        url: `/api/users/${userId}/languages`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetLanguagesQuery } = languageApi;
+export const { useGetLanguagesQuery, useGetLanguageByUserQuery } = languageApi;
