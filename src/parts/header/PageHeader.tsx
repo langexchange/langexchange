@@ -8,14 +8,13 @@ import {
   Image,
   Layout,
   Menu,
-  message,
   Popover,
   Row,
   Select,
   Space,
 } from "antd";
 import {
-  HomeOutlined,
+  GlobalOutlined,
   TeamOutlined,
   MessageOutlined,
   FileTextOutlined,
@@ -40,7 +39,7 @@ import {
 import { toggleTheme } from "../../features/themes/themeSlice";
 const { Header } = Layout;
 
-const PageHeader = () => {
+const PageHeader: React.FC = () => {
   const { t, i18n } = useTranslation(["commons"]);
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
   const dispatch = useAppDispatch();
@@ -49,7 +48,6 @@ const PageHeader = () => {
   const handleChangeLanguage = (value: string) => {
     i18n.changeLanguage(value);
     setSelectedLanguage(value);
-    message.success("Change language success");
   };
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
@@ -66,7 +64,7 @@ const PageHeader = () => {
     {
       label: <NavLink to="/community">{t("header-community")}</NavLink>,
       key: "community",
-      icon: <HomeOutlined />,
+      icon: <GlobalOutlined />,
     },
     {
       label: <NavLink to="/partners">{t("header-partner")}</NavLink>,

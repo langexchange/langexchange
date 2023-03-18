@@ -89,12 +89,19 @@ const SigninForm = () => {
         <Form.Item>
           <Space>
             {t("signin-with")}
-            <Space size="small">
-              <Button type="default" shape="circle" icon={<FacebookFilled />} />
+            <Space size={0} align="center">
               <Button
-                type="default"
+                type="text"
                 shape="circle"
-                icon={<GoogleSquareFilled />}
+                icon={<FacebookFilled className="fz-18" />}
+                className="btn-text-primary d-flex justify-center align-items-center"
+              />
+              <Button
+                type="text"
+                shape="circle"
+                icon={<GoogleSquareFilled className="fz-18" />}
+                className="d-flex justify-center align-items-center"
+                danger
               />
             </Space>
           </Space>

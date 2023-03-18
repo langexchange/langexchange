@@ -34,9 +34,9 @@ const ProtectedRoute = () => {
         message.error("Something went wrong when fetching profile");
       }
     }
-  }, [profile, isLoading]);
+  }, [profile, isLoading, isFetching]);
 
-  if (isLoading || isFetching) return <LoadingPage size="large" />;
+  if (isLoading) return <LoadingPage size="large" />;
 
   if (!credentials.token)
     return <Navigate to="/sign-in" state={{ from: location }} replace />;

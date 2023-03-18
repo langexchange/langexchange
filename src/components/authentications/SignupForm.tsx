@@ -66,7 +66,13 @@ const SignupForm: React.FC = () => {
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: t("password-empty").toString() }]}
+          rules={[
+            { required: true, message: t("password-empty").toString() },
+            {
+              min: 8,
+              message: "Password must be at least 8 characters long",
+            },
+          ]}
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
@@ -124,14 +130,21 @@ const SignupForm: React.FC = () => {
         </Form.Item>
 
         <Form.Item>
-          <Space>
+          <Space align="center">
             {t("signin-with")}
-            <Space size="small">
-              <Button type="default" shape="circle" icon={<FacebookFilled />} />
+            <Space size={0} align="center">
               <Button
-                type="default"
+                type="text"
                 shape="circle"
-                icon={<GoogleSquareFilled />}
+                icon={<FacebookFilled className="fz-18" />}
+                className="btn-text-primary d-flex justify-center align-items-center"
+              />
+              <Button
+                type="text"
+                shape="circle"
+                icon={<GoogleSquareFilled className="fz-18" />}
+                className="d-flex justify-center align-items-center"
+                danger
               />
             </Space>
           </Space>

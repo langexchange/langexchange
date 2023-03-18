@@ -1,10 +1,9 @@
 import { Col, Image, Row, Space, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-// import MemeberImage from "../../assets/images/members.png";
 
 const { Title, Paragraph } = Typography;
 
-const BannerAbout = () => {
+const BannerAbout: React.FC = () => {
   const [t] = useTranslation("about");
   return (
     <div className="bg-white">

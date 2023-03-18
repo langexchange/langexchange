@@ -27,7 +27,6 @@ import {
 } from "../services/comment/commentService";
 import { useAppSelector } from "../hooks/hooks";
 import { selectCredentials } from "../features/auth/authSlice";
-import { useState } from "react";
 import { useLazyGetNumOfInteractQuery } from "../services/comment/commentService";
 
 interface CommentProps extends Comment {

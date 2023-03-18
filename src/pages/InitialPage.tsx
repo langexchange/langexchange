@@ -15,14 +15,10 @@ import { useTranslation } from "react-i18next";
 import { CN, FR, VN } from "country-flag-icons/react/3x2";
 import AuthenBackgroundImage from "../assets/images/authen_bg.png";
 import { useUpdateProfileMutation } from "../services/profile/profileServices";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import {
-  selectCurrentUserId,
-  setCredentials,
-} from "../features/auth/authSlice";
+import { useAppSelector } from "../hooks/hooks";
+import { selectCurrentUserId } from "../features/auth/authSlice";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import SeclectLanguageInput from "../components/SeclectLanguageInput";
-import { setCredentialProfile } from "../features/profile/profileSlice";
 import CountrySelectInput from "../components/CountrySelectInput";
 
 interface BasicInfo {
@@ -99,6 +95,7 @@ const SetupLanguagesForm: React.FC<ItemStepProps> = (props) => {
             onChange={(value) => {
               setBasicInfo("nativeLanguage", value);
             }}
+            exceptLanguages={targetLanguages}
           />
         </Col>
         <Col span={12}>
@@ -115,6 +112,7 @@ const SetupLanguagesForm: React.FC<ItemStepProps> = (props) => {
             bordered={false}
             showArrow
             value={targetLanguages}
+            exceptLanguages={[nativeLanguage]}
             onChange={(value) => {
               setBasicInfo("targetLanguages", value);
             }}
@@ -133,16 +131,6 @@ const MoreInformation: React.FC<ItemStepProps> = (props) => {
   } = props;
 
   const [t] = useTranslation(["initial"]);
-  const countryOptions = [
-    { label: t("Viet Nam", { ns: "commons" }), value: "1" },
-    { label: t("China", { ns: "commons" }), value: "2" },
-    { label: t("United States", { ns: "commons" }), value: "3" },
-    { label: t("United Kingdom", { ns: "commons" }), value: "4" },
-    { label: t("Japan", { ns: "commons" }), value: "5" },
-    { label: t("Korea", { ns: "commons" }), value: "6" },
-    { label: t("Brazil", { ns: "commons" }), value: "7" },
-    { label: t("Canada", { ns: "commons" }), value: "8" },
-  ];
   return (
     <div className="text-center w-100">
       <Typography.Title level={2} className="text-300">
@@ -152,7 +140,6 @@ const MoreInformation: React.FC<ItemStepProps> = (props) => {
         size="large"
         placeholder={t("Country")}
         style={{ width: "100%" }}
-        options={countryOptions}
         className="has-background-color rounded-3 w-50"
         bordered={false}
         value={country || null}
@@ -182,12 +169,10 @@ const InitialPage: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const currentUserId = useAppSelector(selectCurrentUserId);
-  const dispatch = useAppDispatch();
 
   const handleChangeLanguage = (value: string) => {
     i18n.changeLanguage(value);
     setSelectedLanguage(value);
-    message.success("Change language success");
   };
 
   const [basicInfo, setBasicInfo] = useState<BasicInfo>({

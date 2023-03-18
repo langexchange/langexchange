@@ -319,6 +319,7 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
               onChange={(value: string) =>
                 handlePostValueChange("langId", value)
               }
+              allLanguages={false}
             />
             <TagsInput
               tags={tags || []}
@@ -404,8 +405,8 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
           >
             <Button
               type="text"
-              shape="round"
-              style={{ top: 0, right: "76px", zIndex: 2 }}
+              shape="circle"
+              style={{ top: 0, right: "70px", zIndex: 2 }}
               className="btn-text-warning"
               icon={<SmileOutlined style={{ fontSize: "16px" }} />}
             />
@@ -416,7 +417,6 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
             style={{
               left: 0,
               top: "4px",
-              // transform: "translateY(-50%)",
             }}
           >
             <Switch

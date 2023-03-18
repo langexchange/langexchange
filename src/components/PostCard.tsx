@@ -353,6 +353,11 @@ const PostCard: React.FC<PostProps> = ({
       onClick={() => onClick && onClick(post.postId)}
     >
       <Typography.Paragraph>{post.text}</Typography.Paragraph>
+      <div className="">
+        {post?.labels?.map((item, index) => (
+          <Tag key={index}>{item}</Tag>
+        ))}
+      </div>
       <div className="mb-2">
         {post.audioPost?.map((item, index) => (
           <audio
