@@ -8,12 +8,14 @@ interface PostListProps {
   setPostId?: React.Dispatch<React.SetStateAction<string | null>>;
   showModal?: () => void;
   postList?: Post[];
+  refetchListPost?: () => void;
 }
 
 const PostList: React.FC<PostListProps> = ({
   setPostId,
   showModal,
   postList,
+  refetchListPost,
 }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editPostId, setEditPostId] = useState<string | null>(null);
@@ -37,8 +39,8 @@ const PostList: React.FC<PostListProps> = ({
   return (
     <>
       <Row gutter={[0, 24]}>
-        {postList?.map((item, index) => (
-          <Col span={24} key={index}>
+        {postList?.map((item) => (
+          <Col span={24} key={item.postId}>
             <PostCard
               setEditPostId={setEditPostId}
               showEditModal={showEditModal}
@@ -47,6 +49,7 @@ const PostList: React.FC<PostListProps> = ({
               onClick={(item) => {
                 onClick(item);
               }}
+              refetchListPost={refetchListPost}
             />
           </Col>
         ))}

@@ -1,3 +1,14 @@
+import { useEffect, useRef, useState } from "react";
+import TextArea from "antd/es/input/TextArea";
+import CommentList from "./CommentList";
+import PostCard from "./PostCard";
+import CorrectionModal from "./CorrectionModal";
+import { useTranslation } from "react-i18next";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+import { useAppSelector } from "../hooks/hooks";
+import { selectCredentials } from "../features/auth/authSlice";
+import PostFormModal from "./PostFormModal";
 import {
   Button,
   Col,
@@ -13,9 +24,6 @@ import {
   Upload,
   UploadFile,
 } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import CommentList from "./CommentList";
-import PostCard from "./PostCard";
 import {
   SendOutlined,
   AudioOutlined,
@@ -23,26 +31,13 @@ import {
   FileImageOutlined,
   CaretDownOutlined,
 } from "@ant-design/icons";
-import { useEffect, useRef, useState } from "react";
-import CorrectionModal from "./CorrectionModal";
-import { useTranslation } from "react-i18next";
 import {
   Comment,
   useCreateCommentMutation,
   useGetCommentsQuery,
 } from "../services/comment/commentService";
-import Picker from "@emoji-mart/react";
-import data from "@emoji-mart/data";
-import { useAppSelector } from "../hooks/hooks";
-import { selectCredentials } from "../features/auth/authSlice";
-import {
-  AttachedFile,
-  Post,
-  useGetPostQuery,
-} from "../services/post/postService";
-import { RcFile } from "antd/es/upload";
-import { useUploadFileMutation } from "../services/upload/uploadService";
-import PostFormModal from "./PostFormModal";
+import { Post, useGetPostQuery } from "../services/post/postService";
+import useUploadFile from "../hooks/upload/useUploadFile";
 
 const InputComment: React.FC<any> = ({
   inputRef,
@@ -53,11 +48,20 @@ const InputComment: React.FC<any> = ({
   const [t] = useTranslation(["commons"]);
   const uploadImage = useRef<any>(null);
   const uploadAudio = useRef<any>(null);
-  const [imageFileList, setImageFileList] = useState<UploadFile[]>([]);
-  const [audioFileList, setAudioFileList] = useState<UploadFile[]>([]);
-  const [comment, setComment] = useState<string>("");
   const credentials = useAppSelector(selectCredentials);
-  const [uploadFiles, { isLoading: isUploading }] = useUploadFileMutation();
+  const [
+    imageFileList,
+    setImageFileList,
+    uploadImageFiles,
+    isUploadImageFiles,
+  ] = useUploadFile([], credentials.incId, "image");
+  const [
+    audioFileList,
+    setAudioFileList,
+    uploadAudioFiles,
+    isUploadAudioFiles,
+  ] = useUploadFile([], credentials.incId, "image");
+  const [comment, setComment] = useState<string>("");
   const [createComment, { isLoading: isCreatingComment }] =
     useCreateCommentMutation();
 
@@ -71,61 +75,21 @@ const InputComment: React.FC<any> = ({
   };
 
   const handleUpload = async () => {
-    if (!credentials?.incId) return;
-
-    const returnData = {
-      audiocmts: [] as AttachedFile[],
-      imagecmts: [] as AttachedFile[],
-    };
-    if (imageFileList.length > 0) {
-      const formData = new FormData();
-      imageFileList.forEach((file) => {
-        formData.append("files[]", file as RcFile);
-      });
-
-      try {
-        const result = await uploadFiles({
-          type: "image",
-          userId: credentials.incId,
-          body: formData,
-        }).unwrap();
-        returnData.imagecmts = result.map((item) => ({
-          type: item.fileType,
-          url: item.url,
-        })) as never[];
-      } catch (error) {
-        message.error("Upload image failed");
-      }
+    try {
+      const images = await uploadImageFiles();
+      const audios = await uploadAudioFiles();
+      return {
+        imagecmts: images,
+        audiocmts: audios,
+      };
+    } catch (error) {
+      message.error("Upload files failed");
+      throw error;
     }
-    // upload audio
-    if (audioFileList.length > 0) {
-      const formData = new FormData();
-      audioFileList.forEach((file) => {
-        formData.append("files[]", file as RcFile);
-      });
-
-      try {
-        const result = await uploadFiles({
-          type: "audio",
-          userId: credentials.incId,
-          body: formData,
-        }).unwrap();
-        returnData.audiocmts = result.map((item) => ({
-          type: item.fileType,
-          url: item.url,
-        })) as never[];
-      } catch (error) {
-        message.error("Upload audio failed");
-      }
-    }
-    return returnData;
   };
 
-  const [isUpLoading, setIsUpLoading] = useState<boolean>(false);
-
   const handleSubmit = async () => {
-    if (!credentials?.incId) return;
-    if (!credentials?.userId) return;
+    if (!credentials?.incId || !credentials?.userId) return;
 
     if (!comment && imageFileList.length === 0 && audioFileList.length === 0) {
       message.error("Please enter your comment");
@@ -133,9 +97,7 @@ const InputComment: React.FC<any> = ({
     }
 
     try {
-      setIsUpLoading(true);
       const result = await handleUpload();
-      setIsUpLoading(false);
       const commentId = await createComment({
         userId: credentials.userId,
         postId: postId,
@@ -151,14 +113,15 @@ const InputComment: React.FC<any> = ({
       setImageFileList([]);
       setAudioFileList([]);
     } catch (error) {
-      setIsUpLoading(false);
       message.error("Create comment failed");
     }
   };
 
+  const isUploading = isUploadImageFiles || isUploadAudioFiles;
+
   return (
     <Spin
-      spinning={isUpLoading || isCreatingComment}
+      spinning={isUploading || isCreatingComment}
       tip={isUploading ? "Uploading..." : "Creating..."}
     >
       <div className="text-left px-4">
@@ -287,12 +250,14 @@ interface PostModalProps {
   isModalOpen: boolean;
   setIsModalOpen: (v: boolean) => void;
   setPostId: (v: string | null) => void;
+  refetchListPost?: () => void;
 }
 const PostModal: React.FC<PostModalProps> = ({
   postId,
   isModalOpen,
   setIsModalOpen,
   setPostId,
+  refetchListPost,
 }) => {
   const [isOpenCorrectModal, setIsOpenCorrectModal] = useState(false);
   const [t] = useTranslation(["commons"]);
@@ -342,7 +307,7 @@ const PostModal: React.FC<PostModalProps> = ({
     refetch,
     isFetching: isCommentFetching,
   } = useGetCommentsQuery(postId, {
-    // pollingInterval: 20000,
+    // pollingInterval: 10000,
     refetchOnMountOrArgChange: true,
     skip: !postId,
   });
@@ -435,15 +400,19 @@ const PostModal: React.FC<PostModalProps> = ({
         width={800}
         wrapClassName="pv-32"
         bodyStyle={modalBodyStyle}
-        footer={[
-          <InputComment
-            key="input-comment"
-            inputRef={inputRef}
-            isOpenCorrectModal={isOpenCorrectModal}
-            postId={postId}
-            refetch={refetch}
-          />,
-        ]}
+        footer={
+          !post?.isTurnOffCorrection
+            ? [
+              <InputComment
+                key="input-comment"
+                inputRef={inputRef}
+                isOpenCorrectModal={isOpenCorrectModal}
+                postId={postId}
+                refetch={refetch}
+              />,
+            ]
+            : []
+        }
       >
         <Skeleton
           loading={isPostDetailLoading || isPostDetailFetching}
@@ -462,37 +431,42 @@ const PostModal: React.FC<PostModalProps> = ({
               type="inModal"
               inputRef={inputRef}
               handleOpenCorrectModal={handleOpenCorrectModal}
+              setPost={setPost}
+              hideModalDetail={handleCancel}
+              refetchListPost={refetchListPost}
             />
           )}
         </Skeleton>
-        <div className="px-4">
-          <div className="text-right" style={{ zIndex: 4 }}>
-            <Select
-              className="input-select-comment-sort-title"
-              bordered={false}
-              defaultValue="newest_first"
-              style={{ fontWeight: 500 }}
-              dropdownMatchSelectWidth={false}
-              onChange={sortComments}
-              suffixIcon={<CaretDownOutlined style={{ color: "#8c8c8c" }} />}
-              options={[
-                { value: "newest_first", label: "Newest first" },
-                { value: "oldest_first", label: "Oldest first" },
-                { value: "only_correction", label: "Only correction" },
-                { value: "most_interact", label: "The most interacts" },
-              ]}
-            />
+        {!post?.isTurnOffCorrection && (
+          <div className="px-4">
+            <div className="text-right" style={{ zIndex: 4 }}>
+              <Select
+                className="input-select-comment-sort-title"
+                bordered={false}
+                defaultValue="newest_first"
+                style={{ fontWeight: 500 }}
+                dropdownMatchSelectWidth={false}
+                onChange={sortComments}
+                suffixIcon={<CaretDownOutlined style={{ color: "#8c8c8c" }} />}
+                options={[
+                  { value: "newest_first", label: "Newest first" },
+                  { value: "oldest_first", label: "Oldest first" },
+                  { value: "only_correction", label: "Only correction" },
+                  { value: "most_interact", label: "The most interacts" },
+                ]}
+              />
+            </div>
+            <Skeleton loading={isLoading} active avatar>
+              <CommentList
+                commentList={commentList}
+                ownerPostId={post?.userId}
+                refetch={refetch}
+                deleteCommentInList={deleteCommentInList}
+                setInteractCommentInList={setInteractCommentInList}
+              />
+            </Skeleton>
           </div>
-          <Skeleton loading={isLoading} active avatar>
-            <CommentList
-              commentList={commentList}
-              ownerPostId={post?.userId}
-              refetch={refetch}
-              deleteCommentInList={deleteCommentInList}
-              setInteractCommentInList={setInteractCommentInList}
-            />
-          </Skeleton>
-        </div>
+        )}
       </Modal>
       <CorrectionModal
         title={t("Correct content for this post")}

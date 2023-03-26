@@ -82,6 +82,10 @@ const ProfileSettingsPage: React.FC = () => {
   const bioRef = useRef<TextAreaRef>(null);
   const [updateAvatar, { isLoading: isLoadingUpdateAvatar }] =
     useUpdateAvatarMutation();
+  const [form] = Form.useForm();
+  const targetLanguages = Form.useWatch("targetLanguages", form);
+  const nativeLanguage = Form.useWatch("nativeLanguage", form);
+
   const {
     data: fetchProfile,
     refetch,
@@ -97,6 +101,15 @@ const ProfileSettingsPage: React.FC = () => {
       dispatch(setCredentialProfile(fetchProfile));
     }
   }, [fetchProfile, isFetching]);
+
+  useEffect(() => {
+    if (!targetLanguages && !nativeLanguage) return;
+
+    setSelectedLanguages([
+      ...targetLanguages?.map((lang: any) => lang?.id),
+      nativeLanguage?.id,
+    ]);
+  }, [targetLanguages, nativeLanguage]);
 
   useEffect(() => {
     if (!currentUserProfile) return;
@@ -215,6 +228,8 @@ const ProfileSettingsPage: React.FC = () => {
       <div className="px-3">
         <div className="text-center">
           <UploadImage
+            shape="round"
+            aspect={1}
             listType="picture-circle"
             fileList={fileList}
             onRemove={(file) => {
@@ -250,6 +265,7 @@ const ProfileSettingsPage: React.FC = () => {
           autoComplete="off"
           className="pt-3"
           layout="vertical"
+          form={form}
         >
           <Row gutter={12}>
             <Col span={12}>
@@ -323,11 +339,7 @@ const ProfileSettingsPage: React.FC = () => {
                 {fields.map(({ key, name, ...restField }, index) => (
                   <Row key={key}>
                     <Col span={16}>
-                      <Form.Item
-                        // initialValue={"english"}
-                        {...restField}
-                        name={[name, "id"]}
-                      >
+                      <Form.Item {...restField} name={[name, "id"]}>
                         <SeclectLanguageInput
                           placeholder={t("Target Language")}
                           exceptLanguages={selectedLanguages}

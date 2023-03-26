@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   Divider,
@@ -9,7 +8,6 @@ import {
   Skeleton,
   Space,
   Tag,
-  TagProps,
   Typography,
 } from "antd";
 import {

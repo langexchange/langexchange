@@ -10,6 +10,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Profile } from "../services/profile/profileServices";
 import getUnicodeFlagIcon from "country-flag-icons/unicode";
+import { Link } from "react-router-dom";
 
 type Type = "explore" | "request" | "partner";
 
@@ -70,64 +71,70 @@ const UserCard: React.FC<UserProps> = ({ type, ...profile }) => {
   }
 
   return (
-    <Card
-      hoverable
-      cover={profile?.avatar ? <Image src={profile.avatar} /> : undefined}
-      actions={actions}
-      style={{ flexDirection: "column" }}
-      bodyStyle={{ flex: 1 }}
-      className="d-flex"
-    >
-      <div
-        className="d-flex justify-space-between"
-        style={{ flexDirection: "column", height: "100%" }}
+    <Link to={`/profile/${profile.id}`}>
+      <Card
+        hoverable
+        cover={profile?.avatar ? <Image src={profile.avatar} /> : undefined}
+        actions={actions}
+        style={{ flexDirection: "column" }}
+        bodyStyle={{ flex: 1 }}
+        className="d-flex"
       >
-        <Space direction="vertical">
-          <Space wrap>
-            <Typography.Title level={4} className="m-0">
-              {[profile.firstName, profile.lastName].join(" ")}
-            </Typography.Title>
-            <Space
-              align="center"
-              className="has-background-color rounded-4 px-2"
-            >
-              <span className="fz-18">
-                {profile?.country && getUnicodeFlagIcon(profile.country)}
+        <div
+          className="d-flex justify-space-between"
+          style={{ flexDirection: "column", height: "100%" }}
+        >
+          <Space direction="vertical">
+            <Space wrap>
+              <Typography.Title level={4} className="m-0">
+                {[profile.firstName, profile.lastName].join(" ")}
+              </Typography.Title>
+              <Space
+                align="center"
+                className="has-background-color rounded-4 px-2"
+              >
+                <span className="fz-18">
+                  {profile?.country && getUnicodeFlagIcon(profile.country)}
+                </span>
+                <Typography.Text>
+                  {t(profile.country, { ns: "countries" })}
+                </Typography.Text>
+              </Space>
+            </Space>
+            <Space size={4} wrap>
+              <span className="me-2 text-500 secondary-color">
+                {t("Native")}
               </span>
-              <Typography.Text>
-                {t(profile.country, { ns: "countries" })}
-              </Typography.Text>
+              {[profile.nativeLanguage].map((item) => (
+                <Tag
+                  color="green"
+                  key={item.id}
+                  icon={<TranslationOutlined />}
+                  className="m-0"
+                >
+                  {item.name}
+                </Tag>
+              ))}
+            </Space>
+            <Space size={4} wrap>
+              <span className="me-2 text-500 secondary-color">
+                {t("Target")}
+              </span>
+              {profile.targetLanguages.map((item) => (
+                <Tag
+                  color="blue"
+                  key={item.id}
+                  icon={<TagOutlined />}
+                  className="m-0"
+                >
+                  {item.name}
+                </Tag>
+              ))}
             </Space>
           </Space>
-          <Space size={4} wrap>
-            <span className="me-2 text-500 secondary-color">{t("Native")}</span>
-            {[profile.nativeLanguage].map((item) => (
-              <Tag
-                color="green"
-                key={item.id}
-                icon={<TranslationOutlined />}
-                className="m-0"
-              >
-                {item.name}
-              </Tag>
-            ))}
-          </Space>
-          <Space size={4} wrap>
-            <span className="me-2 text-500 secondary-color">{t("Target")}</span>
-            {profile.targetLanguages.map((item) => (
-              <Tag
-                color="blue"
-                key={item.id}
-                icon={<TagOutlined />}
-                className="m-0"
-              >
-                {item.name}
-              </Tag>
-            ))}
-          </Space>
-        </Space>
-      </div>
-    </Card>
+        </div>
+      </Card>
+    </Link>
   );
 };
 

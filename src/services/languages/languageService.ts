@@ -5,6 +5,7 @@ const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 export interface Language {
   id: string;
   name: string;
+  localeCode: string;
 }
 
 export interface GetLanguagesResponse {

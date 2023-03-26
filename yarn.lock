@@ -2698,10 +2698,10 @@ ansi-styles@^5.0.0:
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-5.2.0.tgz#07449690ad45777d1924ac2abb2fc8895dba836b"
   integrity sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==
 
-antd-img-crop@^4.8.0:
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/antd-img-crop/-/antd-img-crop-4.8.0.tgz#68ed0e1eb05df11c7b42d7b944652744636e9c49"
-  integrity sha512-Y/Prjv67TE8OqmucMw0/4deKBEbgFiNT51G831VvPbLRehLr132cCuSVIGILuNodYx3UOKB6M+W1KcnG7pObEw==
+antd-img-crop@^4.10.2:
+  version "4.10.2"
+  resolved "https://registry.yarnpkg.com/antd-img-crop/-/antd-img-crop-4.10.2.tgz#104a834a672589e4f9ba93e2834d2a202f1232a2"
+  integrity sha512-3NHNldjV94gvpMFz7WMByVh+56E0TQBrHXf6ulGONm77ym2A5J465kuL08Jk9NZY1nmltyJexE7Yh9xQd895eg==
   dependencies:
     compare-versions "6.0.0-rc.1"
     react-easy-crop "^4.7.4"

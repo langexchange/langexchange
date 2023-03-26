@@ -26,6 +26,7 @@ export interface ProfileRequest {
 }
 
 export interface Profile {
+  id?: string;
   firstName: string;
   middleName: string;
   lastName: string;

@@ -17,10 +17,14 @@ const getBase64 = (file: RcFile): Promise<string> =>
 interface UploadImageProps extends UploadProps {
   setFileList?: (fileList: UploadFile[]) => void;
   limit?: number;
+  aspect?: number;
+  shape?: "rect" | "round";
 }
 
 const UploadImage: React.FC<UploadImageProps> = ({
   fileList,
+  aspect,
+  shape,
   setFileList,
   limit,
   ...props
@@ -72,7 +76,15 @@ const UploadImage: React.FC<UploadImageProps> = ({
 
   return (
     <>
-      <ImgCrop rotate>
+      <ImgCrop
+        rotationSlider
+        quality={1}
+        aspect={aspect || 16 / 9}
+        aspectSlider
+        showReset
+        modalWidth={700}
+        cropShape={shape || "rect"}
+      >
         <Upload
           listType="picture-card"
           fileList={fileList}

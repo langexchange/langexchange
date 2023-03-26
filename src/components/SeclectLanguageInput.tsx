@@ -13,6 +13,7 @@ interface SeclectLanguageInputProps extends SelectProps {
   allLanguages?: boolean;
   exceptLanguages?: string[];
   setExceptLanguages?: React.Dispatch<React.SetStateAction<string[]>>;
+  valueType?: "locale" | "id";
 }
 
 const tagRender = (props: any) => {
@@ -41,6 +42,7 @@ const SeclectLanguageInput: React.FC<SeclectLanguageInputProps> = ({
   setExceptLanguages,
   color = "blue",
   useCustomTagRender = true,
+  valueType = "id",
   ...rest
 }) => {
   const widthProperty = (typeof width === "number" && `${width}px`) || width;
@@ -88,19 +90,19 @@ const SeclectLanguageInput: React.FC<SeclectLanguageInputProps> = ({
   );
 
   useEffect(() => {
-    if (exceptLanguages.length === 0) return;
     if (!listLanguages) return;
     if (!allLanguages) return;
 
     const languages = listLanguages?.map((language) => ({
-      value: language.id,
+      value: valueType === "id" ? language.id : language.localeCode,
       label: t(language.name),
       color: "blue",
     }));
+
     setLanguages(
       languages.filter(
         (language) =>
-          !exceptLanguages.includes(language.value) ||
+          !exceptLanguages?.includes(language.value) ||
           language.value === rest.value
       )
     );
