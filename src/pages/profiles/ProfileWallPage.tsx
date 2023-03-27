@@ -3,14 +3,11 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import PostList from "../../components/community/PostList";
 import PostModal from "../../components/PostModal";
-import {
-  Post,
-  useGetAllPostOfUserQuery,
-} from "../../services/post/postService";
+import { useGetAllPostOfUserQuery } from "../../services/post/postService";
 
-const ProfileWallPage = () => {
+const ProfileWallPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [post, setPost] = useState<Post | null>(null);
+  const [postId, setPostId] = useState<string | null>(null);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -30,10 +27,15 @@ const ProfileWallPage = () => {
   return (
     <>
       <Skeleton loading={isLoading} avatar active>
-        <PostList setPost={setPost} showModal={showModal} postList={postList} />
+        <PostList
+          setPostId={setPostId}
+          showModal={showModal}
+          postList={postList}
+        />
       </Skeleton>
       <PostModal
-        post={post}
+        postId={postId}
+        setPostId={setPostId}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />

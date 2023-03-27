@@ -1,46 +1,35 @@
-import { Button, Col, Form, Input, Row, Select, Space, Switch } from "antd";
+import { Button, Col, Form, Input, Row, Space, Switch } from "antd";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import type { SelectProps } from "antd";
 import { useTranslation } from "react-i18next";
+import SeclectLanguageInput from "../SeclectLanguageInput";
+import { PostSuggestionQuery } from "../../services/post/postService";
 
 const onSearch = (value: string) => console.log(value);
 
-const handleChange = (value: string | string[]) => {
-  console.log(`Selected: ${value}`);
-};
+interface RightSidebarProps {
+  defaultFilters: PostSuggestionQuery;
+  setFilters: React.Dispatch<React.SetStateAction<PostSuggestionQuery>>;
+  resetFilters: () => void;
+}
 
-const RightSidebar: React.FC = () => {
+const RightSidebar: React.FC<RightSidebarProps> = ({
+  defaultFilters,
+  setFilters,
+  resetFilters,
+}) => {
   const [t] = useTranslation(["commons"]);
 
-  const options: SelectProps["options"] = [
-    {
-      value: "english",
-      label: t("English"),
-    },
-    {
-      value: "vietnamese",
-      label: t("Vietnamese"),
-    },
-    {
-      value: "chinese",
-      label: t("Chinese"),
-    },
-    {
-      value: "japanese",
-      label: t("Japanese"),
-    },
-    {
-      value: "korean",
-      label: t("Korean"),
-    },
-    {
-      value: "laos",
-      label: t("Laos"),
-    },
-  ];
+  const onFinish = (values: any) => {
+    setFilters((prev) => ({
+      ...prev,
+      ...values,
+    }));
+  };
+
+  const [form] = Form.useForm();
 
   return (
-    <div className="has-background-color pt-1">
+    <div className=" pt-1">
       <Space direction="vertical" className="width-full" size="middle">
         <Input.Search
           placeholder={`${t("type-to-search")} ${t("post")}...`}
@@ -48,17 +37,19 @@ const RightSidebar: React.FC = () => {
           className="input-no-background"
         />
 
-        <Form>
-          <Form.Item label={t("languages")} style={{ marginBottom: "12px" }}>
-            <Select
+        <Form onFinish={onFinish} initialValues={defaultFilters} form={form}>
+          <Form.Item
+            name="filterLangs"
+            label={t("languages")}
+            style={{ marginBottom: "12px" }}
+          >
+            <SeclectLanguageInput
               mode="multiple"
               size="middle"
               placeholder={t("languages")}
-              defaultValue={["english", "vietnamese"]}
-              onChange={handleChange}
               style={{ width: "100%" }}
-              options={options}
               className="input-no-background"
+              valueType="locale"
             />
           </Form.Item>
           <Row>
@@ -66,6 +57,8 @@ const RightSidebar: React.FC = () => {
               <Form.Item
                 label={t("filter-only-friend")}
                 style={{ marginBottom: "12px" }}
+                name="isOnlyFriend"
+                valuePropName="checked"
               >
                 <Switch
                   checkedChildren={<CheckOutlined />}
@@ -78,6 +71,8 @@ const RightSidebar: React.FC = () => {
               <Form.Item
                 label={t("filter-latest")}
                 style={{ marginBottom: "12px" }}
+                name="isNewest"
+                valuePropName="checked"
               >
                 <Switch
                   checkedChildren={<CheckOutlined />}
@@ -92,7 +87,15 @@ const RightSidebar: React.FC = () => {
               <Button type="primary" htmlType="submit">
                 {t("filter")}
               </Button>
-              <Button htmlType="button">{t("reset")}</Button>
+              <Button
+                htmlType="button"
+                onClick={() => {
+                  resetFilters();
+                  form.resetFields();
+                }}
+              >
+                {t("reset")}
+              </Button>
             </Space>
           </Form.Item>
         </Form>

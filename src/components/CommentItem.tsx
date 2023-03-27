@@ -27,33 +27,25 @@ import {
 } from "../services/comment/commentService";
 import { useAppSelector } from "../hooks/hooks";
 import { selectCredentials } from "../features/auth/authSlice";
-import { useState } from "react";
 import { useLazyGetNumOfInteractQuery } from "../services/comment/commentService";
+import { Link } from "react-router-dom";
 
 interface CommentProps extends Comment {
   ownerPostId?: string;
   openEditModal: () => void;
   setEditComment: (v: Comment) => void;
   deleteCommentInList: (id: string) => void;
+  setInteractCommentInList: (
+    id: string,
+    isLiked: boolean,
+    numOfInteract: number
+  ) => void;
 }
-
-const checkIsLiked = (
-  userId: string | null,
-  listUserIdInteracted: string[]
-) => {
-  if (!userId || !listUserIdInteracted) return false;
-  if (listUserIdInteracted.includes(userId)) return true;
-  return false;
-};
 
 const CommentItem: React.FC<CommentProps> = (comment) => {
   const credentials = useAppSelector(selectCredentials);
   const [deleteComment, { isLoading: isDeletingComment }] =
     useDeleteCommentMutation();
-  const [isLiked, setIsLiked] = useState(
-    checkIsLiked(credentials?.userId, comment.usersInteract)
-  );
-  const [numOfInteract, setNumOfInteract] = useState(comment.numOfInteract);
 
   const handleEdit = () => {
     comment.openEditModal();
@@ -81,8 +73,8 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
   const handleInteract = async () => {
     try {
       if (!credentials.userId) return;
-      let mode = 0;
-      if (isLiked) mode = 1;
+      let mode = 0; // if (isLiked) mode = 1;
+      if (comment.isUserInteracted) mode = 1;
 
       await interactComment({
         userId: credentials.userId,
@@ -91,8 +83,11 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
       }).unwrap();
 
       const numOfInteract = await getNumOfInteract(comment.commentId).unwrap();
-      setNumOfInteract(numOfInteract);
-      setIsLiked(!isLiked);
+      comment.setInteractCommentInList(
+        comment.commentId,
+        !comment.isUserInteracted,
+        numOfInteract
+      );
     } catch (error) {
       message.error("Error when interacting post");
     }
@@ -109,9 +104,11 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
         className="has-background-color py-2 px-3 rounded-4"
         direction="vertical"
       >
-        <Typography.Text strong={true}>
-          {[comment.userInfo.firstName, comment.userInfo.lastName].join(" ")}
-        </Typography.Text>
+        <Link to={`/profile/${comment.userId}`}>
+          <Typography.Text strong={true} className="hover-underline">
+            {[comment.userInfo.firstName, comment.userInfo.lastName].join(" ")}
+          </Typography.Text>
+        </Link>
         <Typography.Paragraph className="m-0">
           {comment.correctcmt ? (
             <Diff
@@ -155,12 +152,20 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
                 <Button
                   type="text"
                   onClick={handleInteract}
-                  icon={isLiked ? <HeartFilled /> : <HeartOutlined />}
+                  icon={
+                    comment.isUserInteracted ? (
+                      <HeartFilled />
+                    ) : (
+                      <HeartOutlined />
+                    )
+                  }
                   shape="circle"
                   danger
                   size="small"
                 />
-                <Typography.Text type="danger">{numOfInteract}</Typography.Text>
+                <Typography.Text type="danger">
+                  {comment.numOfInteract}
+                </Typography.Text>
               </Space>
               {credentials?.userId === comment.userId && (
                 <Button

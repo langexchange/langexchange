@@ -1,34 +1,47 @@
 import { Col, Row, Skeleton } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PostList from "../../components/community/PostList";
 import RightSidebar from "../../components/community/RightSidebar";
 import Sidebar from "../../components/community/Sidebar";
 import PostInput from "../../components/PostInput";
 import PostModal from "../../components/PostModal";
-import { selectCredentials } from "../../features/auth/authSlice";
-import { useAppSelector } from "../../hooks/hooks";
 import {
   Post,
-  useGetAllPostOfUserQuery,
+  PostSuggestionQuery,
+  useGetPostSuggestionsQuery,
 } from "../../services/post/postService";
-// import Post from "../../types/Post";
 
-const CommunityPage = () => {
+const defaultFilters: PostSuggestionQuery = {
+  filterLangs: [],
+  isNewest: true,
+  isOnlyFriend: false,
+};
+
+const CommunityPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [post, setPost] = useState<Post | null>(null);
-  const credentials = useAppSelector(selectCredentials);
+  const [postId, setPostId] = useState<string | null>(null);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [filters, setFilters] = useState(defaultFilters);
 
   const {
     data: postList,
-    isFetching,
+    refetch,
     isLoading,
-    isError,
-  } = useGetAllPostOfUserQuery(credentials?.userId, {
-    skip: !credentials?.userId,
+  } = useGetPostSuggestionsQuery(filters, {
+    refetchOnMountOrArgChange: true,
   });
+
+  useEffect(() => {
+    if (!postList) return;
+    setPosts(postList);
+  }, [postList]);
 
   const showModal = () => {
     setIsModalOpen(true);
+  };
+
+  const resetFilters = () => {
+    setFilters(defaultFilters);
   };
 
   return (
@@ -36,37 +49,44 @@ const CommunityPage = () => {
       <div>
         <Row
           justify="space-between"
-          className="full-height-minus-header py-3"
+          className="full-height-minus-header"
           gutter={24}
         >
-          <Col span={6}>
+          <Col span={6} className="py-3">
             <Sidebar />
           </Col>
           <Col
             span={12}
-            className="height-full px-3 pb-5 auto-hide-scroll scroll-style-1"
+            className="height-full py-3 px-4 pb-5 auto-hide-scroll scroll-style-1"
             id="style-1"
           >
             <div className="mb-3">
-              <PostInput />
+              <PostInput refetch={refetch} />
             </div>
             <Skeleton loading={isLoading} avatar active>
               <PostList
-                setPost={setPost}
+                setPostId={setPostId}
                 showModal={showModal}
-                postList={postList}
+                postList={posts}
+                refetchListPost={refetch}
               />
             </Skeleton>
           </Col>
-          <Col span={6}>
-            <RightSidebar />
+          <Col span={6} className="py-3">
+            <RightSidebar
+              defaultFilters={defaultFilters}
+              setFilters={setFilters}
+              resetFilters={resetFilters}
+            />
           </Col>
         </Row>
       </div>
       <PostModal
-        post={post}
+        postId={postId}
+        setPostId={setPostId}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        refetchListPost={refetch}
       />
     </>
   );

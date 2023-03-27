@@ -2,7 +2,7 @@ import {
   Avatar,
   Button,
   Card,
-  Dropdown,
+  CardProps,
   Image,
   MenuProps,
   message,
@@ -13,28 +13,26 @@ import {
   Typography,
 } from "antd";
 import {
-  MoreOutlined,
   HeartOutlined,
   HeartFilled,
   CommentOutlined,
   EditOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import Slider from "react-slick";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  AttachedFile,
-  Post,
-  useInteractPostMutation,
-  useLazyGetNumOfInteractQuery,
-} from "../services/post/postService";
-import ReactPlayer from "react-player";
-import { useAppSelector } from "../hooks/hooks";
-import { selectCredentials } from "../features/auth/authSlice";
+import { Post } from "../services/post/postService";
+import Carousel from "./Carousel";
+import usePost from "../hooks/post/usePost";
+import PostCardMoreActions from "./PostCardMoreActions";
+import { Link } from "react-router-dom";
 
-interface PostProps extends Post {
-  onClick?: (item: Post) => void;
+interface PostProps {
+  setEditPostId?: (v: string | null) => void;
+  showEditModal?: () => void;
+  post: Post;
+  setPostId?: (v: string | null) => void;
+  onClick?: (item: string) => void;
   hoverable?: boolean;
   bordered?: boolean;
   boxShadow?: boolean;
@@ -46,172 +44,13 @@ interface PostProps extends Post {
   type?: "normal" | "inModal";
   inputRef?: any;
   handleOpenCorrectModal?: () => void;
+  setPost?: React.Dispatch<React.SetStateAction<Post | null>>;
+  hideModalDetail?: () => void;
+  refetchListPost?: () => void;
 }
-
-const handleMenuClick: MenuProps["onClick"] = (e) => {
-  e.domEvent.preventDefault();
-  e.domEvent.stopPropagation();
-  message.info("Click on menu item.");
-};
-
-const title = (
-  owner: any,
-  group: PostProps["group"],
-  createdAt: string,
-  languages: ReactNode
-) => {
-  if (!owner) return <Skeleton.Input style={{ width: 100 }} active={true} />;
-  return (
-    <div className="d-flex gap-3">
-      <Space>
-        <Avatar
-          style={{
-            verticalAlign: "middle",
-          }}
-          size="large"
-          src={owner?.avatar ? <Image src={owner.avatar} /> : undefined}
-          icon={<UserOutlined />}
-        />
-        <Space size={0} direction="vertical">
-          <Typography.Title level={5} className="m-0">
-            {group ? group.name : [owner.firstName, owner.lastName].join(" ")}
-          </Typography.Title>
-          {group ? (
-            <Space>
-              <Typography.Text type="secondary">
-                {owner.firstName + " " + owner.lastName}
-              </Typography.Text>
-              <Typography.Text type="secondary">-</Typography.Text>
-              <Typography.Text type="secondary" className="text-400">
-                {createdAt}
-              </Typography.Text>
-            </Space>
-          ) : (
-            <Typography.Text type="secondary" className="text-400">
-              {createdAt}
-            </Typography.Text>
-          )}
-        </Space>
-      </Space>
-      <Space align="end">{languages}</Space>
-    </div>
-  );
-};
-
-function SampleNextArrow(props: any) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{
-        ...style,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        right: "24px",
-        position: "absolute",
-        height: "48px",
-        width: "48px",
-      }}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        onClick(e);
-      }}
-    />
-  );
-}
-
-function SamplePrevArrow(props: any) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{
-        ...style,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        left: "24px",
-        position: "absolute",
-        zIndex: 2,
-        height: "48px",
-        width: "48px",
-      }}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        onClick(e);
-      }}
-    />
-  );
-}
-
-interface CarouselProps {
-  images?: AttachedFile[];
-  videos?: AttachedFile[];
-  type?: "normal" | "inModal";
-}
-
-const Carousel: React.FC<CarouselProps> = ({
-  images,
-  videos,
-  type = "normal",
-}) => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-    adaptiveHeight: true,
-    appendDots: (dots: any) => (
-      <div
-        style={{ position: "absolute", zIndex: 3, bottom: "8px" }}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
-        <ul style={{ margin: 0, padding: 0 }}>{dots}</ul>
-      </div>
-    ),
-  };
-
-  return images ? (
-    <>
-      <div style={{ background: "#ebedf0" }}>
-        <Slider {...settings}>
-          {images.map((item, index) => (
-            <div key={index} className="text-center px-4">
-              <Image
-                preview={type === "inModal"}
-                src={item.url}
-                className="w-100"
-                width="auto"
-                height="auto"
-              />
-            </div>
-          ))}
-          {videos?.map((item, index) => (
-            <div key={index} className="text-center px-4">
-              <ReactPlayer
-                url={item.url}
-                controls={true}
-                width="100%"
-                height="auto"
-              />
-            </div>
-          ))}
-        </Slider>
-      </div>
-    </>
-  ) : null;
-};
 
 const PostCard: React.FC<PostProps> = ({
+  post: postData,
   group,
   onClick,
   hoverable = true,
@@ -221,9 +60,18 @@ const PostCard: React.FC<PostProps> = ({
   correctable = false,
   inputRef,
   handleOpenCorrectModal,
-  ...props
+  setEditPostId,
+  showEditModal,
+  setPost: setParentPost,
+  hideModalDetail,
+  refetchListPost,
 }) => {
   const [t] = useTranslation(["commons"]);
+  const [
+    post,
+    setPost,
+    { handleHeart, handlePostActions, isLoading, isOwner },
+  ] = usePost(postData);
   const headStyle: React.CSSProperties = {
     backgroundColor: "white",
     border: "none",
@@ -231,50 +79,48 @@ const PostCard: React.FC<PostProps> = ({
     paddingTop: type === "inModal" ? "0" : "12px",
   };
 
-  const credentials = useAppSelector(selectCredentials);
-  const [numOfLikes, setNumOfLikes] = useState(props.numOfInteract);
-  const [isLike, setIsLike] = useState(props.isUserInteracted);
-  const [interactPost, { isLoading: isInteractingPost }] =
-    useInteractPostMutation();
-  const [getNumOfInteract, { isLoading: isGettingNumOfInteract }] =
-    useLazyGetNumOfInteractQuery();
-
-  const handleHeart = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-
+  const handleMenuClick: MenuProps["onClick"] = async (e) => {
+    e.domEvent.preventDefault();
+    e.domEvent.stopPropagation();
     try {
-      if (!credentials.userId) return;
-      let mode = 0;
-      if (isLike) mode = 1;
-
-      await interactPost({
-        userId: credentials.userId,
-        postId: props.postId,
-        mode: mode as 0 | 1,
-      }).unwrap();
-      const numOfInteract = await getNumOfInteract(props.postId).unwrap();
-      setNumOfLikes(numOfInteract);
-      setIsLike(!isLike);
+      switch (e.key) {
+        case "0":
+          setEditPostId && setEditPostId(post.postId);
+          showEditModal && showEditModal();
+          break;
+        case "2":
+          // copy link of post
+          navigator.clipboard.writeText(
+            `http:localhost:3000/posts/${post.postId}`
+          );
+          message.success("Copy link successfully");
+          break;
+        case "3":
+          await handlePostActions("updateVisible");
+          break;
+        case "4":
+          await handlePostActions("updateCorrection");
+          setParentPost &&
+            setParentPost(
+              (prev) =>
+              ({
+                ...prev,
+                isTurnOffCorrection: !post.isTurnOffCorrection,
+              } as Post)
+            );
+          break;
+        case "5":
+          await handlePostActions("updateSharing");
+          break;
+        case "6":
+          await handlePostActions("delete");
+          hideModalDetail && hideModalDetail();
+          refetchListPost && refetchListPost();
+          break;
+      }
     } catch (error) {
-      message.error("Error when interacting post");
+      message.error("Error when update mode post");
     }
-  };
-
-  const items: MenuProps["items"] = [
-    {
-      label: <span>{t("Collect this post")}</span>,
-      key: "0",
-    },
-    {
-      label: <span>{t("Hide this post")}</span>,
-      key: "1",
-    },
-  ];
-
-  const menuDropdown = {
-    items: items,
-    onClick: handleMenuClick,
   };
 
   return (
@@ -287,26 +133,24 @@ const PostCard: React.FC<PostProps> = ({
       }
       hoverable={hoverable}
       title={title(
-        props.userInfo,
+        post.userInfo,
         group,
-        new Date(props.createdAt).toLocaleString(),
-        [props.langName].map((item, index) => (
+        new Date(post.createdAt).toLocaleString(),
+        [post.langName].map((item, index) => (
           <Tag color="green" key={index}>
             {item}
           </Tag>
-        ))
+        )),
+        post.postId
       )}
       cover={
-        <Carousel
-          images={props.imagePost}
-          videos={props.videoPost}
-          type={type}
-        />
+        <Carousel images={post.imagePost} videos={post.videoPost} type={type} />
       }
       actions={[
         <Button type="text" danger block onClick={handleHeart}>
           <Space size={4}>
-            {isLike ? <HeartFilled /> : <HeartOutlined />} {numOfLikes}
+            {post.isUserInteracted ? <HeartFilled /> : <HeartOutlined />}{" "}
+            {post.numOfInteract}
           </Space>
         </Button>,
         <Button
@@ -314,33 +158,33 @@ const PostCard: React.FC<PostProps> = ({
           className="btn-text-success"
           block
           onClick={() => {
-            if (inputRef) inputRef.current.focus();
+            if (inputRef) inputRef.current?.focus();
           }}
         >
           <Space size={4}>
-            <CommentOutlined /> {props.numOfCmt}
+            <CommentOutlined /> {post.numOfCmt}
           </Space>
         </Button>,
-        <Dropdown menu={menuDropdown} trigger={["click"]}>
-          <Button
-            type="text"
-            icon={<MoreOutlined rotate={90} />}
-            className="btn-text-warning width-full"
-            block
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          />
-        </Dropdown>,
+        <PostCardMoreActions
+          isOwner={isOwner}
+          isTurnOffCorrection={post.isTurnOffCorrection}
+          isTurnOffShare={post.isTurnOffShare}
+          isPublic={post.isPublic}
+          handleMenuClick={handleMenuClick}
+        />,
       ]}
       headStyle={headStyle}
       bodyStyle={{ position: "relative", paddingBottom: "12px" }}
-      onClick={() => onClick && onClick(props)}
+      onClick={() => onClick && onClick(post.postId)}
     >
-      <Typography.Paragraph>{props.text}</Typography.Paragraph>
-      <div className="mb-2">
-        {props.audioPost?.map((item, index) => (
+      <Typography.Paragraph>{post.text}</Typography.Paragraph>
+      <div className="">
+        {post?.labels?.map((item, index) => (
+          <Tag key={index}>{item}</Tag>
+        ))}
+      </div>
+      <div className="my-2">
+        {post.audioPost?.map((item, index) => (
           <audio
             src={item.url}
             controls
@@ -349,7 +193,7 @@ const PostCard: React.FC<PostProps> = ({
           />
         ))}
       </div>
-      {type === "inModal" && correctable && (
+      {type === "inModal" && !post.isTurnOffCorrection && (
         <div
           className="position-absolute end-0 mb-2 me-4"
           style={{ bottom: "-28px" }}
@@ -371,6 +215,61 @@ const PostCard: React.FC<PostProps> = ({
         </div>
       )}
     </Card>
+  );
+};
+
+const title = (
+  owner: any,
+  group: PostProps["group"],
+  createdAt: string,
+  languages: ReactNode,
+  postId: string
+) => {
+  if (!owner) return <Skeleton.Input style={{ width: 100 }} active={true} />;
+  return (
+    <div className="d-flex gap-3">
+      <Space>
+        <Avatar
+          style={{
+            verticalAlign: "middle",
+          }}
+          size="large"
+          src={owner?.avatar ? <Image src={owner.avatar} /> : undefined}
+          icon={<UserOutlined />}
+        />
+        <div className="d-flex flex-column">
+          <Link to={`/profile/${owner?.id}`}>
+            <Typography.Title level={5} className="m-0 hover-underline">
+              {group ? group.name : [owner.firstName, owner.lastName].join(" ")}
+            </Typography.Title>
+          </Link>
+          {group ? (
+            <Space>
+              <Typography.Text type="secondary">
+                {owner.firstName + " " + owner.lastName}
+              </Typography.Text>
+              <Typography.Text type="secondary">-</Typography.Text>
+              <Typography.Text type="secondary" className="text-400">
+                {createdAt}
+              </Typography.Text>
+            </Space>
+          ) : (
+            <Link
+              to={`/posts/${postId}`}
+              style={{ height: "fit-content", lineHeight: "14px" }}
+            >
+              <Typography.Text
+                type="secondary"
+                className="text-400 hover-underline fz-12"
+              >
+                {createdAt}
+              </Typography.Text>
+            </Link>
+          )}
+        </div>
+      </Space>
+      <Space align="end">{languages}</Space>
+    </div>
   );
 };
 

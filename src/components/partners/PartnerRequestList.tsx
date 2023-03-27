@@ -1,42 +1,28 @@
-import { faker } from "@faker-js/faker";
-import { Col, Row } from "antd";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { Profile } from "../../services/profile/profileServices";
 import UserCard from "../UserCard";
-
-interface UserProps {
-  name: string;
-  natives: string[];
-  targets: string[];
-  country: string;
-  image: string;
-}
 
 interface PartnerRequestListProps {
   colSpan?: number;
+  partnerList?: Profile[];
+  refetch?: () => void;
 }
 
-const items: UserProps[] = [];
-
-for (let i = 0; i < 10; i++) {
-  items.push({
-    name: faker.random.words(4),
-    natives: [faker.random.word(), faker.random.word()],
-    targets: [faker.random.word(), faker.random.word()],
-    country: faker.random.words(6),
-    image: faker.image.abstract(),
-  });
-}
-
-const PartnerRequestList = ({ colSpan = 6 }: PartnerRequestListProps) => {
+const PartnerRequestList: React.FC<PartnerRequestListProps> = ({
+  colSpan = 6,
+  partnerList = [],
+  refetch,
+}) => {
   return (
-    <div>
-      <Row gutter={[24, 24]}>
-        {items.map((item, index) => (
-          <Col span={colSpan} key={index}>
-            <UserCard {...item} type="request" />
-          </Col>
+    <ResponsiveMasonry
+      columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3, 1200: 24 / colSpan }}
+    >
+      <Masonry gutter="12px">
+        {partnerList.map((item, index) => (
+          <UserCard {...item} type="request" key={index} refetch={refetch} />
         ))}
-      </Row>
-    </div>
+      </Masonry>
+    </ResponsiveMasonry>
   );
 };
 

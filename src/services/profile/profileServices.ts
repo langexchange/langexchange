@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../../stores/store";
-import { AttachedFile } from "../post/postService";
 
 const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 
@@ -27,6 +26,7 @@ export interface ProfileRequest {
 }
 
 export interface Profile {
+  id?: string;
   firstName: string;
   middleName: string;
   lastName: string;
@@ -82,6 +82,12 @@ export const profileApi = createApi({
         method: "GET",
       }),
     }),
+    getAllProfiles: builder.query<GetProfileResponse[], void>({
+      query: () => ({
+        url: `api/users`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -90,4 +96,5 @@ export const {
   useGetProfileQuery,
   useLazyGetProfileQuery,
   useUpdateAvatarMutation,
+  useGetAllProfilesQuery,
 } = profileApi;

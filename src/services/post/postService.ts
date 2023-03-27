@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "../../stores/store";
 
 const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 
@@ -35,7 +36,7 @@ export interface Post {
   numOfCmt: number;
 }
 
-export interface CreateLanguageRequest {
+export interface CreatePostRequest {
   userId: string;
   body: {
     langId: string;
@@ -52,21 +53,50 @@ export interface CreateLanguageRequest {
   };
 }
 
+export interface UpdatePostRequest extends CreatePostRequest {
+  postId: string;
+}
+
 export interface InteractPostRequest {
   userId: string;
   postId: string;
   mode: 0 | 1; // 0: like, 1: unlike
 }
 
+export interface updateModePostRequest {
+  userId: string;
+  postId: string;
+  mode: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7; // 0: isPublic, 1: isPrivate, 2: deletePost, 3: isTurnOffComment, 4: isTurnOffShare, 5: isTurnOffCorrection, 6: onShare, 7: onCorrect
+}
+
+export interface PostSuggestionQuery {
+  filterLangs: string[];
+  isNewest: boolean;
+  isOnlyFriend: boolean;
+}
+
 export const postApi = createApi({
   reducerPath: "postApi ",
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
     getAllPostOfUser: builder.query<Post[], string | null>({
       query: (userId) => ({
         url: `api/users/${userId}/posts`,
+        method: "GET",
+      }),
+    }),
+    getPost: builder.query<Post, string | null>({
+      query: (postId) => ({
+        url: `api/posts/${postId}`,
         method: "GET",
       }),
     }),
@@ -76,11 +106,24 @@ export const postApi = createApi({
         method: "GET",
       }),
     }),
-    createPost: builder.mutation<string, CreateLanguageRequest>({
+    createPost: builder.mutation<string, CreatePostRequest>({
       query: (data) => ({
         url: `api/users/${data.userId}/post/create`,
         method: "POST",
         body: data.body,
+      }),
+    }),
+    updatePost: builder.mutation<string, UpdatePostRequest>({
+      query: (data) => ({
+        url: `api/users/${data.userId}/posts/${data.postId}/update`,
+        method: "PUT",
+        body: data.body,
+      }),
+    }),
+    updateModePost: builder.mutation<undefined, updateModePostRequest>({
+      query: (data) => ({
+        url: `api/users/${data.userId}/posts/${data.postId}/configure/${data.mode}`,
+        method: "PUT",
       }),
     }),
     interactPost: builder.mutation<string, InteractPostRequest>({
@@ -89,12 +132,33 @@ export const postApi = createApi({
         method: "POST",
       }),
     }),
+    getPostSuggestions: builder.query<Post[], PostSuggestionQuery>({
+      query: (queryParams) => {
+        const params = new URLSearchParams();
+        queryParams.filterLangs.forEach((lang) => {
+          params.append("filterLangs", lang);
+        });
+
+        params.append("isNewest", queryParams.isNewest.toString());
+        params.append("isOnlyFriend", queryParams.isOnlyFriend.toString());
+
+        return {
+          url: `api/posts/suggest`,
+          params: params,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
 export const {
   useCreatePostMutation,
+  useGetPostQuery,
   useGetAllPostOfUserQuery,
   useInteractPostMutation,
   useLazyGetNumOfInteractQuery,
+  useUpdatePostMutation,
+  useUpdateModePostMutation,
+  useGetPostSuggestionsQuery,
 } = postApi;

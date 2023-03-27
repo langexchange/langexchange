@@ -5,6 +5,7 @@ const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 export interface Language {
   id: string;
   name: string;
+  localeCode: string;
 }
 
 export interface GetLanguagesResponse {
@@ -23,7 +24,13 @@ export const languageApi = createApi({
         method: "GET",
       }),
     }),
+    getLanguageByUser: builder.query<Language[], string>({
+      query: (userId) => ({
+        url: `/api/users/${userId}/languages`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetLanguagesQuery } = languageApi;
+export const { useGetLanguagesQuery, useGetLanguageByUserQuery } = languageApi;

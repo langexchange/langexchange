@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "../../stores/store";
 
 const baseUrl = process.env.REACT_APP_API_UPLOAD;
 
@@ -23,6 +24,13 @@ export const uploadApi = createApi({
   reducerPath: "uploadApi",
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
     uploadFile: builder.mutation<UploadFileResponse[], UploadFileRequest>({

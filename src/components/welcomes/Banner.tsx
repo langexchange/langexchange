@@ -2,6 +2,7 @@ import BannerImage from "../../assets/images/introduce_img.png";
 import { Button, Col, Image, Row, Space, Typography } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -24,9 +25,11 @@ const Banner = () => {
               <Title className="m-0">{t("banner-title")}</Title>
             </Space>
             <Text type="secondary">{t("banner-slogan")}</Text>
-            <Button size="large" type="primary" icon={<ArrowRightOutlined />}>
-              {t("btn-text-start")}
-            </Button>
+            <Link to="/sign-up">
+              <Button size="large" type="primary" icon={<ArrowRightOutlined />}>
+                {t("btn-text-start")}
+              </Button>
+            </Link>
           </Space>
         </Col>
       </Row>

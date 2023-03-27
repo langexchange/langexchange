@@ -3,12 +3,14 @@ import authReducer from "../features/auth/authSlice";
 import profileReducer from "../features/profile/profileSlice";
 import languageReducer from "../features/languages/languageSlice";
 import postReducer from "../features/post/postSlice";
+import themeReducer from "../features/themes/themeSlice";
 import { authApi } from "../services/auth/authServices";
 import { profileApi } from "../services/profile/profileServices";
 import { languageApi } from "../services/languages/languageService";
 import { postApi } from "../services/post/postService";
 import { uploadApi } from "../services/upload/uploadService";
 import { commentApi } from "../services/comment/commentService";
+import { friendApi } from "../services/friend/friendService";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +24,8 @@ export const store = configureStore({
     post: postReducer,
     [uploadApi.reducerPath]: uploadApi.reducer,
     [commentApi.reducerPath]: commentApi.reducer,
+    [friendApi.reducerPath]: friendApi.reducer,
+    theme: themeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -30,7 +34,8 @@ export const store = configureStore({
       languageApi.middleware,
       postApi.middleware,
       uploadApi.middleware,
-      commentApi.middleware
+      commentApi.middleware,
+      friendApi.middleware
     ),
 });
 

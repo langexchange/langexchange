@@ -12,7 +12,7 @@ import { setCredentials } from "../../features/auth/authSlice";
 import { useAppDispatch } from "../../hooks/hooks";
 import { useLoginMutation } from "../../services/auth/authServices";
 
-const SigninForm = () => {
+const SigninForm: React.FC = () => {
   const [t] = useTranslation(["commons"]);
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
@@ -43,7 +43,7 @@ const SigninForm = () => {
     <Spin spinning={isLoading} delay={500}>
       <Form
         name="normal_login"
-        className="login-form"
+        className="login-form w-100"
         initialValues={{ remember: true }}
         onFinish={onFinish}
       >
@@ -77,30 +77,41 @@ const SigninForm = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>{t("remember-me")}</Checkbox>
-          </Form.Item>
+          <div className="d-flex align-items-center justify-content-between">
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>{t("remember-me")}</Checkbox>
+            </Form.Item>
 
-          <Link to="/forgot-password" className="float-right">
-            {t("forgot-password")}
-          </Link>
+            <Link to="/forgot-password" className="float-right">
+              {t("forgot-password")}
+            </Link>
+          </div>
         </Form.Item>
 
         <Form.Item>
-          <Space>
-            {t("signin-with")}
-            <Space size="small">
-              <Button type="default" shape="circle" icon={<FacebookFilled />} />
-              <Button
-                type="default"
-                shape="circle"
-                icon={<GoogleSquareFilled />}
-              />
+          <div className="d-flex align-items-center justify-content-between">
+            <Space>
+              {t("signin-with")}
+              <Space size={0} align="center">
+                <Button
+                  type="text"
+                  shape="circle"
+                  icon={<FacebookFilled className="fz-18" />}
+                  className="btn-text-primary d-flex justify-center align-items-center"
+                />
+                <Button
+                  type="text"
+                  shape="circle"
+                  icon={<GoogleSquareFilled className="fz-18" />}
+                  className="d-flex justify-center align-items-center"
+                  danger
+                />
+              </Space>
             </Space>
-          </Space>
-          <Button type="primary" htmlType="submit" className="float-right">
-            {t("sign-in")}
-          </Button>
+            <Button type="primary" htmlType="submit" className="float-right">
+              {t("sign-in")}
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </Spin>

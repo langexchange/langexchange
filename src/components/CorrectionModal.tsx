@@ -1,4 +1,4 @@
-import { Button, Input, message, Modal, ModalProps, Space, Spin } from "antd";
+import { Button, Input, message, Modal, ModalProps, Space } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Diff from "./Diff";
 import type { InputRef } from "antd";
@@ -10,7 +10,7 @@ import { selectCredentials } from "../features/auth/authSlice";
 interface CorrectionModalProps extends ModalProps {
   originalText: string;
   setOpen: (isOpen: boolean) => void;
-  postId: string;
+  postId: string | null;
   refetch: () => void;
 }
 
@@ -44,6 +44,7 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
     e: React.MouseEvent<HTMLAnchorElement> & React.MouseEvent<HTMLButtonElement>
   ) => {
     if (!credentials?.userId) return;
+    if (!postId) return;
 
     if (!text) {
       message.error("Please enter your correction");
@@ -112,6 +113,7 @@ const CorrectionModal: React.FC<CorrectionModalProps> = ({
           correctedText={text}
           className="fz-20 text-300 rounded-3 my-0"
           code
+          strikeThrough={true}
         />
       </Space>
       <Space direction="vertical" className="width-full mt-2">

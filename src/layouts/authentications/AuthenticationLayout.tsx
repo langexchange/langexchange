@@ -1,32 +1,33 @@
 import Logo from "../../assets/images/logo.png";
 import AuthenBackgroundImage from "../../assets/images/authen_bg.png";
-import { Button, Image, Space, Tabs, Typography } from "antd";
+import { Button, Image, Select, Space, Tabs, Typography } from "antd";
 import { RollbackOutlined } from "@ant-design/icons";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import type { TabsProps } from "antd";
 import { useTranslation } from "react-i18next";
 import { getElementInPathnameAt } from "../../utils/extractPathname";
+import LocaleSelect from "../../components/LocaleSelect";
 
 const AuthenticationLayout = () => {
   const { t } = useTranslation(["commons"]);
+  const navigate = useNavigate();
 
   const activeTab = getElementInPathnameAt(1);
+  const handleTabClick = (key: string) => {
+    if (key === "sign-in") {
+      navigate("/sign-in");
+    } else if (key === "sign-up") {
+      navigate("/sign-up");
+    }
+  };
 
   const items: TabsProps["items"] = [
     {
-      label: (
-        <Link to="/sign-in" style={{ color: "inherit" }}>
-          {t("sign-in")}
-        </Link>
-      ),
+      label: t("sign-in"),
       key: "sign-in",
     },
     {
-      label: (
-        <Link to="/sign-up" style={{ color: "inherit" }}>
-          {t("sign-up")}
-        </Link>
-      ),
+      label: t("sign-up"),
       key: "sign-up",
     },
   ];
@@ -41,6 +42,7 @@ const AuthenticationLayout = () => {
 
   return (
     <div style={styles.container}>
+      <LocaleSelect className="float-right me-5 mt-5" />
       <div
         style={{
           margin: "auto",
@@ -53,7 +55,7 @@ const AuthenticationLayout = () => {
           direction="vertical"
           align="center"
           size="large"
-          style={{ width: "360px" }}
+          style={{ minWidth: "500px" }}
         >
           <Space direction="vertical" align="center">
             <Image src={Logo} alt="LangExchange logo" />
@@ -61,14 +63,15 @@ const AuthenticationLayout = () => {
               {t("logo-slogan")}
             </Typography.Text>
           </Space>
-          <Space direction="vertical" align="center">
+          <Space direction="vertical" className="text-center">
             <Tabs
               tabBarExtraContent={backToHome}
               items={items}
-              style={{ width: "360px" }}
+              style={{ minWidth: "360px" }}
               activeKey={activeTab}
+              onTabClick={handleTabClick}
             />
-            <div style={{ width: "360px" }}>
+            <div style={{ minWidth: "360px" }}>
               <Outlet />
             </div>
           </Space>

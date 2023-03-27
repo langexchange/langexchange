@@ -1,13 +1,15 @@
 import { Input, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 
-const onSearch = (value: string) => console.log(value);
-
-interface Props {
+interface ContentTitleWithSearchProps {
   title: string;
+  onSearch?: (value: string) => void;
 }
 
-const ContentTitleWithSearch = ({ title }: Props) => {
+const ContentTitleWithSearch: React.FC<ContentTitleWithSearchProps> = ({
+  title,
+  onSearch,
+}) => {
   const [t] = useTranslation(["commons"]);
   return (
     <div className="d-flex justify-space-between ">

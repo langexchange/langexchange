@@ -57,7 +57,7 @@ const VocabularyCreatePage: React.FC = () => {
   };
   return (
     <div
-      className="has-background-color height-full"
+      className="height-full"
       style={{
         minHeight: "calc(100vh - 48px)",
       }}

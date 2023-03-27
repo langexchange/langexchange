@@ -1,106 +1,86 @@
-import { Button, Col, Form, Row, Select, SelectProps, Space } from "antd";
+import { Button, Col, Form, Row, Space } from "antd";
 import { useTranslation } from "react-i18next";
+import { FriendSuggestionsQuery } from "../../services/friend/friendService";
+import CountrySelectInput from "../CountrySelectInput";
+import SeclectLanguageInput from "../SeclectLanguageInput";
 
-const handleChange = (value: string | string[]) => {
-  console.log(`Selected: ${value}`);
-};
+interface FilterLineProps {
+  defaultFilters: FriendSuggestionsQuery;
+  setFilters: React.Dispatch<React.SetStateAction<FriendSuggestionsQuery>>;
+}
 
-const FilterLine: React.FC = () => {
+const FilterLine: React.FC<FilterLineProps> = ({
+  defaultFilters,
+  setFilters,
+}) => {
   const [t] = useTranslation(["commons"]);
+  const [form] = Form.useForm();
+  const onFinish = (values: any) => {
+    console.log(values);
+    setFilters((prev) => ({ ...prev, ...values }));
+  };
+  const resetFilters = () => {
+    setFilters(defaultFilters);
+    form.resetFields();
+  };
 
-  const options: SelectProps["options"] = [
-    {
-      value: "english",
-      label: t("English"),
-    },
-    {
-      value: "vietnamese",
-      label: t("Vietnamese"),
-    },
-    {
-      value: "chinese",
-      label: t("Chinese"),
-    },
-    {
-      value: "japanese",
-      label: t("Japanese"),
-    },
-    {
-      value: "korean",
-      label: t("Korean"),
-    },
-    {
-      value: "laos",
-      label: t("Laos"),
-    },
-  ];
-
-  const countryOptions = [
-    { label: t("Viet Nam"), value: "1" },
-    { label: t("China"), value: "2" },
-    { label: t("United States"), value: "3" },
-    { label: t("United Kingdom"), value: "4" },
-    { label: t("Japan"), value: "5" },
-    { label: t("Korea"), value: "6" },
-    { label: t("Brazil"), value: "7" },
-    { label: t("Canada"), value: "8" },
-  ];
   return (
-    <Form className="width-full">
+    <Form
+      className="width-full"
+      form={form}
+      initialValues={defaultFilters}
+      onFinish={onFinish}
+    >
       <Row gutter={12}>
         <Col flex="auto">
-          <Form.Item label={t("Native").toString()}>
-            <Select
+          <Form.Item
+            label={t("Native").toString()}
+            className="m-0"
+            name="nativeLangs"
+          >
+            <SeclectLanguageInput
               allowClear
               mode="multiple"
               size="middle"
               placeholder={t("Native").toString()}
-              defaultValue={["english", "vietnamese"]}
-              onChange={handleChange}
-              style={{ width: "100%" }}
-              options={options}
+              dropdownMatchSelectWidth={false}
+              valueType="locale"
             />
           </Form.Item>
         </Col>
         <Col flex="auto">
-          <Form.Item label={t("Target").toString()}>
-            <Select
+          <Form.Item
+            label={t("Target").toString()}
+            className="m-0"
+            name="targetLangs"
+          >
+            <SeclectLanguageInput
               allowClear
               mode="multiple"
               size="middle"
               placeholder={t("Target").toString()}
-              defaultValue={["english", "vietnamese"]}
-              onChange={handleChange}
-              options={options}
+              dropdownMatchSelectWidth={false}
+              valueType="locale"
             />
           </Form.Item>
         </Col>
         <Col flex="auto">
-          <Form.Item label={t("Country")}>
-            <Select
-              allowClear
-              showSearch
+          <Form.Item label={t("Country")} className="m-0" name="countryCodes">
+            <CountrySelectInput
               mode="multiple"
               placeholder={t("Country").toString()}
-              optionFilterProp="children"
-              // onChange={onChange}
-              // onSearch={onSearch}
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={countryOptions}
             />
           </Form.Item>
         </Col>
         <Col flex="auto">
-          <Form.Item className="text-center">
+          <Form.Item className="text-center m-0">
             <Space>
               <Button type="primary" htmlType="submit">
                 {t("filter")}
               </Button>
-              <Button htmlType="button">{t("reset")}</Button>
+              <Button htmlType="button" onClick={resetFilters}>
+                {t("reset")}
+              </Button>
             </Space>
           </Form.Item>
         </Col>

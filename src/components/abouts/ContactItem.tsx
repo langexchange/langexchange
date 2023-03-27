@@ -10,13 +10,13 @@ interface ContactItemProps {
   text_button: string;
 }
 
-const ContactItem = ({
+const ContactItem: React.FC<ContactItemProps> = ({
   image,
   title,
   descriptions,
   type,
   text_button,
-}: ContactItemProps) => {
+}) => {
   return (
     <Card>
       <Space direction="vertical" align="center" size="large">

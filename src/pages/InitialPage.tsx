@@ -5,25 +5,20 @@ import {
   Input,
   message,
   Row,
-  Select,
   Spin,
   Steps,
   theme,
   Typography,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import { CN, FR, VN } from "country-flag-icons/react/3x2";
 import AuthenBackgroundImage from "../assets/images/authen_bg.png";
 import { useUpdateProfileMutation } from "../services/profile/profileServices";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import {
-  selectCurrentUserId,
-  setCredentials,
-} from "../features/auth/authSlice";
+import { useAppSelector } from "../hooks/hooks";
+import { selectCurrentUserId } from "../features/auth/authSlice";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import SeclectLanguageInput from "../components/SeclectLanguageInput";
-import { setCredentialProfile } from "../features/profile/profileSlice";
 import CountrySelectInput from "../components/CountrySelectInput";
+import LocaleSelect from "../components/LocaleSelect";
 
 interface BasicInfo {
   firstName: string;
@@ -99,6 +94,7 @@ const SetupLanguagesForm: React.FC<ItemStepProps> = (props) => {
             onChange={(value) => {
               setBasicInfo("nativeLanguage", value);
             }}
+            exceptLanguages={targetLanguages}
           />
         </Col>
         <Col span={12}>
@@ -115,6 +111,7 @@ const SetupLanguagesForm: React.FC<ItemStepProps> = (props) => {
             bordered={false}
             showArrow
             value={targetLanguages}
+            exceptLanguages={[nativeLanguage]}
             onChange={(value) => {
               setBasicInfo("targetLanguages", value);
             }}
@@ -133,16 +130,6 @@ const MoreInformation: React.FC<ItemStepProps> = (props) => {
   } = props;
 
   const [t] = useTranslation(["initial"]);
-  const countryOptions = [
-    { label: t("Viet Nam", { ns: "commons" }), value: "1" },
-    { label: t("China", { ns: "commons" }), value: "2" },
-    { label: t("United States", { ns: "commons" }), value: "3" },
-    { label: t("United Kingdom", { ns: "commons" }), value: "4" },
-    { label: t("Japan", { ns: "commons" }), value: "5" },
-    { label: t("Korea", { ns: "commons" }), value: "6" },
-    { label: t("Brazil", { ns: "commons" }), value: "7" },
-    { label: t("Canada", { ns: "commons" }), value: "8" },
-  ];
   return (
     <div className="text-center w-100">
       <Typography.Title level={2} className="text-300">
@@ -152,7 +139,6 @@ const MoreInformation: React.FC<ItemStepProps> = (props) => {
         size="large"
         placeholder={t("Country")}
         style={{ width: "100%" }}
-        options={countryOptions}
         className="has-background-color rounded-3 w-50"
         bordered={false}
         value={country || null}
@@ -178,17 +164,9 @@ const MoreInformation: React.FC<ItemStepProps> = (props) => {
 };
 
 const InitialPage: React.FC = () => {
-  const { t, i18n } = useTranslation(["initial", "commons"]);
-  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+  const { t } = useTranslation(["initial", "commons"]);
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const currentUserId = useAppSelector(selectCurrentUserId);
-  const dispatch = useAppDispatch();
-
-  const handleChangeLanguage = (value: string) => {
-    i18n.changeLanguage(value);
-    setSelectedLanguage(value);
-    message.success("Change language success");
-  };
 
   const [basicInfo, setBasicInfo] = useState<BasicInfo>({
     firstName: "",
@@ -312,55 +290,6 @@ const InitialPage: React.FC = () => {
     padding: "0 24px",
   };
 
-  const languages = [
-    {
-      label: (
-        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/English_language.svg"
-            width={24}
-            alt="EN"
-          />
-          EN
-        </div>
-      ),
-      value: "en",
-    },
-    {
-      label: (
-        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
-          <div style={{ width: "24px" }} className="d-flex align-items-center">
-            <VN title="Vietnamese" style={{ width: "24px" }} />
-          </div>
-          VI
-        </div>
-      ),
-      value: "vi",
-    },
-    {
-      label: (
-        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
-          <div style={{ width: "24px" }} className="d-flex align-items-center">
-            <CN title="Chinese" style={{ width: "24px" }} />
-          </div>
-          CN
-        </div>
-      ),
-      value: "cn",
-    },
-    {
-      label: (
-        <div className="d-flex align-items-center" style={{ gap: "8px" }}>
-          <div style={{ width: "24px" }} className="d-flex align-items-center">
-            <FR title="French" style={{ width: "24px" }} />
-          </div>
-          FR
-        </div>
-      ),
-      value: "fr",
-    },
-  ];
-
   return (
     <Spin tip="Just a moment" size="large" spinning={isLoading}>
       <div
@@ -370,15 +299,7 @@ const InitialPage: React.FC = () => {
         }}
         className="pt-5"
       >
-        <Select
-          className="float-right me-5"
-          options={languages}
-          bordered={false}
-          onChange={handleChangeLanguage}
-          defaultValue={i18n.language}
-          value={selectedLanguage}
-          dropdownMatchSelectWidth={false}
-        />
+        <LocaleSelect className="float-right me-5" />
         <div className="container py-5">
           <div className="text-center mb-3">
             <Typography.Title level={2} style={{ margin: 0 }}>
