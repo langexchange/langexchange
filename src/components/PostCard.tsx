@@ -2,6 +2,7 @@ import {
   Avatar,
   Button,
   Card,
+  CardProps,
   Image,
   MenuProps,
   message,
@@ -87,6 +88,13 @@ const PostCard: React.FC<PostProps> = ({
           setEditPostId && setEditPostId(post.postId);
           showEditModal && showEditModal();
           break;
+        case "2":
+          // copy link of post
+          navigator.clipboard.writeText(
+            `http:localhost:3000/posts/${post.postId}`
+          );
+          message.success("Copy link successfully");
+          break;
         case "3":
           await handlePostActions("updateVisible");
           break;
@@ -106,8 +114,8 @@ const PostCard: React.FC<PostProps> = ({
           break;
         case "6":
           await handlePostActions("delete");
-          refetchListPost && refetchListPost();
           hideModalDetail && hideModalDetail();
+          refetchListPost && refetchListPost();
           break;
       }
     } catch (error) {
@@ -132,7 +140,8 @@ const PostCard: React.FC<PostProps> = ({
           <Tag color="green" key={index}>
             {item}
           </Tag>
-        ))
+        )),
+        post.postId
       )}
       cover={
         <Carousel images={post.imagePost} videos={post.videoPost} type={type} />
@@ -213,7 +222,8 @@ const title = (
   owner: any,
   group: PostProps["group"],
   createdAt: string,
-  languages: ReactNode
+  languages: ReactNode,
+  postId: string
 ) => {
   if (!owner) return <Skeleton.Input style={{ width: 100 }} active={true} />;
   return (
@@ -227,9 +237,9 @@ const title = (
           src={owner?.avatar ? <Image src={owner.avatar} /> : undefined}
           icon={<UserOutlined />}
         />
-        <Space size={0} direction="vertical">
+        <div className="d-flex flex-column">
           <Link to={`/profile/${owner?.id}`}>
-            <Typography.Title level={5} className="m-0">
+            <Typography.Title level={5} className="m-0 hover-underline">
               {group ? group.name : [owner.firstName, owner.lastName].join(" ")}
             </Typography.Title>
           </Link>
@@ -244,11 +254,19 @@ const title = (
               </Typography.Text>
             </Space>
           ) : (
-            <Typography.Text type="secondary" className="text-400">
-              {createdAt}
-            </Typography.Text>
+            <Link
+              to={`/posts/${postId}`}
+              style={{ height: "fit-content", lineHeight: "14px" }}
+            >
+              <Typography.Text
+                type="secondary"
+                className="text-400 hover-underline fz-12"
+              >
+                {createdAt}
+              </Typography.Text>
+            </Link>
           )}
-        </Space>
+        </div>
       </Space>
       <Space align="end">{languages}</Space>
     </div>

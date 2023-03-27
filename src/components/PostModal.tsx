@@ -39,7 +39,7 @@ import {
 import { Post, useGetPostQuery } from "../services/post/postService";
 import useUploadFile from "../hooks/upload/useUploadFile";
 
-const InputComment: React.FC<any> = ({
+export const InputComment: React.FC<any> = ({
   inputRef,
   isOpenCorrectModal,
   postId,
@@ -307,7 +307,7 @@ const PostModal: React.FC<PostModalProps> = ({
     refetch,
     isFetching: isCommentFetching,
   } = useGetCommentsQuery(postId, {
-    // pollingInterval: 10000,
+    // pollingInterval: 5000,
     refetchOnMountOrArgChange: true,
     skip: !postId,
   });

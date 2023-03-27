@@ -24,6 +24,7 @@ import PartnerDetailPage from "./pages/partners/PartnerDetailPage";
 import PartnerExplorePage from "./pages/partners/PartnerExplorePage";
 import PartnerRequestsPage from "./pages/partners/PartnerRequestsPage";
 import YourPartnersPage from "./pages/partners/YourPartnersPage";
+import PostDetailPage from "./pages/posts/PostDetailPage";
 import ProfileSettingsPage from "./pages/profiles/ProfileSettingsPage";
 import ProfileVocabulariesPage from "./pages/profiles/ProfileVocabulariePage";
 import ProfileWallPage from "./pages/profiles/ProfileWallPage";
@@ -120,6 +121,7 @@ const App: React.FC = () => {
                 />
                 <Route path="settings" element={<ProfileSettingsPage />} />
               </Route>
+              <Route path="/posts/:id" element={<PostDetailPage />} />
             </Route>
           </Route>
           <Route path="/*" element={<NotFoundPage />} />

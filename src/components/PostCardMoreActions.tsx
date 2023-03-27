@@ -1,16 +1,13 @@
 import { Button, Dropdown, DropDownProps, MenuProps } from "antd";
 import {
   MoreOutlined,
-  HeartOutlined,
-  HeartFilled,
-  CommentOutlined,
   EditOutlined,
-  UserOutlined,
   LockOutlined,
   UnlockOutlined,
   FileDoneOutlined,
   ShareAltOutlined,
   DeleteOutlined,
+  LinkOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
@@ -33,6 +30,11 @@ const PostCardMoreActions: React.FC<PostCardMoreActionsProps> = ({
   const [t] = useTranslation(["commons"]);
   const items: MenuProps["items"] = [
     {
+      label: <span>Copy link of this post</span>,
+      key: "2",
+      icon: <LinkOutlined />,
+    },
+    {
       label: <span>{t("Edit this post")}</span>,
       key: "0",
       disabled: !isOwner,
@@ -42,10 +44,6 @@ const PostCardMoreActions: React.FC<PostCardMoreActionsProps> = ({
     //   label: <span>{t("Collect this post")}</span>,
     //   key: "1",
     //   disabled: isTurnOffShare,
-    // },
-    // {
-    //   label: <span>{t("Hide this post")}</span>,
-    //   key: "2",
     // },
     {
       label: <span>{isPublic ? "Set post private" : "Set post public"}</span>,

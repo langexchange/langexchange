@@ -1,7 +1,7 @@
-import { Button, Result } from "antd";
+import { Button, Result, ResultProps } from "antd";
 import { Link } from "react-router-dom";
 
-const NotFoundPage = () => {
+const NotFoundPage: React.FC<ResultProps> = (props) => {
   return (
     <Result
       status="404"
@@ -12,6 +12,7 @@ const NotFoundPage = () => {
           <Button type="primary">Back Home</Button>
         </Link>
       }
+      {...props}
     />
   );
 };

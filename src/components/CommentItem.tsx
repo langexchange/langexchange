@@ -28,6 +28,7 @@ import {
 import { useAppSelector } from "../hooks/hooks";
 import { selectCredentials } from "../features/auth/authSlice";
 import { useLazyGetNumOfInteractQuery } from "../services/comment/commentService";
+import { Link } from "react-router-dom";
 
 interface CommentProps extends Comment {
   ownerPostId?: string;
@@ -45,8 +46,6 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
   const credentials = useAppSelector(selectCredentials);
   const [deleteComment, { isLoading: isDeletingComment }] =
     useDeleteCommentMutation();
-  // const [isLiked, setIsLiked] = useState(comment.isUserInteracted);
-  // const [numOfInteract, setNumOfInteract] = useState(comment.numOfInteract);
 
   const handleEdit = () => {
     comment.openEditModal();
@@ -74,8 +73,7 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
   const handleInteract = async () => {
     try {
       if (!credentials.userId) return;
-      let mode = 0;
-      // if (isLiked) mode = 1;
+      let mode = 0; // if (isLiked) mode = 1;
       if (comment.isUserInteracted) mode = 1;
 
       await interactComment({
@@ -85,8 +83,6 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
       }).unwrap();
 
       const numOfInteract = await getNumOfInteract(comment.commentId).unwrap();
-      // setNumOfInteract(numOfInteract);
-      // setIsLiked(!isLiked);
       comment.setInteractCommentInList(
         comment.commentId,
         !comment.isUserInteracted,
@@ -108,9 +104,11 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
         className="has-background-color py-2 px-3 rounded-4"
         direction="vertical"
       >
-        <Typography.Text strong={true}>
-          {[comment.userInfo.firstName, comment.userInfo.lastName].join(" ")}
-        </Typography.Text>
+        <Link to={`/profile/${comment.userId}`}>
+          <Typography.Text strong={true} className="hover-underline">
+            {[comment.userInfo.firstName, comment.userInfo.lastName].join(" ")}
+          </Typography.Text>
+        </Link>
         <Typography.Paragraph className="m-0">
           {comment.correctcmt ? (
             <Diff
