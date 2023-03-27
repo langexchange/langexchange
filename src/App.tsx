@@ -97,7 +97,7 @@ const App: React.FC = () => {
                 </Route>
                 <Route element={<YourPartnerLayout />}>
                   <Route path="all" element={<YourPartnersPage />} />
-                  <Route path="detail" element={<PartnerDetailPage />} />
+                  <Route path=":id" element={<PartnerDetailPage />} />
                 </Route>
               </Route>
               <Route path="/vocabularies" element={<MainVocabularyLayout />}>

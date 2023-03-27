@@ -1,39 +1,28 @@
-import { Col, Skeleton } from "antd";
-import { useEffect, useState } from "react";
+import { Col, Divider, Skeleton } from "antd";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ContentTitleWithSearch from "../../components/partners/ContentTitleWithSearch";
 import ExplorePartnerList from "../../components/partners/ExplorePartnerList";
 import FilterLine from "../../components/partners/FilterLine";
-import { selectCredentalProfile } from "../../features/profile/profileSlice";
-import { useAppSelector } from "../../hooks/hooks";
 import {
   FriendSuggestionsQuery,
   useGetFriendSuggestionsQuery,
 } from "../../services/friend/friendService";
 
+const defaultFilters: FriendSuggestionsQuery = {
+  nativeLangs: [],
+  targetLangs: [],
+  countryCodes: ["VN"],
+};
+
 const PartnerExplorePage: React.FC = () => {
   const [t] = useTranslation(["commons"]);
-  const currentProfile = useAppSelector(selectCredentalProfile);
-  const [filters, setFilters] = useState<FriendSuggestionsQuery>({
-    nativeLangs: [],
-    targetLangs: [],
-    countryCodes: currentProfile?.country ? [currentProfile.country] : [],
-  });
+  const [filters, setFilters] =
+    useState<FriendSuggestionsQuery>(defaultFilters);
   const { data: suggestFriends, isLoading } = useGetFriendSuggestionsQuery(
     filters,
-    {
-      skip: filters.countryCodes.length === 0,
-      refetchOnMountOrArgChange: true,
-    }
+    { refetchOnMountOrArgChange: true }
   );
-  useEffect(() => {
-    if (currentProfile) {
-      setFilters((prev) => ({
-        ...prev,
-        countryCodes: currentProfile?.country ? [currentProfile.country] : [],
-      }));
-    }
-  }, [currentProfile]);
 
   return (
     <Col
@@ -41,9 +30,10 @@ const PartnerExplorePage: React.FC = () => {
       className="auto-hide-scroll scroll-style-1 height-full pb-5 overflow-x-hidden"
     >
       <ContentTitleWithSearch title={t("You may know")} />
-      <FilterLine />
+      <FilterLine defaultFilters={defaultFilters} setFilters={setFilters} />
+      <Divider plain />
       <Skeleton loading={isLoading} active>
-        <ExplorePartnerList colSpan={8} partnerList={suggestFriends} />
+        <ExplorePartnerList colSpan={6} partnerList={suggestFriends} />
       </Skeleton>
     </Col>
   );

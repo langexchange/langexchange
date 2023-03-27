@@ -67,8 +67,8 @@ export const friendApi = createApi({
         method: "POST",
       }),
     }),
-    acceptFriendRequest: builder.mutation({
-      query: (id: string) => ({
+    acceptFriendRequest: builder.mutation<undefined, string>({
+      query: (id) => ({
         url: `/api/accept/users/${id}`,
         method: "POST",
       }),
