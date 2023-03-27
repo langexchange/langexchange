@@ -6,7 +6,11 @@ import { useAppSelector } from "../hooks/hooks";
 import { selectCredentalProfile } from "../features/profile/profileSlice";
 import PostFormModal from "./PostFormModal";
 
-const PostInput: React.FC = () => {
+interface PostInputProps {
+  refetch?: () => void;
+}
+
+const PostInput: React.FC<PostInputProps> = ({ refetch }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [t] = useTranslation(["commons"]);
   const currentUserProfile = useAppSelector(selectCredentalProfile);
@@ -52,6 +56,7 @@ const PostInput: React.FC = () => {
         setIsModalOpen={setIsModalOpen}
         handleOk={handleOk}
         handleCancel={handleCancel}
+        refetch={refetch}
       />
     </>
   );

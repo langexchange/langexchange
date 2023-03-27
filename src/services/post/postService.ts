@@ -36,7 +36,7 @@ export interface Post {
   numOfCmt: number;
 }
 
-export interface CreateLanguageRequest {
+export interface CreatePostRequest {
   userId: string;
   body: {
     langId: string;
@@ -53,7 +53,7 @@ export interface CreateLanguageRequest {
   };
 }
 
-export interface UpdateLanguageRequest extends CreateLanguageRequest {
+export interface UpdatePostRequest extends CreatePostRequest {
   postId: string;
 }
 
@@ -61,6 +61,18 @@ export interface InteractPostRequest {
   userId: string;
   postId: string;
   mode: 0 | 1; // 0: like, 1: unlike
+}
+
+export interface updateModePostRequest {
+  userId: string;
+  postId: string;
+  mode: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7; // 0: isPublic, 1: isPrivate, 2: deletePost, 3: isTurnOffComment, 4: isTurnOffShare, 5: isTurnOffCorrection, 6: onShare, 7: onCorrect
+}
+
+export interface PostSuggestionQuery {
+  filterLangs: string[];
+  isNewest: boolean;
+  isOnlyFriend: boolean;
 }
 
 export const postApi = createApi({
@@ -94,18 +106,24 @@ export const postApi = createApi({
         method: "GET",
       }),
     }),
-    createPost: builder.mutation<string, CreateLanguageRequest>({
+    createPost: builder.mutation<string, CreatePostRequest>({
       query: (data) => ({
         url: `api/users/${data.userId}/post/create`,
         method: "POST",
         body: data.body,
       }),
     }),
-    updatePost: builder.mutation<string, UpdateLanguageRequest>({
+    updatePost: builder.mutation<string, UpdatePostRequest>({
       query: (data) => ({
         url: `api/users/${data.userId}/posts/${data.postId}/update`,
         method: "PUT",
         body: data.body,
+      }),
+    }),
+    updateModePost: builder.mutation<undefined, updateModePostRequest>({
+      query: (data) => ({
+        url: `api/users/${data.userId}/posts/${data.postId}/configure/${data.mode}`,
+        method: "PUT",
       }),
     }),
     interactPost: builder.mutation<string, InteractPostRequest>({
@@ -113,6 +131,23 @@ export const postApi = createApi({
         url: `/api/users/${data.userId}/interact/${data.mode}/posts/${data.postId}`,
         method: "POST",
       }),
+    }),
+    getPostSuggestions: builder.query<Post[], PostSuggestionQuery>({
+      query: (queryParams) => {
+        const params = new URLSearchParams();
+        queryParams.filterLangs.forEach((lang) => {
+          params.append("filterLangs", lang);
+        });
+
+        params.append("isNewest", queryParams.isNewest.toString());
+        params.append("isOnlyFriend", queryParams.isOnlyFriend.toString());
+
+        return {
+          url: `api/posts/suggest`,
+          params: params,
+          method: "GET",
+        };
+      },
     }),
   }),
 });
@@ -124,4 +159,6 @@ export const {
   useInteractPostMutation,
   useLazyGetNumOfInteractQuery,
   useUpdatePostMutation,
+  useUpdateModePostMutation,
+  useGetPostSuggestionsQuery,
 } = postApi;

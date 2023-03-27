@@ -1,4 +1,22 @@
 import { SmileOutlined } from "@ant-design/icons";
+import { useEffect, useRef, useState } from "react";
+import SeclectLanguageInput from "./SeclectLanguageInput";
+import TagsInput from "./TagsInput";
+import UploadAudio from "./UploadAudio";
+import UploadImage from "./UploadImage";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import type { InputRef } from "antd";
+import { useTranslation } from "react-i18next";
+import { selectCredentials } from "../features/auth/authSlice";
+import { useAppSelector } from "../hooks/hooks";
+import useUploadFile from "../hooks/upload/useUploadFile";
+import convertToUploadFilesAntd from "../utils/uploadFiles/convertToUploadFileAntd";
+import {
+  useCreatePostMutation,
+  useGetPostQuery,
+  useUpdatePostMutation,
+} from "../services/post/postService";
 import {
   Button,
   Input,
@@ -11,25 +29,6 @@ import {
   Upload,
   UploadFile,
 } from "antd";
-import { useEffect, useRef, useState } from "react";
-import SeclectLanguageInput from "./SeclectLanguageInput";
-import TagsInput from "./TagsInput";
-import UploadAudio from "./UploadAudio";
-import UploadImage from "./UploadImage";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import type { InputRef } from "antd";
-import { useTranslation } from "react-i18next";
-import { RcFile } from "antd/lib/upload/interface";
-import { useUploadFileMutation } from "../services/upload/uploadService";
-import { selectCredentials } from "../features/auth/authSlice";
-import { useAppSelector } from "../hooks/hooks";
-import {
-  AttachedFile,
-  useCreatePostMutation,
-  useGetPostQuery,
-  useUpdatePostMutation,
-} from "../services/post/postService";
 
 const initialPost = {
   langId: "",
@@ -49,6 +48,7 @@ interface PostFormModalProps {
   isModalOpen: boolean;
   handleOk: () => void;
   handleCancel: () => void;
+  refetch?: () => void;
 }
 
 const PostFormModal: React.FC<PostFormModalProps> = ({
@@ -58,26 +58,40 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
   isModalOpen,
   handleOk,
   handleCancel,
+  refetch,
 }) => {
   const [t] = useTranslation(["commons"]);
   const inputRef = useRef<InputRef>(null);
+  const [open, setOpen] = useState(false);
   const [post, setPost] = useState(initialPost);
   const [tags, setTags] = useState(initialTags);
-  const [imageFileList, setImageFileList] = useState<UploadFile[]>([]);
-  const [audioFileList, setAudioFileList] = useState<UploadFile[]>([]);
-  const [videoFileList, setVideoFileList] = useState<UploadFile[]>([]);
-  const [uploadFiles, { isLoading }] = useUploadFileMutation();
-  const [createPost, { isLoading: isCreatingPost }] = useCreatePostMutation();
-  const [open, setOpen] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const credentials = useAppSelector(selectCredentials);
+  const [createPost, { isLoading: isCreatingPost }] = useCreatePostMutation();
   const [updatePost, { isLoading: isUpdatingPost }] = useUpdatePostMutation();
+  const [
+    imageFileList,
+    setImageFileList,
+    uploadImageFiles,
+    isUploadImageFiles,
+  ] = useUploadFile([], credentials.incId, "image");
+  const [
+    audioFileList,
+    setAudioFileList,
+    uploadAudioFiles,
+    isUploadAudioFiles,
+  ] = useUploadFile([], credentials.incId, "audio");
+  const [
+    videoFileList,
+    setVideoFileList,
+    uploadVideoFiles,
+    isUploadVideoFiles,
+  ] = useUploadFile([], credentials.incId, "video");
 
   const {
     data: fetchPost,
     isLoading: isPostDetailLoading,
-    refetch: refetchPostDetail,
-    isFetching: isPostDetailFetching,
+    // refetch: refetchPostDetail,
+    // isFetching: isPostDetailFetching,
   } = useGetPostQuery(editPostId, {
     skip: !editPostId,
   });
@@ -93,197 +107,66 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
 
   useEffect(() => {
     if (!fetchPost) return;
+
     setPost(fetchPost);
     setTags(fetchPost.labels);
-    const listAudio: UploadFile[] = [];
-    const listVideo: UploadFile[] = [];
-    const listImage: UploadFile[] = [];
-    fetchPost.audioPost?.forEach((item, index) => {
-      listAudio.push({
-        uid: index.toString(),
-        name: "Audio_" + index.toString(),
-        status: "done",
-        url: item.url,
-      });
-    });
-    fetchPost.videoPost?.forEach((item, index) => {
-      listVideo.push({
-        uid: index.toString(),
-        name: "Video_" + index.toString(),
-        status: "done",
-        url: item.url,
-      });
-    });
-    fetchPost.imagePost?.forEach((item, index) => {
-      listImage.push({
-        uid: index.toString(),
-        name: "Image_" + index.toString(),
-        status: "done",
-        url: item.url,
-      });
-    });
-    setAudioFileList(listAudio);
-    setVideoFileList(listVideo);
-    setImageFileList(listImage);
+    setAudioFileList(convertToUploadFilesAntd(fetchPost.audioPost));
+    setVideoFileList(convertToUploadFilesAntd(fetchPost.videoPost));
+    setImageFileList(convertToUploadFilesAntd(fetchPost.imagePost));
   }, [fetchPost, isPostDetailLoading]);
 
-  const handlePostValueChange = (key: string, value: any) => {
+  const handlePostValueChange = (key: string, value: any) =>
     setPost((prev) => ({ ...prev, [key]: value }));
-  };
 
-  const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen);
-  };
+  const handleOpenChange = (newOpen: boolean) => setOpen(newOpen);
 
-  const handleSelectEmoji = (values: any) => {
+  const handleSelectEmoji = (values: any) =>
     handlePostValueChange("text", post.text + values.native);
-  };
 
   const handleUpload = async () => {
-    if (!credentials?.incId) return;
-
-    const returnData = {
-      imagePost: [] as AttachedFile[],
-      audioPost: [] as AttachedFile[],
-      videoPost: [] as AttachedFile[],
-    };
-    if (imageFileList.length > 0) {
-      const formData = new FormData();
-      imageFileList.forEach((file) => {
-        if (file.status === "done" && file.url) {
-          returnData.imagePost.push({
-            type: "image",
-            url: file.url,
-          });
-          return;
-        }
-        formData.append("files[]", file as RcFile);
-      });
-
-      try {
-        const result = await uploadFiles({
-          type: "image",
-          userId: credentials.incId,
-          body: formData,
-        }).unwrap();
-        result.forEach((item) => {
-          returnData.imagePost.push({
-            type: "image",
-            url: item.url,
-          });
-        });
-      } catch (error) {
-        message.error("Upload image failed");
-      }
+    try {
+      const imagePost = await uploadImageFiles();
+      const audioPost = await uploadAudioFiles();
+      const videoPost = await uploadVideoFiles();
+      return { imagePost, audioPost, videoPost };
+    } catch (error) {
+      message.error("Upload files failed");
+      throw error;
     }
-    // upload audio
-    if (audioFileList.length > 0) {
-      const formData = new FormData();
-      audioFileList.forEach((file) => {
-        if (file.status === "done" && file.url) {
-          returnData.audioPost.push({
-            type: "audio",
-            url: file.url,
-          });
-          return;
-        }
-        formData.append("files[]", file as RcFile);
-      });
-
-      try {
-        const result = await uploadFiles({
-          type: "audio",
-          userId: credentials.incId,
-          body: formData,
-        }).unwrap();
-        result.forEach((item) => {
-          returnData.audioPost.push({
-            type: "audio",
-            url: item.url,
-          });
-        });
-      } catch (error) {
-        message.error("Upload audio failed");
-      }
-    }
-    // upload video
-    if (videoFileList.length > 0) {
-      const formData = new FormData();
-      videoFileList.forEach((file) => {
-        if (file.status === "done" && file.url) {
-          returnData.videoPost.push({
-            type: "video",
-            url: file.url,
-          });
-          return;
-        }
-        formData.append("files[]", file as RcFile);
-      });
-
-      try {
-        const result = await uploadFiles({
-          type: "video",
-          userId: credentials.incId,
-          body: formData,
-        }).unwrap();
-        result.forEach((item) => {
-          returnData.videoPost.push({
-            type: "video",
-            url: item.url,
-          });
-        });
-      } catch (error) {
-        message.error("Upload video failed");
-      }
-    }
-    return returnData;
   };
 
   const handleSubmit = async () => {
-    if (!credentials?.userId) {
-      message.error("Please login to post!");
-      return;
-    }
+    if (!credentials?.userId) return;
 
     if (
       !post.text &&
       imageFileList.length === 0 &&
       audioFileList.length === 0 &&
       videoFileList.length === 0
-    ) {
-      message.error("Post must have text or media!");
-      return;
-    }
+    )
+      return message.error("Post must have text or media!");
+
     if (!post.langId) {
       message.error("Please select language!");
       return;
     }
-    setUploading(true);
+
     try {
       const files = await handleUpload();
-      setUploading(false);
+      const postData: any = {
+        userId: credentials.userId,
+        body: { ...post, ...files, labels: tags },
+      };
+
       if (editPostId) {
-        const postId = await updatePost({
-          userId: credentials.userId,
-          postId: editPostId,
-          body: {
-            ...post,
-            ...files,
-            labels: tags,
-          },
-        });
+        postData.postId = editPostId;
+        await updatePost(postData).unwrap();
         message.success("Update post successfully!");
       } else {
-        const postId = await createPost({
-          userId: credentials.userId,
-          body: {
-            ...post,
-            ...files,
-            labels: tags,
-          },
-        }).unwrap();
+        await createPost(postData).unwrap();
         message.success("Create post successfully!");
       }
+      refetch && refetch();
       setIsModalOpen(false);
       setPost(initialPost);
       setImageFileList([]);
@@ -292,10 +175,16 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
       setEditPostId && setEditPostId(null);
       setTags(initialTags);
     } catch (error) {
-      setUploading(false);
       message.error("Create post failed!");
     }
   };
+
+  const isHandling =
+    isCreatingPost ||
+    isUpdatingPost ||
+    isUploadImageFiles ||
+    isUploadAudioFiles ||
+    isUploadVideoFiles;
 
   return (
     <Skeleton loading={isPostDetailLoading} active>
@@ -357,7 +246,6 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
           <UploadAudio
             fileList={[...audioFileList, ...videoFileList]}
             onRemove={(file) => {
-              console.log(file.type);
               if (file?.type?.includes("video")) {
                 const index = videoFileList.indexOf(file);
                 const newFileList = videoFileList.slice();
@@ -433,9 +321,9 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
               unCheckedChildren="Correct off"
               defaultChecked
               checked={!post.isTurnOffCorrection}
-              onChange={(checked: boolean) =>
-                handlePostValueChange("isTurnOffCorrection", !checked)
-              }
+              onChange={(checked: boolean) => {
+                handlePostValueChange("isTurnOffCorrection", !checked);
+              }}
             />
             <Switch
               checkedChildren="Share on"
@@ -474,16 +362,16 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
           setFileList={setImageFileList}
         />
         <Button
-          loading={uploading || isLoading || isCreatingPost}
+          loading={isHandling}
           size="large"
           block
           type="primary"
           onClick={handleSubmit}
         >
-          {isCreatingPost
-            ? "Creating post..."
-            : isLoading || uploading
-              ? "Uploading files..."
+          {isHandling
+            ? "Processing..."
+            : editPostId
+              ? "Update post"
               : t("New post")}
         </Button>
       </Modal>

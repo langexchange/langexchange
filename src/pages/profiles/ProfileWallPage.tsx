@@ -3,12 +3,9 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import PostList from "../../components/community/PostList";
 import PostModal from "../../components/PostModal";
-import {
-  Post,
-  useGetAllPostOfUserQuery,
-} from "../../services/post/postService";
+import { useGetAllPostOfUserQuery } from "../../services/post/postService";
 
-const ProfileWallPage = () => {
+const ProfileWallPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [postId, setPostId] = useState<string | null>(null);
 

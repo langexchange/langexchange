@@ -10,6 +10,7 @@ import { languageApi } from "../services/languages/languageService";
 import { postApi } from "../services/post/postService";
 import { uploadApi } from "../services/upload/uploadService";
 import { commentApi } from "../services/comment/commentService";
+import { friendApi } from "../services/friend/friendService";
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     post: postReducer,
     [uploadApi.reducerPath]: uploadApi.reducer,
     [commentApi.reducerPath]: commentApi.reducer,
+    [friendApi.reducerPath]: friendApi.reducer,
     theme: themeReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -32,7 +34,8 @@ export const store = configureStore({
       languageApi.middleware,
       postApi.middleware,
       uploadApi.middleware,
-      commentApi.middleware
+      commentApi.middleware,
+      friendApi.middleware
     ),
 });
 

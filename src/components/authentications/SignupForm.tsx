@@ -113,6 +113,7 @@ const SignupForm: React.FC = () => {
         </Form.Item>
 
         <Form.Item
+          className="text-left"
           name="agreement"
           valuePropName="checked"
           rules={[
@@ -130,27 +131,29 @@ const SignupForm: React.FC = () => {
         </Form.Item>
 
         <Form.Item>
-          <Space align="center">
-            {t("signin-with")}
-            <Space size={0} align="center">
-              <Button
-                type="text"
-                shape="circle"
-                icon={<FacebookFilled className="fz-18" />}
-                className="btn-text-primary d-flex justify-center align-items-center"
-              />
-              <Button
-                type="text"
-                shape="circle"
-                icon={<GoogleSquareFilled className="fz-18" />}
-                className="d-flex justify-center align-items-center"
-                danger
-              />
+          <div className="d-flex align-items-center justify-content-between">
+            <Space align="center">
+              {t("signin-with")}
+              <Space size={0} align="center">
+                <Button
+                  type="text"
+                  shape="circle"
+                  icon={<FacebookFilled className="fz-18" />}
+                  className="btn-text-primary d-flex justify-center align-items-center"
+                />
+                <Button
+                  type="text"
+                  shape="circle"
+                  icon={<GoogleSquareFilled className="fz-18" />}
+                  className="d-flex justify-center align-items-center"
+                  danger
+                />
+              </Space>
             </Space>
-          </Space>
-          <Button type="primary" htmlType="submit" className="float-right">
-            {t("sign-up")}
-          </Button>
+            <Button type="primary" htmlType="submit" className="float-right">
+              {t("sign-up")}
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </Spin>

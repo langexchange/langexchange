@@ -26,17 +26,29 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
 
   const items: MenuProps["items"] = [
     {
-      label: <Link to="wall">{t("Wall")}</Link>,
+      label: (
+        <Link to="wall" replace>
+          {t("Wall")}
+        </Link>
+      ),
       key: "wall",
       icon: <ProfileOutlined />,
     },
     {
-      label: <Link to="vocabularies">{t("Vocabulary")}</Link>,
+      label: (
+        <Link to="vocabularies" replace>
+          {t("Vocabulary")}
+        </Link>
+      ),
       key: "vocabularies",
       icon: <StarOutlined />,
     },
     {
-      label: <Link to="settings">{t("settings")}</Link>,
+      label: (
+        <Link to="settings" replace>
+          {t("settings")}
+        </Link>
+      ),
       key: "settings",
       icon: <SettingOutlined />,
     },

@@ -444,3 +444,9 @@ $background-color: #f0f2f5;
   border-radius: 8px;
   background-color: #8c8c8c;
 }
+
+.hover-underline {
+  &:hover {
+    text-decoration: underline;
+  }
+}

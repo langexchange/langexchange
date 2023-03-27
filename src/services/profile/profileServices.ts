@@ -26,6 +26,7 @@ export interface ProfileRequest {
 }
 
 export interface Profile {
+  id?: string;
   firstName: string;
   middleName: string;
   lastName: string;
@@ -81,6 +82,12 @@ export const profileApi = createApi({
         method: "GET",
       }),
     }),
+    getAllProfiles: builder.query<GetProfileResponse[], void>({
+      query: () => ({
+        url: `api/users`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -89,4 +96,5 @@ export const {
   useGetProfileQuery,
   useLazyGetProfileQuery,
   useUpdateAvatarMutation,
+  useGetAllProfilesQuery,
 } = profileApi;

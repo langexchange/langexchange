@@ -1,15 +1,15 @@
 import {
   Avatar,
-  Badge,
   Button,
   Card,
+  Col,
   Divider,
   Image,
   Rate,
+  Row,
   Skeleton,
   Space,
   Tag,
-  TagProps,
   Typography,
 } from "antd";
 import {
@@ -42,7 +42,7 @@ const colors = [
 ];
 
 interface ProfileCardProps {
-  userId: string;
+  userId?: string;
   isCurrentUser?: boolean;
 }
 
@@ -174,18 +174,20 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
             <HeartOutlined /> {t("Target languages")}
           </Tag>
         </div>
-        <div className="d-flex gap-2">
+        <Row gutter={[12, 12]} justify="center">
           {profile?.targetLanguages?.map((language) => (
-            <Card type="inner" size="small" className="w-50" key={language.id}>
-              <div className="d-flex flex-column align-items-center justify-space-between gap-2">
-                <Typography.Text strong>
-                  {t(`${language.name}`)}
-                </Typography.Text>
-                <Rate disabled value={language.level} />
-              </div>
-            </Card>
+            <Col key={language.id} span={12}>
+              <Card type="inner" size="small">
+                <div className="d-flex flex-column align-items-center justify-space-between gap-2">
+                  <Typography.Text strong>
+                    {t(`${language.name}`)}
+                  </Typography.Text>
+                  <Rate disabled value={language.level} />
+                </div>
+              </Card>
+            </Col>
           ))}
-        </div>
+        </Row>
         <Space
           className="languages width-full"
           direction="vertical"
