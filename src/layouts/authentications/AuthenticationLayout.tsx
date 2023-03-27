@@ -1,6 +1,6 @@
 import Logo from "../../assets/images/logo.png";
 import AuthenBackgroundImage from "../../assets/images/authen_bg.png";
-import { Button, Image, Select, Space, Tabs, Typography } from "antd";
+import { Button, Image, Space, Tabs, Typography } from "antd";
 import { RollbackOutlined } from "@ant-design/icons";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import type { TabsProps } from "antd";
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { getElementInPathnameAt } from "../../utils/extractPathname";
 import LocaleSelect from "../../components/LocaleSelect";
 
-const AuthenticationLayout = () => {
+const AuthenticationLayout: React.FC = () => {
   const { t } = useTranslation(["commons"]);
   const navigate = useNavigate();
 
@@ -58,7 +58,7 @@ const AuthenticationLayout = () => {
           style={{ minWidth: "500px" }}
         >
           <Space direction="vertical" align="center">
-            <Image src={Logo} alt="LangExchange logo" />
+            <Image src={Logo} alt="LangExchange logo" height={48} />
             <Typography.Text type="secondary">
               {t("logo-slogan")}
             </Typography.Text>
