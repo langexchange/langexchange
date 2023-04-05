@@ -1,5 +1,6 @@
 import { Avatar, Badge, Image, Space, Typography } from "antd";
 import User from "../types/User";
+import { UserOutlined } from "@ant-design/icons";
 
 interface UserItemProps extends User {
   size?: any;
@@ -44,7 +45,8 @@ const UserItem = ({
             <Avatar
               style={{ verticalAlign: "middle", backgroundColor: color }}
               size={size}
-              src={<Image src={avatar} style={{ width: 32 }} />}
+              src={avatar && <Image src={avatar} style={{ width: 32 }} />}
+              icon={!avatar && <UserOutlined />}
             />
           )}
         </>
