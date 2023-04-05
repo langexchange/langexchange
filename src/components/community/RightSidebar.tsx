@@ -3,6 +3,7 @@ import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import SeclectLanguageInput from "../SeclectLanguageInput";
 import { PostSuggestionQuery } from "../../services/post/postService";
+import SuggestFriendSide from "../SuggestFriendSide";
 
 const onSearch = (value: string) => console.log(value);
 
@@ -99,6 +100,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
             </Space>
           </Form.Item>
         </Form>
+        <SuggestFriendSide />
       </Space>
     </div>
   );

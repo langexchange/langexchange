@@ -73,6 +73,12 @@ export const friendApi = createApi({
         method: "POST",
       }),
     }),
+    rejectFriendRequest: builder.mutation<undefined, string>({
+      query: (id) => ({
+        url: `/api/friends/${id}/request`,
+        method: "DELETE",
+      }),
+    }),
     unfriend: builder.mutation({
       query: (id: string) => ({
         url: `/api/unfriend/users/${id}`,
@@ -90,4 +96,5 @@ export const {
   useSendFriendRequestMutation,
   useAcceptFriendRequestMutation,
   useUnfriendMutation,
+  useRejectFriendRequestMutation,
 } = friendApi;

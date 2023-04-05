@@ -11,6 +11,7 @@ import {
   Space,
   Tag,
   Typography,
+  message,
 } from "antd";
 import {
   UserDeleteOutlined,
@@ -26,6 +27,14 @@ import { useTranslation } from "react-i18next";
 import { useGetProfileQuery } from "../../services/profile/profileServices";
 import { useAppSelector } from "../../hooks/hooks";
 import { selectCredentalProfile } from "../../features/profile/profileSlice";
+import {
+  useAcceptFriendRequestMutation,
+  useGetFriendRequestsQuery,
+  useRejectFriendRequestMutation,
+  useSendFriendRequestMutation,
+  useUnfriendMutation,
+} from "../../services/friend/friendService";
+import { Link } from "react-router-dom";
 
 const colors = [
   "magenta",
@@ -49,20 +58,88 @@ interface ProfileCardProps {
 const ProfileCard: React.FC<ProfileCardProps> = (props) => {
   const { userId, isCurrentUser = false } = props;
   const currentUserProfile = useAppSelector(selectCredentalProfile);
+  const [unfriend, { isLoading: isUnfriending }] = useUnfriendMutation();
+  const [sendFriendRequest, { isLoading: isSending }] =
+    useSendFriendRequestMutation();
+  const [acceptFriendRequest, { isLoading: isAccepting }] =
+    useAcceptFriendRequestMutation();
+  const [rejectFriendRequest, { isLoading: isRejecting }] =
+    useRejectFriendRequestMutation();
 
   const {
     data: fetchProfile,
     isFetching,
     isLoading,
     isError,
+    refetch,
   } = useGetProfileQuery(userId, {
     skip: isCurrentUser,
   });
+
+  const {
+    data: requestList,
+    isLoading: isLoadingRequest,
+    refetch: refetchRequest,
+  } = useGetFriendRequestsQuery(undefined, {});
 
   const [t] = useTranslation(["commons", "countries"]);
 
   if (isError) return <div>Something went wrong</div>;
   const profile = isCurrentUser ? currentUserProfile : fetchProfile;
+
+  const handleUnfriend = async () => {
+    if (!userId) return;
+
+    try {
+      await unfriend(userId).unwrap();
+      refetch();
+      message.success("Huỷ kết bạn thành công", 1);
+    } catch (error) {
+      message.error("Opps! Đã có lỗi xảy ra, vui lòng thử lại sau", 1);
+    }
+  };
+
+  const handleSendFriendRequest = async (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!userId) return;
+    try {
+      await sendFriendRequest(userId).unwrap();
+      message.success("Send request successful!", 1);
+    } catch (error) {
+      message.error("Oops! Something went wrong.", 1);
+    }
+  };
+
+  const handleRejectRequest = async (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!userId) return;
+    try {
+      await rejectFriendRequest(userId).unwrap();
+      refetch();
+      refetchRequest();
+      message.success("Reject request successful!", 1);
+    } catch (error) {
+      message.error("Oops! Something went wrong.", 1);
+    }
+  };
+
+  const handleAcceptRequest = async (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!userId) return;
+    try {
+      await acceptFriendRequest(userId).unwrap();
+      message.success("Accept request successful!", 1);
+      refetch();
+    } catch (error) {
+      message.error("Oops! Something went wrong.", 1);
+    }
+  };
 
   return (
     <Skeleton loading={isLoading || isFetching} active avatar>
@@ -78,29 +155,75 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                 boxShadow: "0 0 0 4px #f1f1f1, 0 0 0 6px #f1f1ff",
               }}
             />
-            <Typography.Title level={2} className="m-0">
-              {[profile?.firstName, profile?.lastName].join(" ")}
-            </Typography.Title>
+            <Link to={`/profile/${userId}`}>
+              <Typography.Title level={2} className="m-0 hover-underline">
+                {[profile?.firstName, profile?.lastName].join(" ")}
+              </Typography.Title>
+            </Link>
             {!isCurrentUser && (
               <Space>
-                <Button
-                  type="primary"
-                  shape="round"
-                  icon={<UserDeleteOutlined />}
-                  danger
-                  size="small"
-                >
-                  Huỷ kết bạn
-                </Button>
-                <Button
-                  type="primary"
-                  shape="round"
-                  icon={<MessageOutlined />}
-                  className="btn-success"
-                  size="small"
-                >
-                  Gửi tin nhắn
-                </Button>
+                {profile?.isFriend ? (
+                  <>
+                    <Button
+                      type="primary"
+                      shape="round"
+                      icon={<UserDeleteOutlined />}
+                      danger
+                      size="small"
+                      loading={isUnfriending}
+                      onClick={handleUnfriend}
+                    >
+                      Huỷ kết bạn
+                    </Button>
+                    <Button
+                      type="default"
+                      shape="round"
+                      icon={<MessageOutlined />}
+                      className="btn-outlined-secondary"
+                      size="small"
+                    >
+                      Gửi tin nhắn
+                    </Button>
+                  </>
+                ) : requestList?.some(
+                  (request: any) => request.id === userId
+                ) ? (
+                  <>
+                    <Button
+                      type="primary"
+                      shape="round"
+                      icon={<UserDeleteOutlined />}
+                      className="btn-success"
+                      size="small"
+                      loading={isAccepting}
+                      onClick={handleAcceptRequest}
+                    >
+                      Đồng ý
+                    </Button>
+                    <Button
+                      type="default"
+                      shape="round"
+                      icon={<UserDeleteOutlined />}
+                      className="btn-outlined-secondary"
+                      size="small"
+                      onClick={handleRejectRequest}
+                      loading={isRejecting}
+                    >
+                      Từ chối
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    type="primary"
+                    shape="round"
+                    icon={<UserDeleteOutlined />}
+                    size="small"
+                    loading={isSending}
+                    onClick={handleSendFriendRequest}
+                  >
+                    Kết bạn
+                  </Button>
+                )}
               </Space>
             )}
             <Space size={6}>

@@ -1,4 +1,4 @@
-import { message, Spin } from "antd";
+import { message } from "antd";
 import { Suspense, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { setLanguages } from "./features/languages/languageSlice";

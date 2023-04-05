@@ -1,20 +1,28 @@
 import UserItem from "../UserItem";
-import User from "../../types/User";
-import { fakeUsers } from "../../utils/fakeData/fakeUser";
-import { Avatar, Card, Collapse, List, Space, Typography } from "antd";
+import {
+  Avatar,
+  Card,
+  Collapse,
+  List,
+  Skeleton,
+  Space,
+  Typography,
+} from "antd";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../hooks/hooks";
 import { selectCurrentUserId } from "../../features/auth/authSlice";
 import { selectCredentalProfile } from "../../features/profile/profileSlice";
 import { UserOutlined } from "@ant-design/icons";
-
-const userItems: User[] = fakeUsers(10);
+import { useGetFriendsQuery } from "../../services/friend/friendService";
 
 const Sidebar: React.FC = () => {
   const [t] = useTranslation(["community"]);
   const currentUserId = useAppSelector(selectCurrentUserId);
   const currentUserProfile = useAppSelector(selectCredentalProfile);
+  const { data, isLoading, refetch } = useGetFriendsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   return (
     <Space size="large" direction="vertical" className="width-full">
@@ -40,38 +48,48 @@ const Sidebar: React.FC = () => {
           </Space>
         </Card>
       </Link>
-      <Collapse
-        collapsible="header"
-        defaultActiveKey={["1"]}
-        bordered={false}
-        expandIconPosition="end"
-      >
-        <Collapse.Panel
-          header={
-            <Typography.Text
-              type="secondary"
-              className="fz-16 text-500 d-block"
-            >
-              {t("active-partners")}
-            </Typography.Text>
-          }
-          key="1"
+      <Card bordered={false} bodyStyle={{ padding: 0 }}>
+        <Collapse
+          collapsible="header"
+          defaultActiveKey={["1"]}
+          bordered={false}
+          expandIconPosition="end"
+          style={{ background: "#00000005" }}
         >
-          <List
-            className="text-left"
-            itemLayout="horizontal"
-            dataSource={userItems}
-            split={false}
-            renderItem={(item) => (
-              <List.Item style={{ padding: 0 }}>
-                <div className="as-the-button width-full">
-                  <UserItem {...item} direction="left" badge={false} />
-                </div>
-              </List.Item>
-            )}
-          />
-        </Collapse.Panel>
-      </Collapse>
+          <Collapse.Panel
+            header={
+              <Typography.Text
+                // type="secondary"
+                className="fz-16 text-500 d-block"
+              >
+                {t("active-partners")}
+              </Typography.Text>
+            }
+            key="1"
+          >
+            <Skeleton loading={isLoading} active avatar>
+              <List
+                className="text-left"
+                itemLayout="horizontal"
+                dataSource={data}
+                split={false}
+                renderItem={(item: any) => (
+                  <List.Item style={{ padding: 0 }}>
+                    <div className="as-the-button width-full">
+                      <UserItem
+                        {...item}
+                        direction="left"
+                        badge={false}
+                        fullname={[item.firstName, item.lastName].join(" ")}
+                      />
+                    </div>
+                  </List.Item>
+                )}
+              />
+            </Skeleton>
+          </Collapse.Panel>
+        </Collapse>
+      </Card>
     </Space>
   );
 };

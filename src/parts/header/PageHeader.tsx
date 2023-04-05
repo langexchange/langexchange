@@ -3,6 +3,7 @@ import {
   Avatar,
   Badge,
   Button,
+  Card,
   Col,
   Dropdown,
   Image,
@@ -11,6 +12,8 @@ import {
   Popover,
   Row,
   Space,
+  Tooltip,
+  Typography,
 } from "antd";
 import {
   GlobalOutlined,
@@ -51,6 +54,7 @@ const PageHeader: React.FC = () => {
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     if (e.key === "sign-out") {
       dispatch(logout());
+      localStorage.clear();
       dispatch(setCredentialProfile(null));
       navigate("/");
     } else if (e.key === "toggle-theme") {
@@ -84,6 +88,37 @@ const PageHeader: React.FC = () => {
   const dropdownItems: MenuProps["items"] = [
     {
       label: (
+        <Tooltip title="See your profile">
+          <Link to={`/profile/${credentials.userId}`}>
+            <Card
+              bodyStyle={{
+                padding: "8px 12px",
+              }}
+              hoverable
+              className="width-full"
+              size="small"
+            >
+              <Space align="center" size={12}>
+                <Avatar
+                  style={{ verticalAlign: "middle" }}
+                  size="small"
+                  src={currentUserProfile?.avatar}
+                  icon={!currentUserProfile?.avatar && <UserOutlined />}
+                />
+                <Typography.Title level={5} className="m-0 color-primary">
+                  <span className="text-400">Hi</span>{" "}
+                  {currentUserProfile?.firstName}
+                  <span className="text-400">!</span>
+                </Typography.Title>
+              </Space>
+            </Card>
+          </Link>
+        </Tooltip>
+      ),
+      key: "profile",
+    },
+    {
+      label: (
         <Link to={`profile/${credentials.userId}/settings`}>
           {t("settings")}
         </Link>
@@ -91,12 +126,13 @@ const PageHeader: React.FC = () => {
       key: "setting",
       icon: <SettingOutlined />,
     },
+    { label: "Toggle theme", key: "toggle-theme", icon: <SwapOutlined /> },
     {
       label: t("sign-out"),
       key: "sign-out",
       icon: <LogoutOutlined />,
+      danger: true,
     },
-    { label: "Toggle theme", key: "toggle-theme", icon: <SwapOutlined /> },
   ];
 
   const menuDropdown = {
