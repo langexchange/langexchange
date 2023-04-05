@@ -54,6 +54,7 @@ const PageHeader: React.FC = () => {
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     if (e.key === "sign-out") {
       dispatch(logout());
+      localStorage.clear();
       dispatch(setCredentialProfile(null));
       navigate("/");
     } else if (e.key === "toggle-theme") {
