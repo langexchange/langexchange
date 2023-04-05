@@ -32,6 +32,7 @@ export interface Profile {
   lastName: string;
   gender: string;
   introduction: string;
+  isFriend?: boolean;
   country: string;
   nativeLanguage: Language;
   targetLanguages: Language[];

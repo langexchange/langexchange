@@ -207,6 +207,25 @@ $background-color: #f0f2f5;
   }
 }
 
+.btn-secondary {
+  color: #fff;
+  background-color: $secondary-color;
+
+  &:hover {
+    background-color: #bfbfbf !important;
+  }
+}
+
+.btn-outlined-secondary {
+  color: $secondary-color;
+  background-color: "#fff";
+  border-color: $secondary-color;
+  &:hover {
+    color: #bfbfbf !important;
+    border-color: #bfbfbf !important;
+  }
+}
+
 .float-right {
   float: right;
 }

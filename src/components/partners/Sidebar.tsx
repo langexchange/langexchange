@@ -31,14 +31,9 @@ const Sidebar = () => {
 
   let activeKey: string = window.location.pathname.split("/")[2] || "explores";
 
-  const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
-  };
-
   return (
     <Card size="small" bodyStyle={{ padding: "4px" }}>
       <Menu
-        onClick={onClick}
         mode="inline"
         items={items}
         style={{ border: "none" }}

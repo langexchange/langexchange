@@ -24,7 +24,9 @@ import getUnicodeFlagIcon from "country-flag-icons/unicode";
 import { Link } from "react-router-dom";
 import {
   useAcceptFriendRequestMutation,
+  useRejectFriendRequestMutation,
   useSendFriendRequestMutation,
+  useUnfriendMutation,
 } from "../services/friend/friendService";
 
 type Type = "explore" | "request" | "partner";
@@ -41,6 +43,9 @@ const UserCard: React.FC<UserCardProps> = ({ type, refetch, ...profile }) => {
     useSendFriendRequestMutation();
   const [acceptFriendRequest, { isLoading: isAccepting }] =
     useAcceptFriendRequestMutation();
+  const [rejectFriendRequest, { isLoading: isRejecting }] =
+    useRejectFriendRequestMutation();
+  const [unfriend, { isLoading: isUnfriending }] = useUnfriendMutation();
 
   const handleSendFriendRequest = async (e: any) => {
     e.preventDefault();
@@ -49,13 +54,9 @@ const UserCard: React.FC<UserCardProps> = ({ type, refetch, ...profile }) => {
     if (!profile?.id) return;
     try {
       await sendFriendRequest(profile.id).unwrap();
-      message.success({
-        content: "Send request successful!",
-      });
+      message.success("Send request successful!", 1);
     } catch (error) {
-      message.error({
-        content: "Oops! Something went wrong.",
-      });
+      message.error("Oops! Something went wrong.", 1);
     }
   };
 
@@ -67,13 +68,38 @@ const UserCard: React.FC<UserCardProps> = ({ type, refetch, ...profile }) => {
     try {
       await acceptFriendRequest(profile.id).unwrap();
       refetch && refetch();
-      message.success({
-        content: "Accept request successful!",
-      });
+      message.success("Accept request successful!", 1);
     } catch (error) {
-      message.error({
-        content: "Oops! Something went wrong.",
-      });
+      message.error("Oops! Something went wrong.", 1);
+    }
+  };
+
+  const handleRejectRequest = async (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!profile?.id) return;
+    try {
+      await rejectFriendRequest(profile.id).unwrap();
+      refetch && refetch();
+      message.success("Reject request successful!", 1);
+    } catch (error) {
+      message.error("Oops! Something went wrong.", 1);
+    }
+  };
+
+  const handleUnfriend = async (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!profile?.id) return;
+
+    try {
+      await unfriend(profile.id).unwrap();
+      refetch && refetch();
+      message.success("Huỷ kết bạn thành công", 1);
+    } catch (error) {
+      message.error("Opps! Đã có lỗi xảy ra, vui lòng thử lại sau", 1);
     }
   };
 
@@ -117,7 +143,14 @@ const UserCard: React.FC<UserCardProps> = ({ type, refetch, ...profile }) => {
           />
         </Tooltip>,
         <Tooltip title={t("Remove request")}>
-          <Button type="text" icon={<CloseOutlined />} danger block />
+          <Button
+            type="text"
+            icon={<CloseOutlined />}
+            danger
+            block
+            onClick={handleRejectRequest}
+            loading={isRejecting}
+          />
         </Tooltip>,
       ];
       break;
@@ -132,7 +165,14 @@ const UserCard: React.FC<UserCardProps> = ({ type, refetch, ...profile }) => {
           />
         </Tooltip>,
         <Tooltip title={t("Remove from partner")}>
-          <Button type="text" icon={<UserDeleteOutlined />} danger block />
+          <Button
+            type="text"
+            icon={<UserDeleteOutlined />}
+            danger
+            block
+            onClick={handleUnfriend}
+            loading={isUnfriending}
+          />
         </Tooltip>,
       ];
       break;

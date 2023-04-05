@@ -22,7 +22,7 @@ const YourPartnerLayout: React.FC = () => {
   const navigate = useNavigate();
   const [userList, setUserList] = useState<any>([]);
 
-  const { data, isLoading } = useGetFriendsQuery(undefined, {
+  const { data, isLoading, refetch } = useGetFriendsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
 
@@ -92,7 +92,7 @@ const YourPartnerLayout: React.FC = () => {
           </div>
         </Card>
       </Col>
-      <Outlet context={{ userList: data }} />
+      <Outlet context={{ userList: data, refetch: refetch }} />
     </Row>
   );
 };

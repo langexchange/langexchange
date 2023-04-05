@@ -27,7 +27,7 @@ import { useEffect, useState } from "react";
 const defaultFilters = {
   nativeLangs: [],
   targetLangs: [],
-  countryCodes: ["US"],
+  countryCodes: ["VN"],
 };
 
 const SuggestFriendSide: React.FC = () => {
@@ -97,9 +97,11 @@ const SuggestFriendSide: React.FC = () => {
         <Space>
           <Avatar src={item.avatar} size="large" />
           <div>
-            <Typography.Title level={4} className="m-0">
-              {[item.firstName, item.lastName].join(" ")}
-            </Typography.Title>
+            <Link to={`/profile/${item.id}`}>
+              <Typography.Title level={4} className="m-0 hover-underline">
+                {[item.firstName, item.lastName].join(" ")}
+              </Typography.Title>
+            </Link>
             <Space
               align="center"
               className="has-background-color rounded-4 px-2"
@@ -146,7 +148,8 @@ const SuggestFriendSide: React.FC = () => {
   return (
     <Card
       size="small"
-      title="You can know"
+      title={<span className="fz-16 text-500">You can know</span>}
+      bordered={false}
       headStyle={{ border: "none" }}
       style={{ background: "#00000005" }}
     >
