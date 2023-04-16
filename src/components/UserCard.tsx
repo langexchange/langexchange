@@ -186,17 +186,18 @@ const UserCard: React.FC<UserCardProps> = ({ type, refetch, ...profile }) => {
       <Card
         hoverable
         cover={
-          profile?.avatar ? (
-            <Image
-              src={profile.avatar}
-              style={{ width: "calc(100% - 2px)" }}
-              className="d-block ma"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            />
-          ) : undefined
+          <Image
+            src={
+              profile?.avatar ||
+              "https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg"
+            }
+            style={{ width: "calc(100% - 2px)" }}
+            className="d-block ma"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          />
         }
         actions={actions}
         style={{ flexDirection: "column" }}
@@ -234,7 +235,7 @@ const UserCard: React.FC<UserCardProps> = ({ type, refetch, ...profile }) => {
                   icon={<TranslationOutlined />}
                   className="m-0"
                 >
-                  {item.name || "Vietnamese"}
+                  {item.name}
                 </Tag>
               ))}
             </Space>
@@ -249,7 +250,7 @@ const UserCard: React.FC<UserCardProps> = ({ type, refetch, ...profile }) => {
                   icon={<TagOutlined />}
                   className="m-0"
                 >
-                  {item.name || "English"}
+                  {item.name}
                 </Tag>
               ))}
             </Space>

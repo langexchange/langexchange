@@ -1,5 +1,5 @@
 import { Badge, Card, Col, Image, Row, Typography } from "antd";
-import Vocabulary from "../types/Vocabulary";
+import { Vocabulary } from "../services/vocabulary/vocabularyService";
 
 interface VocabularyProps extends Vocabulary {
   badge?: {
@@ -8,7 +8,12 @@ interface VocabularyProps extends Vocabulary {
   };
 }
 
-const VocabularyItem = ({ term, define, image, badge }: VocabularyProps) => {
+const VocabularyItem = ({
+  term,
+  define,
+  imageUrl: image,
+  badge,
+}: VocabularyProps) => {
   return (
     <div className="width-full">
       {badge ? (

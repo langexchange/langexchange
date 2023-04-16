@@ -9,7 +9,6 @@ import NoSignedInLayout from "./layouts/NoSignedInLayout";
 import PartnerLayout from "./layouts/partners/PartnerLayout";
 import YourPartnerLayout from "./layouts/partners/YourPartnerLayout";
 import ProfileLayout from "./layouts/profile/ProfileLayout";
-// import StudySpaceLayout from "./layouts/studySpace/StudySpaceLayout";
 import MainVocabularyLayout from "./layouts/vocabularies/MainVocabularyLayout";
 import PracticeVocabularyLayout from "./layouts/vocabularies/PracticeVocabularyLayout";
 import AboutPage from "./pages/abouts/AboutPage";
@@ -28,11 +27,9 @@ import PostDetailPage from "./pages/posts/PostDetailPage";
 import ProfileSettingsPage from "./pages/profiles/ProfileSettingsPage";
 import ProfileVocabulariesPage from "./pages/profiles/ProfileVocabulariePage";
 import ProfileWallPage from "./pages/profiles/ProfileWallPage";
-// import StudySpaceExplorePage from "./pages/studySpaces/StudySpaceExplorePage";
-// import StudySpaceOwnPage from "./pages/studySpaces/StudySpaceOwnPage";
-// import StudySpacePage from "./pages/studySpaces/StudySpacePage";
 import VocabularyCreatePage from "./pages/vocabularies/VocabularyCreatePage";
 import VocabularyDetailPage from "./pages/vocabularies/VocabularyDetailPage";
+import VocabularyEditPage from "./pages/vocabularies/VocabularyEditPage";
 import VocabularyExploresPage from "./pages/vocabularies/VocabularyExploresPage";
 import VocabularyPracticeOverviewPage from "./pages/vocabularies/VocabularyPracticeOverviewPage";
 import VocabularyPracticePage from "./pages/vocabularies/VocabularyPracticePage";
@@ -59,7 +56,7 @@ const App: React.FC = () => {
         message.error("Something went wrong when fetching languages");
       }
     }
-  }, [languages, isFetching]);
+  }, [languages, isFetching, isError]);
 
   return (
     <Suspense fallback={<LoadingPage size="large" />}>
@@ -80,16 +77,6 @@ const App: React.FC = () => {
             <Route path="/initial" element={<InitialPage />} />
             <Route element={<AppSignedInLayout />}>
               <Route path="/community" element={<CommunityPage />} />
-              {/* <Route path="/study-spaces"> */}
-              {/*   <Route element={<StudySpaceLayout />}> */}
-              {/*     <Route index element={<StudySpacePage />} /> */}
-              {/*     <Route path="recent" element={<StudySpacePage />} /> */}
-              {/*     <Route path="all" element={<StudySpaceOwnPage />} /> */}
-              {/*     <Route path="own" element={<StudySpaceOwnPage />} /> */}
-              {/*     <Route path="joined" element={<StudySpaceOwnPage />} /> */}
-              {/*   </Route> */}
-              {/*   <Route path="explores" element={<StudySpaceExplorePage />} /> */}
-              {/* </Route> */}
               <Route path="/partners">
                 <Route element={<PartnerLayout />}>
                   <Route index element={<PartnerExplorePage />} />
@@ -109,7 +96,11 @@ const App: React.FC = () => {
                   <Route index element={<VocabularyPracticeOverviewPage />} />
                   <Route path=":id" element={<VocabularyPracticePage />} />
                 </Route>
-                <Route path="details" element={<VocabularyDetailPage />} />
+
+                <Route path=":vocabularySetId">
+                  <Route index element={<VocabularyDetailPage />} />
+                  <Route path="edit" element={<VocabularyEditPage />} />
+                </Route>
                 <Route path="create" element={<VocabularyCreatePage />} />
               </Route>
               <Route path="/profile/:id" element={<ProfileLayout />}>

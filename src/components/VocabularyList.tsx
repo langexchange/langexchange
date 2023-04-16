@@ -1,10 +1,7 @@
 import { List } from "antd";
-import Vocabulary from "../types/Vocabulary";
 import VocabularyItem from "./VocabularyItem";
 import { useTranslation } from "react-i18next";
-import { fakeVocabularies } from "../utils/fakeData/fakeVocabulary";
-
-const items: Vocabulary[] = fakeVocabularies(10);
+import { Vocabulary } from "../services/vocabulary/vocabularyService";
 
 interface VocabularyListProps {
   type?: "hard" | "known";
@@ -37,7 +34,7 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
   return (
     <List
       itemLayout="horizontal"
-      dataSource={vocabularies || items}
+      dataSource={vocabularies || []}
       split={false}
       renderItem={(item, index) => (
         <List.Item key={index}>

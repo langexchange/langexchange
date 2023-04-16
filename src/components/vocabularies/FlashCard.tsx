@@ -1,18 +1,14 @@
 import { Col, Image, Row } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Vocabulary from "../../types/Vocabulary";
+import { Vocabulary } from "../../services/vocabulary/vocabularyService";
 import classes from "./FlashCard.module.scss";
 
-const FlashCard: React.FC<Vocabulary> = ({ id, term, define, image }) => {
+const FlashCard: React.FC<Vocabulary> = ({ term, define, imageUrl }) => {
   const [side, setSide] = useState<boolean>(false);
   const [t] = useTranslation(["commons"]);
 
-  function handleClick() {
-    console.log("clicked!");
-    setSide(!side);
-    console.log(side);
-  }
+  const handleClick = () => setSide(!side);
 
   return (
     <div
@@ -22,7 +18,7 @@ const FlashCard: React.FC<Vocabulary> = ({ id, term, define, image }) => {
       <div className={classes.title}>{side ? t("Define") : t("Term")}</div>
       <div className={classes.front}>{term}</div>
       <div className={classes.back}>
-        {image ? (
+        {imageUrl ? (
           <Row wrap={false} align="middle" gutter={12}>
             <Col span={16}>
               <span className="text-300" style={{ fontSize: "46px" }}>
@@ -31,7 +27,7 @@ const FlashCard: React.FC<Vocabulary> = ({ id, term, define, image }) => {
             </Col>
             <Col span={8}>
               <Image
-                src={image}
+                src={imageUrl}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();

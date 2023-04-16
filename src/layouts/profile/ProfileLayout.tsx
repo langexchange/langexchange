@@ -15,15 +15,15 @@ const ProfileLayout = () => {
 
   return (
     <Row className="full-height-minus-header py-3">
-      <Col span={10}>
+      <Col span={9} className="d-flex flex-column h-100 overflow-hidden">
         <ProfileCard userId={userId} isCurrentUser={isCurrentUser} />
       </Col>
-      <Col span={14} className="h-100">
+      <Col span={15} className="h-100">
         <Row wrap={false} className="h-100">
           <Col flex="none">
             <SidebarNavigation canSeeSettings={isCurrentUser} />
           </Col>
-          <Col flex="auto" className="auto-hide-scroll scroll-style-1 px-3">
+          <Col flex="auto" className="auto-hide-scroll scroll-style-1 px-4">
             <Outlet />
           </Col>
         </Row>

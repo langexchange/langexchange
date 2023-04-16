@@ -209,6 +209,7 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
                 handlePostValueChange("langId", value)
               }
               allLanguages={false}
+              exceptLanguages={[]}
             />
             <TagsInput
               tags={tags || []}
@@ -360,6 +361,7 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
             return false;
           }}
           setFileList={setImageFileList}
+          onChange={undefined}
         />
         <Button
           loading={isHandling}

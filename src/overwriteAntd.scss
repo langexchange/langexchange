@@ -67,6 +67,7 @@
 .ant-card.card-custome-scroll {
   .ant-card-body {
     overflow: hidden;
+    height: 100%;
 
     &:hover {
       overflow-y: scroll;

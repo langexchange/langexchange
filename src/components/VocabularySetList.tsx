@@ -1,40 +1,45 @@
-import { Link } from "react-router-dom";
-import VocabularySet from "../types/VocabularySet";
-import { fakeVocabularySets } from "../utils/fakeData/fakeVocabularySet";
 import VocabularyCard from "./VocabularyCard";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { VocabularySetDetail } from "../services/vocabulary/vocabularyService";
 
-interface ListProps {
+interface VocabularySetListProps {
+  data?: VocabularySetDetail[];
   colSpan?: number;
   editable?: boolean;
-  setVocabularySet?: React.Dispatch<React.SetStateAction<VocabularySet | null>>;
+  setVocabularySet?: React.Dispatch<
+    React.SetStateAction<VocabularySetDetail | null>
+  >;
   showModal?: () => void;
   columnsCount?: number;
+  refetch?: () => void;
 }
 
-const items: VocabularySet[] = fakeVocabularySets(10);
-
-const VocabularySetList = ({
+const VocabularySetList: React.FC<VocabularySetListProps> = ({
+  data,
   showModal,
   setVocabularySet,
   columnsCount = 4,
   editable = false,
-}: ListProps) => {
+  refetch,
+}) => {
   return (
     <ResponsiveMasonry
       columnsCountBreakPoints={{ 350: 1, 750: 2, 900: columnsCount }}
     >
       <Masonry gutter="16px" columnsCount={columnsCount}>
-        {items.map((item, index) => (
-          <Link to="/vocabularies/details" key={index}>
+        {data?.map((ofUser) => {
+          return ofUser?.vocabularyPackageDtos.map((item) => (
             <VocabularyCard
               {...item}
+              owner={ofUser.userInfo}
               editable={editable}
               showModal={showModal}
-              setVocabularySet={setVocabularySet}
+              // setVocabularySet={setVocabularySet}
+              refetch={refetch}
+              key={item.packageId}
             />
-          </Link>
-        ))}
+          ));
+        })}
       </Masonry>
     </ResponsiveMasonry>
   );

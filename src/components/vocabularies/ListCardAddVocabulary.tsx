@@ -1,54 +1,40 @@
-import { Button, Card, Col, Input, Row, Space, Typography } from "antd";
+import { memo, useCallback, useMemo, useRef } from "react";
+import { Card, Space, Typography } from "antd";
 import { List, arrayMove } from "react-movable";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { useState } from "react";
-import UploadImage from "../UploadImage";
+import { PlusOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import CardAddVocabulary from "./CardAddVocabulary";
+import { VocabularyForm } from "../../pages/vocabularies/VocabularyCreatePage";
 
-interface Vocabulary {
-  term: string;
-  define: string;
+interface ListCardAddVocabularyProps {
+  items: VocabularyForm[];
+  setItems: React.Dispatch<React.SetStateAction<VocabularyForm[]>>;
 }
 
-const initial = [
-  {
-    term: "",
-    define: "",
-  },
-  {
-    term: "",
-    define: "",
-  },
-];
-const ListCardAddVocabulary: React.FC = () => {
-  const [items, setItems] = useState<Vocabulary[]>(initial);
-  const [t] = useTranslation(["vocabulary", "commons"]);
-
-  const updateTerm = (value: string, key: number) => {
+const ListCardAddVocabulary: React.FC<ListCardAddVocabularyProps> = ({
+  items,
+  setItems,
+}) => {
+  const addCard = useCallback(() => {
     setItems((prev) => {
-      prev[key].term = value;
-      return [...prev];
+      return [
+        ...prev,
+        {
+          term: "",
+          define: "",
+          imageUrl: "",
+          fileList: [],
+          error: false,
+        },
+      ];
     });
-  };
+  }, []);
 
-  const updateDefine = (value: string, key: number) => {
-    setItems((prev) => {
-      prev[key].define = value;
-      return [...prev];
-    });
-  };
-
-  const addCard = () => {
-    setItems((prev) => {
-      return [...prev, { term: "", define: "" }];
-    });
-  };
-
-  const removeCard = (key: number) => {
+  const removeCard = useCallback((key: number) => {
     setItems((prev) => {
       return prev.filter((_, index) => index !== key);
     });
-  };
+  }, []);
 
   return (
     <>
@@ -63,54 +49,29 @@ const ListCardAddVocabulary: React.FC = () => {
           </div>
         )}
         renderItem={({ value, props }) => (
-          <div style={{ margin: "12px 0" }} key={props.key}>
-            <Card
-              hoverable
-              size="small"
-              title={
-                <Typography.Text type="secondary">{props.key}</Typography.Text>
-              }
-              extra={
-                <Button
-                  onClick={() => removeCard(Number(props.key))}
-                  type="text"
-                  icon={<DeleteOutlined />}
-                  danger
-                />
-              }
-              {...props}
-            >
-              <Row gutter={8} align="middle">
-                <Col flex={1}>
-                  <Input
-                    size="large"
-                    placeholder={t("Term", { ns: "commons" }).toString()}
-                    value={value.term}
-                    onChange={(e) =>
-                      updateTerm(e.target.value, Number(props.key))
-                    }
-                  />
-                </Col>
-                <Col flex={2}>
-                  <Input.TextArea
-                    size="large"
-                    placeholder={t("Define", { ns: "commons" }).toString()}
-                    rows={1}
-                    value={value.define}
-                    onChange={(e) =>
-                      updateDefine(e.target.value, Number(props.key))
-                    }
-                    autoSize={true}
-                  />
-                </Col>
-                <Col flex="none">
-                  <UploadImage />
-                </Col>
-              </Row>
-            </Card>
+          <div key={props.key} className="my-3" {...props}>
+            <CardAddVocabulary
+              value={value}
+              removeCard={removeCard}
+              setItems={setItems}
+              props={props}
+            />
           </div>
         )}
       />
+      <AddCardButton addCard={addCard} />
+    </>
+  );
+};
+
+interface AddCardButtonProps {
+  addCard: () => void;
+}
+
+const AddCardButton: React.FC<AddCardButtonProps> = memo(
+  function AddCardButton({ addCard }) {
+    const [t] = useTranslation(["vocabulary"]);
+    return (
       <Card hoverable onClick={addCard} className="text-center">
         <Space>
           <Typography.Text strong type="success">
@@ -119,8 +80,8 @@ const ListCardAddVocabulary: React.FC = () => {
           <Typography.Text strong>{t("Add card")}</Typography.Text>
         </Space>
       </Card>
-    </>
-  );
-};
+    );
+  }
+);
 
 export default ListCardAddVocabulary;
