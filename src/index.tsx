@@ -12,6 +12,7 @@ import "./overwriteAntd.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./i18n";
+import { ConfigProvider } from "antd";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -20,7 +21,11 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <ConfigProvider
+          theme={{ token: { colorPrimary: "#3ea9ff", borderRadius: 8 } }}
+        >
+          <App />
+        </ConfigProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

@@ -186,8 +186,8 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                     </Button>
                   </>
                 ) : requestList?.some(
-                  (request: any) => request.id === userId
-                ) ? (
+                    (request: any) => request.id === userId
+                  ) ? (
                   <>
                     <Button
                       type="primary"
@@ -272,8 +272,7 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
             </Space>
           </Space>
         </div>
-        <br />
-        <Typography.Paragraph italic className="text-center text-300">
+        <Typography.Paragraph italic className="text-center text-400 mt-2">
           "{profile?.introduction}"
         </Typography.Paragraph>
         <Divider />

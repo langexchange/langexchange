@@ -45,42 +45,34 @@ const CommunityPage: React.FC = () => {
   };
 
   return (
-    <>
-      <div>
-        <Row
-          justify="space-between"
-          className="full-height-minus-header"
-          gutter={24}
-        >
-          <Col span={6} className="py-3">
-            <Sidebar />
-          </Col>
-          <Col
-            span={12}
-            className="height-full py-3 px-4 pb-5 auto-hide-scroll scroll-style-1"
-            id="style-1"
-          >
-            <div className="mb-3">
-              <PostInput refetch={refetch} />
-            </div>
-            <Skeleton loading={isLoading} avatar active>
-              <PostList
-                setPostId={setPostId}
-                showModal={showModal}
-                postList={posts}
-                refetchListPost={refetch}
-              />
-            </Skeleton>
-          </Col>
-          <Col span={6} className="py-3">
-            <RightSidebar
-              defaultFilters={defaultFilters}
-              setFilters={setFilters}
-              resetFilters={resetFilters}
-            />
-          </Col>
-        </Row>
-      </div>
+    <Row
+      className="mx-auto full-height-minus-header mx-auto auto-hide-scroll scroll-style-1 "
+      gutter={24}
+    >
+      <Col xs={0} md={0} lg={7} xl={6} className="py-3 position-sticky top-0">
+        <Sidebar />
+      </Col>
+      <Col xs={24} md={24} lg={10} xl={12} className="height-full py-3 pb-5">
+        <div className="mb-3">
+          <PostInput refetch={refetch} />
+        </div>
+        <Skeleton loading={isLoading} avatar active>
+          <PostList
+            setPostId={setPostId}
+            showModal={showModal}
+            postList={posts}
+            refetchListPost={refetch}
+          />
+        </Skeleton>
+      </Col>
+      <Col xs={0} md={0} lg={7} xl={6} className="py-3 position-sticky top-0">
+        <RightSidebar
+          defaultFilters={defaultFilters}
+          setFilters={setFilters}
+          resetFilters={resetFilters}
+        />
+      </Col>
+
       <PostModal
         postId={postId}
         setPostId={setPostId}
@@ -88,7 +80,7 @@ const CommunityPage: React.FC = () => {
         setIsModalOpen={setIsModalOpen}
         refetchListPost={refetch}
       />
-    </>
+    </Row>
   );
 };
 

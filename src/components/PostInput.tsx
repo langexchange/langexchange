@@ -33,7 +33,7 @@ const PostInput: React.FC<PostInputProps> = ({ refetch }) => {
         <div className="d-flex justify-space-between align-items-center py-1">
           <div className="me-2">
             <Avatar
-              size={44}
+              size={40}
               src={currentUserProfile?.avatar}
               icon={<UserOutlined />}
             />

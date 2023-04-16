@@ -12,7 +12,7 @@ import {
 const defaultFilters: FriendSuggestionsQuery = {
   nativeLangs: [],
   targetLangs: [],
-  countryCodes: ["VN"],
+  countryCodes: [],
 };
 
 const PartnerExplorePage: React.FC = () => {

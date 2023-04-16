@@ -42,6 +42,7 @@ const usePost = (postData: Post): UsePostReturn => {
     e.stopPropagation();
     e.preventDefault();
 
+    // TODO: improve this by updating before call api
     try {
       if (!credentials.userId) return;
       let mode = 0;

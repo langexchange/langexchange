@@ -2,7 +2,6 @@ import {
   Avatar,
   Button,
   Card,
-  CardProps,
   Image,
   MenuProps,
   message,
@@ -190,6 +189,10 @@ const PostCard: React.FC<PostProps> = ({
             controls
             key={index}
             style={{ width: "100%", height: "40px" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
           />
         ))}
       </div>

@@ -20,6 +20,7 @@ const MenuUserList: React.FC<MenuUserListProps> = ({ userList }) => {
             direction="left"
             badge={false}
             fullname={[item.firstName, item.lastName].join(" ")}
+            linkToProfile={false}
           />
         </Link>
       ),

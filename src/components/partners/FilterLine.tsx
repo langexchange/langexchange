@@ -45,6 +45,7 @@ const FilterLine: React.FC<FilterLineProps> = ({
               placeholder={t("Native").toString()}
               dropdownMatchSelectWidth={false}
               valueType="locale"
+              exceptLanguages={[]}
             />
           </Form.Item>
         </Col>
@@ -61,6 +62,7 @@ const FilterLine: React.FC<FilterLineProps> = ({
               placeholder={t("Target").toString()}
               dropdownMatchSelectWidth={false}
               valueType="locale"
+              exceptLanguages={[]}
             />
           </Form.Item>
         </Col>

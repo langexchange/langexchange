@@ -4,7 +4,7 @@ import VocabularySet from "./VocabularySet";
 export default interface User {
   id: string;
   fullname: string;
-  email: string;
+  email?: string;
   nativeLanguages?: string[];
   targetLanguages?: string[];
   interests?: string[];

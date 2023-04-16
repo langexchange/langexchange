@@ -38,7 +38,7 @@ const PostList: React.FC<PostListProps> = ({
 
   return (
     <>
-      <Row gutter={[0, 24]}>
+      <Row gutter={[0, 24]} className="pb-5">
         {postList?.map((item) => (
           <Col span={24} key={item.postId}>
             <PostCard

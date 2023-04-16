@@ -49,17 +49,17 @@ const SeclectLanguageInput: React.FC<SeclectLanguageInputProps> = ({
   const [t] = useTranslation(["commons"]);
   const initialLanguageOptions = [
     {
-      value: "english",
+      value: "en",
       label: t("English"),
       color: "blue",
     },
     {
-      value: "vietnamese",
+      value: "vi",
       label: t("Vietnamese"),
       color: "blue",
     },
     {
-      value: "chinese",
+      value: "vn",
       label: t("Chinese"),
       color: "blue",
     },
@@ -84,23 +84,21 @@ const SeclectLanguageInput: React.FC<SeclectLanguageInputProps> = ({
   const credentials = useAppSelector(selectCredentials);
   const { data: userLanguages, isLoading } = useGetLanguageByUserQuery(
     credentials?.userId || "",
-    {
-      skip: !credentials?.userId || allLanguages,
-    }
+    { skip: !credentials?.userId || allLanguages }
   );
 
   useEffect(() => {
     if (!listLanguages) return;
     if (!allLanguages) return;
 
-    const languages = listLanguages?.map((language) => ({
+    const newLanguages = listLanguages?.map((language) => ({
       value: valueType === "id" ? language.id : language.localeCode,
       label: t(language.name),
       color: "blue",
     }));
 
     setLanguages(
-      languages.filter(
+      newLanguages.filter(
         (language) =>
           !exceptLanguages?.includes(language.value) ||
           language.value === rest.value
@@ -112,14 +110,20 @@ const SeclectLanguageInput: React.FC<SeclectLanguageInputProps> = ({
     if (!userLanguages) return;
     if (allLanguages) return;
 
+    const newLanguages = userLanguages.map((language) => ({
+      value: valueType === "id" ? language.id : language.localeCode,
+      label: t(language.name),
+      color: "blue",
+    }));
+
     setLanguages(
-      userLanguages.map((language) => ({
-        value: language.id,
-        label: t(language.name),
-        color: "blue",
-      }))
+      newLanguages.filter(
+        (language) =>
+          !exceptLanguages?.includes(language.value) ||
+          language.value === rest.value
+      )
     );
-  }, [userLanguages, isLoading]);
+  }, [userLanguages, isLoading, exceptLanguages]);
 
   return (
     <Select
