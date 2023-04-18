@@ -40,7 +40,7 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
   refetch,
   ...vocabularySet
 }) => {
-  const [t] = useTranslation(["commons", "languages"]);
+  const { t } = useTranslation(["commons", "languages"]);
   const [deleteVocabularySet, { isLoading }] = useDeleteVocabularySetMutation();
   const navigate = useNavigate();
 
@@ -157,14 +157,16 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
         </Typography.Paragraph>
         {vocabularySet.practiceResultDto.isPracticed ? (
           <Tooltip title="Bộ này bạn đang luyện tập">
-            <Progress
-              percent={
-                (vocabularySet.practiceResultDto.currentNumOfVocab /
-                  vocabularySet.practiceResultDto.totalVocabs) *
-                100
-              }
-              size="small"
-            />
+            <span>
+              <Progress
+                percent={
+                  (vocabularySet.practiceResultDto.currentNumOfVocab /
+                    vocabularySet.practiceResultDto.totalVocabs) *
+                  100
+                }
+                size="small"
+              />
+            </span>
           </Tooltip>
         ) : null}
       </Space>
