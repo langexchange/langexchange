@@ -12,6 +12,7 @@ import { uploadApi } from "../services/upload/uploadService";
 import { commentApi } from "../services/comment/commentService";
 import { friendApi } from "../services/friend/friendService";
 import { vocabularyApi } from "../services/vocabulary/vocabularyService";
+import { dictionaryApi } from "../services/dictionary/dictionaryService";
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     [commentApi.reducerPath]: commentApi.reducer,
     [friendApi.reducerPath]: friendApi.reducer,
     [vocabularyApi.reducerPath]: vocabularyApi.reducer,
+    [dictionaryApi.reducerPath]: dictionaryApi.reducer,
     theme: themeReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -38,7 +40,8 @@ export const store = configureStore({
       uploadApi.middleware,
       commentApi.middleware,
       friendApi.middleware,
-      vocabularyApi.middleware
+      vocabularyApi.middleware,
+      dictionaryApi.middleware
     ),
 });
 

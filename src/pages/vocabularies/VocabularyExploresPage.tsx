@@ -15,16 +15,14 @@ const defaultFilters: FilterVocabularySet = {
 };
 
 const VocabularyExploresPage: React.FC = () => {
+  const [t] = useTranslation(["commons"]);
   const [filters, setFilters] = useState<FilterVocabularySet>(defaultFilters);
   const { data, isLoading } = useGetSuggestVocabularySetsQuery(filters, {
     refetchOnMountOrArgChange: true,
   });
 
-  const resetFilters = () => {
-    setFilters(defaultFilters);
-  };
+  const resetFilters = () => setFilters(defaultFilters);
 
-  const [t] = useTranslation(["commons"]);
   return (
     <div className="pt-4 pb-5">
       <div className="d-flex gap-3">

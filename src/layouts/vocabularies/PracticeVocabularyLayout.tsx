@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import PracticeSidebar from "../../components/vocabularies/PracticeSidebar";
 import { Outlet } from "react-router-dom";
 
-const PracticeVocabularyLayout = () => {
+const PracticeVocabularyLayout: React.FC = () => {
   return (
     <Layout
       className="py-4 full-height-minus-header"
