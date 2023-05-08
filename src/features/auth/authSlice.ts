@@ -6,18 +6,21 @@ interface AuthState {
   incId: string | null;
   token: string | null;
   persist?: boolean;
+  jid: string | null;
 }
 
 const userId = localStorage.getItem("userId");
 const incId = localStorage.getItem("incId");
 const token = localStorage.getItem("token");
 const persist = localStorage.getItem("persist") === "true";
+const jid = localStorage.getItem("jid");
 
 const initialState: AuthState = {
   userId: userId,
   incId: incId,
   token: token,
   persist: persist,
+  jid: jid,
 };
 
 const authSlice = createSlice({
@@ -28,6 +31,7 @@ const authSlice = createSlice({
       if (payload.user) {
         state.userId = payload.user.id;
         state.incId = payload.user.incId;
+        state.jid = payload.user.jid;
       }
       if (payload.token) state.token = payload.token;
 
@@ -35,6 +39,7 @@ const authSlice = createSlice({
         if (payload.user) {
           localStorage.setItem("userId", payload.user.id);
           localStorage.setItem("incId", payload.user.incId);
+          localStorage.setItem("jid", payload.user.jid);
         }
         if (payload.token) localStorage.setItem("token", payload.token);
         localStorage.setItem("persist", "true");
@@ -47,6 +52,7 @@ const authSlice = createSlice({
       localStorage.removeItem("incId");
       localStorage.removeItem("token");
       localStorage.removeItem("persist");
+      localStorage.removeItem("jid");
     },
   },
 });
