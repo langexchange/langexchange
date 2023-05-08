@@ -7,7 +7,7 @@ import { getElementInPathnameAt } from "../../utils/extractPathname";
 import { useTranslation } from "react-i18next";
 import { useGetPracticeListQuery } from "../../services/vocabulary/vocabularyService";
 
-const onClick: MenuProps["onClick"] = (e) => { };
+const onClick: MenuProps["onClick"] = (e) => {};
 
 const PracticeSidebar: React.FC = () => {
   const activeKey = getElementInPathnameAt(3);
@@ -71,6 +71,7 @@ const PracticeSidebar: React.FC = () => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        refetchPracticeList={refetch}
       />
     </div>
   );

@@ -1,47 +1,43 @@
-import { faker } from "@faker-js/faker";
 import { Avatar, List, Space, Typography } from "antd";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Notification,
+  useGetNotificationsQuery,
+} from "../services/notifications/notificationsService";
 
-interface Notification {
-  image: string;
-  title: string;
-  description: string;
-  time: string;
-  read: boolean;
+interface NotificationItemProps {
+  notification: Notification;
 }
-
-const notifications: Notification[] = [];
-
-for (let i = 0; i < 20; i++) {
-  const notification: Notification = {
-    image: faker.image.abstract(100, 100),
-    title: faker.name.fullName(),
-    description: faker.lorem.sentence(),
-    read: Number(faker.random.numeric(2)) % 2 === 0,
-    time: faker.date.past().toLocaleString(),
+const NotificationItem: React.FC<NotificationItemProps> = ({
+  notification,
+}) => {
+  const navigate = useNavigate();
+  const read: boolean = true;
+  const onClick = () => {
+    if (!notification.postid) return;
+    navigate(`/posts/${notification.postid}`);
   };
-  notifications.push(notification);
-}
 
-const NotificationItem = ({ notification }: { notification: Notification }) => {
   return (
     <Space
       style={{
-        backgroundColor: notification.read ? "white" : "#e6f4ff",
+        backgroundColor: read ? "white" : "#e6f4ff",
         borderRadius: "8px",
         maxWidth: "400px",
       }}
       className="p-2 width-full my-1 notification-item"
       align="start"
+      onClick={onClick}
     >
-      <Avatar src={notification.image} size={50} />
+      {/* <Avatar src={notification.image} size={50} /> */}
       <Space direction="vertical" size={0}>
-        <Typography.Text strong>{notification.title}</Typography.Text>
-        <Typography.Text type="secondary">
-          {notification.description}
-        </Typography.Text>
+        <Typography.Text strong>{notification.notifyMessage}</Typography.Text>
+        {notification.subNotification?.map((subNotification) => (
+          <Typography.Text type="secondary">{subNotification}</Typography.Text>
+        ))}
         <Typography.Text className="fz-12 color-primary text-600">
-          {notification.time}
+          {new Date(notification.createdAt).toLocaleString()}
         </Typography.Text>
       </Space>
     </Space>
@@ -53,8 +49,13 @@ interface NotificationListProps {
   setAllRead: (allRead: boolean) => void;
 }
 
-const NotificationList = ({ allRead }: NotificationListProps) => {
-  const [data, setData] = useState<Notification[]>(notifications);
+const NotificationList: React.FC<NotificationListProps> = ({ allRead }) => {
+  // const [data, setData] = useState<Notification[]>(notifications);
+  const { data, isLoading } = useGetNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  console.log(data);
 
   return (
     <div
@@ -64,16 +65,13 @@ const NotificationList = ({ allRead }: NotificationListProps) => {
       className="overflow-y-scroll"
     >
       <List
-        // header={<div>Header</div>}
-        // footer={<div>Footer</div>}
         itemLayout="horizontal"
         dataSource={data}
-        split={false}
+        // split={false}
+        loading={isLoading}
         renderItem={(item) => (
           <List.Item style={{ padding: 0 }}>
-            <NotificationItem
-              notification={{ ...item, read: allRead || item.read }}
-            />
+            <NotificationItem notification={item} />
           </List.Item>
         )}
       />

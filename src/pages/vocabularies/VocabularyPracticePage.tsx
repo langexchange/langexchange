@@ -22,16 +22,16 @@ const VocabularyPracticePage: React.FC = () => {
 
   return (
     <div>
-      <Card
-        hoverable
-        size="small"
-        onClick={showDrawer}
-        className="mb-3 float-right"
-        style={{ width: "fit-content", zIndex: 1 }}
-      >
-        <LeftOutlined />
-        {t("Dashboard")}
-      </Card>
+      {/* <Card */}
+      {/*   hoverable */}
+      {/*   size="small" */}
+      {/*   onClick={showDrawer} */}
+      {/*   className="mb-3 float-right" */}
+      {/*   style={{ width: "fit-content", zIndex: 1 }} */}
+      {/* > */}
+      {/*   <LeftOutlined /> */}
+      {/*   {t("Dashboard")} */}
+      {/* </Card> */}
       <Skeleton loading={isLoading} active>
         <FlashCardList vocabularies={data?.practiceVocabularies} />
       </Skeleton>

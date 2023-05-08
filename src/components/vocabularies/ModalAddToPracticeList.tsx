@@ -8,16 +8,24 @@ import {
 } from "../../services/vocabulary/vocabularyService";
 import VocabularySetMenuItem from "./VocabularySetMenuItem";
 
-const ModalAddToPracticeList: React.FC<ModalProps> = ({
+interface ModalAddToPracticeListProps extends ModalProps {
+  refetchPracticeList: () => void;
+}
+
+const ModalAddToPracticeList: React.FC<ModalAddToPracticeListProps> = ({
   open,
   onOk,
   onCancel,
+  refetchPracticeList,
 }) => {
   const [t] = useTranslation(["commons"]);
   const [sets, setSets] = useState<VocabularySetDetail>();
-  const { data, isLoading, refetch } = useGetVocabularySetsQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data, isLoading, refetch, isFetching } = useGetVocabularySetsQuery(
+    undefined,
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
   const [addToPractice, { isLoading: isAdding }] = useAddToPracticeMutation();
   const [addingId, setAddingId] = useState<string>("");
 
@@ -44,6 +52,11 @@ const ModalAddToPracticeList: React.FC<ModalProps> = ({
     });
   }, [data]);
 
+  useEffect(() => {
+    if (!open) return;
+    refetch();
+  }, [open]);
+
   const handleAdding = async (id: string) => {
     setAddingId(id);
     try {
@@ -51,6 +64,7 @@ const ModalAddToPracticeList: React.FC<ModalProps> = ({
       message.success("Added to practice list", 1);
       setAddingId("");
       refetch();
+      refetchPracticeList();
     } catch (error) {
       setAddingId("");
       message.success(
@@ -63,6 +77,7 @@ const ModalAddToPracticeList: React.FC<ModalProps> = ({
   return (
     <>
       <Modal
+        destroyOnClose={true}
         title={
           <div className="d-flex align-items-center justify-space-between">
             {t("Add set to practice list", { ns: "vocabulary" })}
@@ -86,7 +101,7 @@ const ModalAddToPracticeList: React.FC<ModalProps> = ({
       >
         <List
           itemLayout="horizontal"
-          loading={isLoading}
+          loading={isLoading || isFetching}
           // loadMore={loadMore}
           dataSource={sets?.vocabularyPackageDtos}
           renderItem={(set) => (
