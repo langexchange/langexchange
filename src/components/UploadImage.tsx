@@ -5,6 +5,8 @@ import ImgCrop from "antd-img-crop";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
 import { useTranslation } from "react-i18next";
+import { useAppSelector } from "../hooks/hooks";
+import { selectCredentials } from "../features/auth/authSlice";
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -19,6 +21,8 @@ interface UploadImageProps extends UploadProps {
   limit?: number;
   aspect?: number;
   shape?: "rect" | "round";
+  cropable?: boolean;
+  customAspect?: boolean;
 }
 
 const UploadImage: React.FC<UploadImageProps> = ({
@@ -27,12 +31,20 @@ const UploadImage: React.FC<UploadImageProps> = ({
   shape,
   setFileList,
   limit,
+  cropable = true,
+  customAspect = true,
   ...props
 }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileListAlt, setFileListAlt] = useState<UploadFile[]>([]);
+  const credentials = useAppSelector(selectCredentials);
+  const endPoint =
+    process.env.REACT_APP_API_UPLOAD +
+    "api/files/users/" +
+    credentials.incId +
+    "/types/image";
 
   if (!fileList && !setFileList) {
     fileList = fileListAlt;
@@ -76,25 +88,39 @@ const UploadImage: React.FC<UploadImageProps> = ({
 
   return (
     <>
-      <ImgCrop
-        rotationSlider
-        quality={1}
-        aspect={aspect || 16 / 9}
-        aspectSlider
-        showReset
-        modalWidth={700}
-        cropShape={shape || "rect"}
-      >
+      {cropable ? (
+        <ImgCrop
+          rotationSlider
+          quality={1}
+          aspect={aspect || 16 / 9}
+          aspectSlider={customAspect}
+          showReset
+          modalWidth={700}
+          cropShape={shape || "rect"}
+        >
+          <Upload
+            action={endPoint}
+            listType="picture-card"
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleChange}
+            {...props}
+          >
+            {Number(fileList?.length) >= (limit || 8) ? null : uploadButton}
+          </Upload>
+        </ImgCrop>
+      ) : (
         <Upload
+          action={endPoint}
           listType="picture-card"
           fileList={fileList}
           onPreview={handlePreview}
-          // onChange={handleChange}
+          onChange={handleChange}
           {...props}
         >
           {Number(fileList?.length) >= (limit || 8) ? null : uploadButton}
         </Upload>
-      </ImgCrop>
+      )}
 
       <Modal
         open={previewOpen}

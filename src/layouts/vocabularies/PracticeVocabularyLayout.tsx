@@ -2,16 +2,20 @@ import { Layout } from "antd";
 import PracticeSidebar from "../../components/vocabularies/PracticeSidebar";
 import { Outlet } from "react-router-dom";
 
-const PracticeVocabularyLayout = () => {
+const PracticeVocabularyLayout: React.FC = () => {
   return (
     <Layout
       className="py-4 full-height-minus-header"
       style={{ backgroundColor: "inherit" }}
     >
       <Layout.Sider
-        className="white-background sider-with-content-scroll py-3 px-3"
+        className="card-box-shadow rounded-3 white-background"
         width={360}
-        style={{ borderRadius: "8px" }}
+        style={{ zIndex: 2 }}
+        breakpoint="xl"
+        collapsedWidth="0"
+        theme="light"
+        zeroWidthTriggerStyle={{ top: "12px" }}
       >
         <PracticeSidebar />
       </Layout.Sider>

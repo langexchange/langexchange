@@ -23,15 +23,15 @@ const VocabularyList = ({
   return (
     <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1024: 2 }}>
       <Masonry gutter="16px" columnsCount={columnsCount}>
-        {items.map((item, index) => (
-          <VocabularyCard
-            {...item}
-            editable={editable}
-            showModal={showModal}
-            setVocabularySet={setVocabularySet}
-            key={index}
-          />
-        ))}
+        {/* {items.map((item, index) => ( */}
+        {/*   <VocabularyCard */}
+        {/*     {...item} */}
+        {/*     editable={editable} */}
+        {/*     showModal={showModal} */}
+        {/*     setVocabularySet={setVocabularySet} */}
+        {/*     key={index} */}
+        {/*   /> */}
+        {/* ))} */}
       </Masonry>
     </ResponsiveMasonry>
   );

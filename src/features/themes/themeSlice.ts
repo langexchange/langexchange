@@ -7,7 +7,7 @@ interface ThemeState {
 
 if (!localStorage.getItem("theme")) {
   const theme = {
-    backgroundColor: "#fff",
+    backgroundColor: "#f0f2f5",
   };
   localStorage.setItem("theme", JSON.stringify(theme));
 }

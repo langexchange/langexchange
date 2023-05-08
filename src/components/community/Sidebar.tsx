@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
               src={currentUserProfile?.avatar}
               icon={!currentUserProfile?.avatar && <UserOutlined />}
             />
-            <Typography.Title level={3} className="m-0 color-primary">
+            <Typography.Title level={4} className="m-0 color-primary">
               {currentUserProfile?.firstName} {currentUserProfile?.lastName}
             </Typography.Title>
           </Space>

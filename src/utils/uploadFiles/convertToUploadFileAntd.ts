@@ -13,6 +13,18 @@ export const convertToUploadFileAntd = (file: AttachedFile): UploadFile => {
   };
 };
 
+export const imageUrlToUploadFileAntd = (url: string): UploadFile => {
+  const timeNow = Date.now().toString();
+  return {
+    uid: timeNow,
+    name: "image" + timeNow,
+    status: "done",
+    url: url,
+    thumbUrl: url,
+    type: "image",
+  };
+};
+
 const convertToUploadFilesAntd = (files: AttachedFile[]): UploadFile[] => {
   let results: UploadFile[] = [];
   files.forEach((item) => {

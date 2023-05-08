@@ -1,99 +1,73 @@
-import { Button, Form, Select, SelectProps, Space } from "antd";
+import { Button, Col, Form, Row, Space } from "antd";
 import { useTranslation } from "react-i18next";
+import { FilterVocabularySet } from "../../services/vocabulary/vocabularyService";
+import SeclectLanguageInput from "../SeclectLanguageInput";
 
-const handleChange = (value: string | string[]) => {
-  console.log(`Selected: ${value}`);
-};
-
-const FilterLine: React.FC = () => {
+interface FilterLineProps {
+  resetFilters?: () => void;
+  setFilters?: React.Dispatch<React.SetStateAction<FilterVocabularySet>>;
+}
+const FilterLine: React.FC<FilterLineProps> = ({
+  resetFilters,
+  setFilters,
+}) => {
   const [t] = useTranslation(["vocabulary", "commons"]);
-  const options: SelectProps["options"] = [
-    {
-      value: "english",
-      label: t("English", { ns: "commons" }),
-    },
-    {
-      value: "vietnamese",
-      label: t("Vietnamese", { ns: "commons" }),
-    },
-    {
-      value: "chinese",
-      label: t("Chinese", { ns: "commons" }),
-    },
-    {
-      value: "japanese",
-      label: t("Japanese", { ns: "commons" }),
-    },
-    {
-      value: "korean",
-      label: t("Korean", { ns: "commons" }),
-    },
-    {
-      value: "laos",
-      label: t("Laos", { ns: "commons" }),
-    },
-  ];
+  const [form] = Form.useForm();
 
-  const topicOptions = [
-    { label: t("Food"), value: "1" },
-    { label: t("Beauty"), value: "2" },
-    { label: t("Sport"), value: "3" },
-    { label: t("Technology"), value: "4" },
-    { label: t("Machine learning"), value: "5" },
-    { label: t("Girls"), value: "6" },
-    { label: t("Histories"), value: "7" },
-    { label: t("Travel"), value: "8" },
-  ];
+  const onFinish = (values: any) => setFilters?.(values);
 
   return (
-    <Form className="width-full" layout="inline">
-      <Form.Item label={t("Term", { ns: "commons" }).toString()}>
-        <Select
-          allowClear
-          // mode="multiple"
-          size="middle"
-          placeholder={t("Term", { ns: "commons" })}
-          defaultValue={["english"]}
-          onChange={handleChange}
-          style={{ width: "100%" }}
-          options={options}
-          dropdownMatchSelectWidth={false}
-        />
-      </Form.Item>
-      <Form.Item label={t("Define", { ns: "commons" })}>
-        <Select
-          allowClear
-          size="middle"
-          placeholder={t("Define", { ns: "commons" })}
-          defaultValue={["vietnamese"]}
-          onChange={handleChange}
-          options={options}
-          dropdownMatchSelectWidth={false}
-        />
-      </Form.Item>
-      <Form.Item label={t("Topic", { ns: "commons" })}>
-        <Select
-          allowClear
-          showSearch
-          placeholder={t("Topic", { ns: "commons" })}
-          optionFilterProp="children"
-          // onChange={onChange}
-          // onSearch={onSearch}
-          filterOption={(input, option) =>
-            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-          }
-          options={topicOptions}
-          dropdownMatchSelectWidth={false}
-        />
-      </Form.Item>
-      <Form.Item className="text-center">
-        <Space>
-          <Button type="primary" htmlType="submit">
-            {t("filter", { ns: "commons" })}
-          </Button>
-          <Button htmlType="button">{t("reset", { ns: "commons" })}</Button>
-        </Space>
-      </Form.Item>
+    <Form className="width-full" form={form} onFinish={onFinish}>
+      <Row gutter={12}>
+        <Col flex="auto">
+          <Form.Item
+            label={t("Term", { ns: "commons" }).toString()}
+            name="terms"
+            className="m-0"
+          >
+            <SeclectLanguageInput
+              mode="multiple"
+              valueType="locale"
+              placeholder={t("Term", { ns: "commons" })}
+              dropdownMatchSelectWidth={false}
+              exceptLanguages={[]}
+            />
+          </Form.Item>
+        </Col>
+        <Col flex="auto">
+          <Form.Item
+            label={t("Define", { ns: "commons" })}
+            name="defines"
+            className="m-0"
+          >
+            <SeclectLanguageInput
+              mode="multiple"
+              valueType="locale"
+              placeholder={t("Define", { ns: "commons" })}
+              dropdownMatchSelectWidth={false}
+              exceptLanguages={[]}
+            />
+          </Form.Item>
+        </Col>
+        <Col flex="auto">
+          <Form.Item className="text-center m-0">
+            <Space>
+              <Button type="primary" htmlType="submit">
+                {t("filter", { ns: "commons" })}
+              </Button>
+              <Button
+                htmlType="button"
+                onClick={() => {
+                  resetFilters && resetFilters();
+                  form.resetFields();
+                }}
+              >
+                {t("reset", { ns: "commons" })}
+              </Button>
+            </Space>
+          </Form.Item>
+        </Col>
+      </Row>
     </Form>
   );
 };

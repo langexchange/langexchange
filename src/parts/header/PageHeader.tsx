@@ -15,16 +15,16 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import {
+import Icon, {
   GlobalOutlined,
   TeamOutlined,
   MessageOutlined,
-  FileTextOutlined,
   LogoutOutlined,
   SettingOutlined,
   BellOutlined,
   SwapOutlined,
 } from "@ant-design/icons";
+import type { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -40,6 +40,42 @@ import {
 import { toggleTheme } from "../../features/themes/themeSlice";
 import LocaleSelect from "../../components/LocaleSelect";
 const { Header } = Layout;
+
+const VocabularySvg = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    x="0px"
+    y="0px"
+    width="14"
+    height="14"
+    viewBox="0,0,256,256"
+    fill="currentColor"
+  >
+    <g transform="translate(-48,-48) scale(1.375,1.375)">
+      <g
+        fillRule="nonzero"
+        stroke="none"
+        strokeWidth="1"
+        strokeLinecap="butt"
+        strokeLinejoin="miter"
+        strokeMiterlimit="10"
+        strokeDasharray=""
+        strokeDashoffset="0"
+        fontFamily="none"
+        fontWeight="none"
+        fontSize="none"
+        textAnchor="none"
+      >
+        <g transform="scale(8,8)">
+          <path d="M9,4c-1.64453,0 -3,1.35547 -3,3v18c0,1.64453 1.35547,3 3,3h17v-24zM9,6h15v16h-15c-0.35156,0 -0.68359,0.07422 -1,0.1875v-15.1875c0,-0.56641 0.43359,-1 1,-1zM12.21094,10l-2.21094,5.81641v2.18359h2v-1h2v1h2v-2.19141l-2.32422,-5.80859zM19.5,12c-1.37109,0 -2.5,1.12891 -2.5,2.5v1c0,1.37109 1.12891,2.5 2.5,2.5c0.5625,0 1.07813,-0.19531 1.49609,-0.51562c0.5,0.33594 1.18359,0.51563 2.00391,0.51563v-2c-0.73047,0 -0.89062,-0.16406 -0.93359,-0.20703c-0.04297,-0.04687 -0.06641,-0.13281 -0.06641,-0.29297v-1c0,-1.37109 -1.12891,-2.5 -2.5,-2.5zM12.97266,13.625l0.55078,1.375h-1.07422zM19.5,14c0.28125,0 0.5,0.21875 0.5,0.5v1c0,0.28125 -0.21875,0.5 -0.5,0.5c-0.28125,0 -0.5,-0.21875 -0.5,-0.5v-1c0,-0.28125 0.21875,-0.5 0.5,-0.5zM9,24h15v2h-15c-0.56641,0 -1,-0.43359 -1,-1c0,-0.56641 0.43359,-1 1,-1z"></path>
+        </g>
+      </g>
+    </g>
+  </svg>
+);
+const VocabularyIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={VocabularySvg} {...props} />
+);
 
 const PageHeader: React.FC = () => {
   const { t } = useTranslation(["commons"]);
@@ -64,24 +100,41 @@ const PageHeader: React.FC = () => {
 
   const items: MenuProps["items"] = [
     {
-      label: <NavLink to="/community">{t("header-community")}</NavLink>,
+      label: (
+        <NavLink className="text-500" to="/community">
+          {t("header-community")}
+        </NavLink>
+      ),
       key: "community",
       icon: <GlobalOutlined />,
     },
     {
-      label: <NavLink to="/partners">{t("header-partner")}</NavLink>,
+      label: (
+        <NavLink className="text-500" to="/partners">
+          {t("header-partner")}
+        </NavLink>
+      ),
       key: "partners",
       icon: <TeamOutlined />,
     },
     {
-      label: <NavLink to="chat">{t("header-chat")}</NavLink>,
+      label: (
+        <NavLink className="text-500" to="chat">
+          {t("header-chat")}
+        </NavLink>
+      ),
       key: "chat",
       icon: <MessageOutlined />,
     },
     {
-      label: <NavLink to="vocabularies">{t("header-vocabulary")}</NavLink>,
+      label: (
+        <NavLink className="text-500" to="vocabularies">
+          {t("header-vocabulary")}
+        </NavLink>
+      ),
       key: "vocabularies",
-      icon: <FileTextOutlined />,
+      icon: <VocabularyIcon />,
+      // icon: <FileTextOutlined />,
     },
   ];
 

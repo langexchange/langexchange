@@ -1,4 +1,4 @@
-import { Button, Col, Layout, Menu, Row, Typography } from "antd";
+import { Button, Col, Image, Layout, Menu, Row, Space, Typography } from "antd";
 import {
   FileTextOutlined,
   CompassOutlined,
@@ -8,6 +8,7 @@ import {
 import { Link, NavLink } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
+import VocabularyIcon from "../../assets/images/vocabularyLogo.png";
 
 const VocabularyHeader: React.FC = () => {
   const [t] = useTranslation(["vocabulary", "commons"]);
@@ -35,21 +36,29 @@ const VocabularyHeader: React.FC = () => {
   ];
 
   const activeKey: string = window.location.pathname.split("/")[2];
+
   return (
     <Layout.Header className="z-index-1 bg-white justify-space-between pos-sticky t-0 width-full with-header-height with-header-border-bottom">
       <div className="container">
         <Row className="height-full" align="middle" style={{}}>
           <Col span={6}>
-            <Typography.Title level={4} className="m-0">
-              {t("Vocabulary", { ns: "commons" })}
-            </Typography.Title>
+            <Space>
+              <Image src={VocabularyIcon} height={32} width={32} />
+              <Typography.Title
+                level={4}
+                className="m-0 text-500"
+                style={{ color: "#4f65d1" }}
+              >
+                {t("Vocabulary", { ns: "commons" })}
+              </Typography.Title>
+            </Space>
           </Col>
           <Col span={12} className="text-center">
             <Menu
               theme="light"
               mode="horizontal"
               // defaultSelectedKeys={["community"]}
-              selectedKeys={[activeKey]}
+              selectedKeys={[activeKey || "explores"]}
               items={items}
               className="d-block height-full"
             />

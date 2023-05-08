@@ -15,12 +15,12 @@ const ProfileVocabulariesPage = () => {
   };
   return (
     <>
-      <VocabularyList
-        colSpan={12}
-        editable={false}
-        setVocabularySet={setVocabularySet}
-        showModal={showModalVocabulary}
-      />
+      {/* <VocabularyList */}
+      {/*   colSpan={12} */}
+      {/*   editable={false} */}
+      {/*   setVocabularySet={setVocabularySet} */}
+      {/*   showModal={showModalVocabulary} */}
+      {/* /> */}
       <VocabularyModal
         vocabularySet={vocabularySet}
         isModalVocabularyOpen={isModalVocabularyOpen}

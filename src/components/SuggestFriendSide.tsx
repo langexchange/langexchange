@@ -27,7 +27,7 @@ import { useEffect, useState } from "react";
 const defaultFilters = {
   nativeLangs: [],
   targetLangs: [],
-  countryCodes: ["VN"],
+  countryCodes: [],
 };
 
 const SuggestFriendSide: React.FC = () => {
@@ -148,7 +148,7 @@ const SuggestFriendSide: React.FC = () => {
   return (
     <Card
       size="small"
-      title={<span className="fz-16 text-500">You can know</span>}
+      title={<span className="fz-16 text-500">{t("You may know")}</span>}
       bordered={false}
       headStyle={{ border: "none" }}
       style={{ background: "#00000005" }}
@@ -157,7 +157,7 @@ const SuggestFriendSide: React.FC = () => {
         className="demo-loadmore-list"
         loading={isLoading}
         itemLayout="horizontal"
-        dataSource={friendList}
+        dataSource={friendList.slice(0, 6)}
         renderItem={(item) => (
           <Popover
             content={popoverContent(item)}
@@ -165,61 +165,51 @@ const SuggestFriendSide: React.FC = () => {
             mouseEnterDelay={0.5}
             placement="bottom"
           >
-            <Button
-              type="text"
-              block
-              style={{ height: "fit-content" }}
-              size="small"
-              className="text-left"
+            <List.Item
+              extra={
+                <Space size={4}>
+                  <Button
+                    size="small"
+                    shape="circle"
+                    icon={<UserAddOutlined />}
+                    type="link"
+                    onClick={(e) => handleSendFriendRequest(e, item.id || "")}
+                    loading={isSending}
+                  />
+                  <Button
+                    size="small"
+                    shape="circle"
+                    icon={<DeleteOutlined />}
+                    type="text"
+                    className="secondary-color"
+                    onClick={(e) => handleDeleteSuggestFriend(e, item.id || "")}
+                  />
+                </Space>
+              }
+              className="border-0 hover-as-text-button px-2"
             >
-              <List.Item
-                extra={
-                  <Space size={4}>
-                    <Button
-                      size="small"
-                      shape="circle"
-                      icon={<UserAddOutlined />}
-                      type="link"
-                      onClick={(e) => handleSendFriendRequest(e, item.id || "")}
-                      loading={isSending}
-                    />
-                    <Button
-                      size="small"
-                      shape="circle"
-                      icon={<DeleteOutlined />}
-                      type="text"
-                      className="secondary-color"
-                      onClick={(e) =>
-                        handleDeleteSuggestFriend(e, item.id || "")
-                      }
-                    />
+              <List.Item.Meta
+                avatar={<Avatar src={item.avatar} />}
+                title={
+                  <Link to={`/profile/${item.id}`}>
+                    {[item.firstName, item.lastName].join(" ")}
+                  </Link>
+                }
+                description={
+                  <Space
+                    align="center"
+                    className="has-background-color rounded-4 px-2"
+                  >
+                    <span style={{ color: "black" }}>
+                      {item?.country && getUnicodeFlagIcon(item.country)}
+                    </span>
+                    <Typography.Text>
+                      {t(item.country, { ns: "countries" })}
+                    </Typography.Text>
                   </Space>
                 }
-                className="border-0"
-              >
-                <List.Item.Meta
-                  avatar={<Avatar src={item.avatar} />}
-                  title={
-                    <Link to={`/profile/${item.id}`}>
-                      {[item.firstName, item.lastName].join(" ")}
-                    </Link>
-                  }
-                  description={
-                    <Space
-                      align="center"
-                      className="has-background-color rounded-4 px-2"
-                    >
-                      <span style={{ color: "black" }}>
-                        {item?.country && getUnicodeFlagIcon(item.country)}
-                      </span>
-                      <Typography.Text>
-                        {t(item.country, { ns: "countries" })}
-                      </Typography.Text>
-                    </Space>
-                  }
-                />
-              </List.Item>
-            </Button>
+              />
+            </List.Item>
           </Popover>
         )}
       />

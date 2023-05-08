@@ -30,7 +30,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
   const [form] = Form.useForm();
 
   return (
-    <div className=" pt-1">
+    <div className="pt-1">
       <Space direction="vertical" className="width-full" size="middle">
         <Input.Search
           placeholder={`${t("type-to-search")} ${t("post")}...`}
@@ -51,10 +51,11 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
               style={{ width: "100%" }}
               className="input-no-background"
               valueType="locale"
+              exceptLanguages={[]}
             />
           </Form.Item>
-          <Row>
-            <Col span={12}>
+          <Row wrap={true} gutter={12}>
+            <Col span="auto">
               <Form.Item
                 label={t("filter-only-friend")}
                 style={{ marginBottom: "12px" }}
@@ -68,7 +69,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
                 />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span="auto">
               <Form.Item
                 label={t("filter-latest")}
                 style={{ marginBottom: "12px" }}

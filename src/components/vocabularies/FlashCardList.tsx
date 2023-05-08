@@ -1,25 +1,31 @@
 import { useState } from "react";
 import FlashCard from "./FlashCard";
-import { Button, Space } from "antd";
+import { Button, Skeleton, Space, Spin } from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import classes from "./FlashCardList.module.scss";
-import Vocabulary from "../../types/Vocabulary";
-import { fakeVocabularies } from "../../utils/fakeData/fakeVocabulary";
 import { useTranslation } from "react-i18next";
-
-const items: Vocabulary[] = fakeVocabularies(10);
+import { Vocabulary } from "../../services/vocabulary/vocabularyService";
 
 interface FlashCardListProps {
   type?: "view" | "practice";
+  vocabularies?: Vocabulary[];
 }
 
-const FlashCardList: React.FC<FlashCardListProps> = ({ type = "practice" }) => {
+const FlashCardList: React.FC<FlashCardListProps> = ({
+  type = "practice",
+  vocabularies,
+}) => {
   const [t] = useTranslation(["vocabulary"]);
-  const cards = items.map((item: Vocabulary) => {
-    return <FlashCard {...item} key={item.id} />;
-  });
+  const cards =
+    vocabularies?.map((item: Vocabulary, index) => {
+      return <FlashCard {...item} key={index} />;
+    }) || [];
 
-  const loading = <div className="loading">Loading flashcard content...</div>;
+  const loading = (
+    <Spin tip="Loading vocabularies...">
+      <FlashCard term="" define="" imageUrl="" />
+    </Spin>
+  );
 
   const [current, setCurrent] = useState(0);
   function previousCard() {
@@ -31,11 +37,11 @@ const FlashCardList: React.FC<FlashCardListProps> = ({ type = "practice" }) => {
 
   return (
     <div className={classes.container}>
-      {items && items.length > 0 ? cards[current] : loading}
+      {vocabularies && vocabularies.length > 0 ? cards[current] : loading}
 
-      {items && items.length > 0 ? (
+      {vocabularies && vocabularies.length > 0 ? (
         <div className={classes.index}>
-          {current + 1}/{items.length}
+          {current + 1}/{vocabularies.length}
         </div>
       ) : (
         ""
@@ -51,13 +57,21 @@ const FlashCardList: React.FC<FlashCardListProps> = ({ type = "practice" }) => {
         />
         {type === "practice" && (
           <>
-            <Button size="large" className="btn-outlined-warning">
+            <Button
+              size="large"
+              className="btn-outlined-warning"
+              disabled={vocabularies?.length === 0}
+            >
               {t("Medium")}
             </Button>
-            <Button size="large" danger>
+            <Button size="large" danger disabled={vocabularies?.length === 0}>
               {t("Hard")}
             </Button>
-            <Button size="large" className="btn-outlined-success">
+            <Button
+              size="large"
+              className="btn-outlined-success"
+              disabled={vocabularies?.length === 0}
+            >
               {t("Known")}
             </Button>
           </>
@@ -65,7 +79,7 @@ const FlashCardList: React.FC<FlashCardListProps> = ({ type = "practice" }) => {
         <Button
           onClick={nextCard}
           size="large"
-          disabled={current >= items.length - 1}
+          disabled={current >= (vocabularies?.length || 0) - 1}
           icon={<RightOutlined />}
           className={classes.button}
         />

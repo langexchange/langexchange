@@ -1,66 +1,80 @@
-import { faker } from "@faker-js/faker";
-import { Button, List, message, Modal } from "antd";
+import { Button, Input, List, message, Modal, ModalProps } from "antd";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  useAddToPracticeMutation,
+  useGetVocabularySetsQuery,
+  VocabularySetDetail,
+} from "../../services/vocabulary/vocabularyService";
 import VocabularySetMenuItem from "./VocabularySetMenuItem";
-
-interface ModalProps {
-  open?: boolean | undefined;
-  onOk?: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => void | undefined;
-  onCancel?: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => void | undefined;
-}
-
-interface VocabularySet {
-  owner?: {
-    fullname: string;
-    color?: string;
-    image: string;
-  };
-  title: string;
-  descriptions: string;
-  termLanguage: string;
-  defineLanguage: string;
-}
-
-const sets: VocabularySet[] = [];
-
-for (let i = 0; i < 20; i++) {
-  const set: VocabularySet = {
-    owner: {
-      fullname: faker.name.fullName(),
-      image: faker.image.abstract(),
-    },
-    title: faker.random.words(4),
-    descriptions: faker.random.numeric(),
-    termLanguage: faker.random.word(),
-    defineLanguage: faker.random.word(),
-  };
-
-  sets.push(set);
-}
 
 const ModalAddToPracticeList: React.FC<ModalProps> = ({
   open,
   onOk,
   onCancel,
 }) => {
-  const [messageApi, contextHolder] = message.useMessage();
   const [t] = useTranslation(["commons"]);
+  const [sets, setSets] = useState<VocabularySetDetail>();
+  const { data, isLoading, refetch } = useGetVocabularySetsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+  const [addToPractice, { isLoading: isAdding }] = useAddToPracticeMutation();
+  const [addingId, setAddingId] = useState<string>("");
 
-  const success = () => {
-    messageApi.open({
-      type: "success",
-      content: "This is a success message",
+  const onSearch = (value: string) => {
+    setSets((prev: any) => {
+      const newSets = data?.vocabularyPackageDtos.filter(
+        (item) =>
+          item.title.toLowerCase().includes(value.toLowerCase()) &&
+          item.practiceResultDto?.isPracticed === false
+      );
+
+      return { ...prev, vocabularyPackageDtos: newSets };
     });
   };
+
+  useEffect(() => {
+    if (!data) return;
+    setSets((prev: any) => {
+      const newSets = data?.vocabularyPackageDtos.filter(
+        (item) => item.practiceResultDto?.isPracticed === false
+      );
+
+      return { ...prev, vocabularyPackageDtos: newSets };
+    });
+  }, [data]);
+
+  const handleAdding = async (id: string) => {
+    setAddingId(id);
+    try {
+      await addToPractice(id).unwrap();
+      message.success("Added to practice list", 1);
+      setAddingId("");
+      refetch();
+    } catch (error) {
+      setAddingId("");
+      message.success(
+        "Sorry, somethings went wrong. Please try again later!",
+        1
+      );
+    }
+  };
+
   return (
     <>
-      {contextHolder}
       <Modal
-        title={t("Add set to practice list", { ns: "vocabulary" })}
+        title={
+          <div className="d-flex align-items-center justify-space-between">
+            {t("Add set to practice list", { ns: "vocabulary" })}
+            <Input.Search
+              placeholder={t("type-to-search").toString()}
+              allowClear
+              onSearch={onSearch}
+              style={{ width: 400 }}
+              className="me-3"
+            />
+          </div>
+        }
         open={open}
         onOk={onOk}
         onCancel={onCancel}
@@ -72,16 +86,22 @@ const ModalAddToPracticeList: React.FC<ModalProps> = ({
       >
         <List
           itemLayout="horizontal"
-          // loading={initLoading}
+          loading={isLoading}
           // loadMore={loadMore}
-          dataSource={sets}
+          dataSource={sets?.vocabularyPackageDtos}
           renderItem={(set) => (
             <List.Item
               actions={[
-                <Button type="primary" onClick={success}>
+                <Button
+                  type="primary"
+                  onClick={() => handleAdding(set.packageId)}
+                  loading={isAdding && addingId === set.packageId}
+                  key={`btn-action-${set.packageId}`}
+                >
                   {t("Add")}
                 </Button>,
               ]}
+              key={set.packageId}
             >
               <VocabularySetMenuItem
                 {...set}

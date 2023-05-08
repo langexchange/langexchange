@@ -1,17 +1,17 @@
-import { Button } from "antd";
+import { Button, ButtonProps } from "antd";
 import { useNavigate } from "react-router-dom";
-import { LeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
-const BackCircleButton = () => {
+const BackCircleButton: React.FC<ButtonProps> = (props) => {
   const navigate = useNavigate();
 
   return (
     <Button
-      size="small"
       shape="circle"
-      icon={<LeftOutlined />}
+      type="text"
+      icon={<ArrowLeftOutlined />}
       onClick={() => navigate(-1)}
-      className="color-secondary"
+      {...props}
     />
   );
 };

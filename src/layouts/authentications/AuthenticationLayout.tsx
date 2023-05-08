@@ -58,7 +58,7 @@ const AuthenticationLayout: React.FC = () => {
           style={{ minWidth: "500px" }}
         >
           <Space direction="vertical" align="center">
-            <Image src={Logo} alt="LangExchange logo" height={48} />
+            <Image src={Logo} alt="LangExchange logo" height={48} width={274} />
             <Typography.Text type="secondary">
               {t("logo-slogan")}
             </Typography.Text>
