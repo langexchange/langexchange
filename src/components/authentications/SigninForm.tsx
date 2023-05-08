@@ -26,12 +26,14 @@ const SigninForm: React.FC = () => {
       };
 
       const { token, ...user } = await login(data).unwrap();
-      
+
       // Chat app get the user name here
       const jid = `${user.id}@${process.env.REACT_APP_CHAT_HOST}`;
 
       const credentials = { user, token };
-      dispatch(setCredentials({ ...credentials, persist: values.remember , jid}));
+      dispatch(
+        setCredentials({ ...credentials, persist: values.remember, jid })
+      );
       notification.success({
         message: "Login success!",
       });

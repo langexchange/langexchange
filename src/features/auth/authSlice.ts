@@ -31,7 +31,7 @@ const authSlice = createSlice({
       if (payload.user) {
         state.userId = payload.user.id;
         state.incId = payload.user.incId;
-        state.jid = payload.user.jid;
+        state.jid = payload.jid;
       }
       if (payload.token) state.token = payload.token;
 
@@ -39,7 +39,7 @@ const authSlice = createSlice({
         if (payload.user) {
           localStorage.setItem("userId", payload.user.id);
           localStorage.setItem("incId", payload.user.incId);
-          localStorage.setItem("jid", payload.user.jid);
+          localStorage.setItem("jid", payload.jid);
         }
         if (payload.token) localStorage.setItem("token", payload.token);
         localStorage.setItem("persist", "true");

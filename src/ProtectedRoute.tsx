@@ -9,6 +9,7 @@ import {
   setCredentialProfile,
 } from "./features/profile/profileSlice";
 import { useGetProfileQuery } from "./services/profile/profileServices";
+import { initChat } from "./chat";
 
 const ProtectedRoute = () => {
   const credentials = useAppSelector(selectCredentials);
@@ -35,6 +36,12 @@ const ProtectedRoute = () => {
       dispatch(logout());
     }
   }, [profile, isLoading, isFetching]);
+
+  useEffect(() => {
+    if (!window.converse) return;
+
+    initChat();
+  }, [window.converse]);
 
   if (isLoading) return <LoadingPage size="large" />;
 

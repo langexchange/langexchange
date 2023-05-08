@@ -39,6 +39,7 @@ import {
 } from "../../features/profile/profileSlice";
 import { toggleTheme } from "../../features/themes/themeSlice";
 import LocaleSelect from "../../components/LocaleSelect";
+import { destroyChat } from "../../chat";
 const { Header } = Layout;
 
 const VocabularySvg = () => (
@@ -90,6 +91,7 @@ const PageHeader: React.FC = () => {
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     if (e.key === "sign-out") {
       dispatch(logout());
+      destroyChat();
       localStorage.clear();
       dispatch(setCredentialProfile(null));
       navigate("/");
