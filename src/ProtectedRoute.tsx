@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import LoadingPage from "./pages/LoadingPage";
 import { logout, selectCredentials } from "./features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
@@ -9,14 +9,17 @@ import {
   setCredentialProfile,
 } from "./features/profile/profileSlice";
 import { useGetProfileQuery } from "./services/profile/profileServices";
-import { initChat } from "./chat";
+import { initChat, login } from "./chat";
 
 const ProtectedRoute = () => {
+  console.log("Dont know how this function will call");
   const credentials = useAppSelector(selectCredentials);
+  console.log(credentials)
   const currentProfile = useAppSelector(selectCredentalProfile);
   const dispatch = useAppDispatch();
   const location = useLocation();
   const isInitial = location.pathname === "/initial";
+  const [isChatInit, setIsChatInit] = useState(false)
 
   const {
     data: profile,
@@ -38,19 +41,27 @@ const ProtectedRoute = () => {
   }, [profile, isLoading, isFetching]);
 
   useEffect(() => {
-    if (!window.converse) return;
-
+    if (isChatInit || !window.converse) return;
+    console.log("Init chat")
     initChat();
-  }, [window.converse]);
+    setIsChatInit(true)
+  }, [isChatInit, window.converse]);
 
   if (isLoading) return <LoadingPage size="large" />;
 
+  
   if (!credentials.token)
     return <Navigate to="/sign-in" state={{ from: location }} replace />;
   if (!profile?.firstName && !isInitial && !currentProfile?.firstName)
     return <Navigate to="/initial" state={{ from: location }} replace />;
-  if (profile?.firstName && isInitial)
+  if (profile?.firstName && isInitial){
+    if(isChatInit){
+      console.log("Login user with initialized config")
+      login(credentials.jid, credentials.token)
+    }
     return <Navigate to="/community" state={{ from: location }} replace />;
+  }
+    
 
   return (
     <Outlet
