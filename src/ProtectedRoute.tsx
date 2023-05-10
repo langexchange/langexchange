@@ -9,17 +9,19 @@ import {
   setCredentialProfile,
 } from "./features/profile/profileSlice";
 import { useGetProfileQuery } from "./services/profile/profileServices";
-import { initChat, login } from "./chat";
+import { hideChat, initChat, loginChat, showChat } from "./chat";
+import { selectCurrentChatStatus, setChatStatus } from "./features/chatSlice";
 
 const ProtectedRoute = () => {
   console.log("Dont know how this function will call");
   const credentials = useAppSelector(selectCredentials);
-  console.log(credentials)
+  console.log(credentials);
   const currentProfile = useAppSelector(selectCredentalProfile);
   const dispatch = useAppDispatch();
   const location = useLocation();
   const isInitial = location.pathname === "/initial";
-  const [isChatInit, setIsChatInit] = useState(false)
+  const [isChatInit, setIsChatInit] = useState(false);
+  const chatStatus = useAppSelector(selectCurrentChatStatus);
 
   const {
     data: profile,
@@ -41,27 +43,21 @@ const ProtectedRoute = () => {
   }, [profile, isLoading, isFetching]);
 
   useEffect(() => {
-    if (isChatInit || !window.converse) return;
-    console.log("Init chat")
+    if (chatStatus || !window.converse) return;
+    // if (window.location.pathname === "/initial") return;
+
     initChat();
-    setIsChatInit(true)
-  }, [isChatInit, window.converse]);
+    dispatch(setChatStatus(true));
+  }, [window.converse]);
 
   if (isLoading) return <LoadingPage size="large" />;
 
-  
   if (!credentials.token)
     return <Navigate to="/sign-in" state={{ from: location }} replace />;
   if (!profile?.firstName && !isInitial && !currentProfile?.firstName)
     return <Navigate to="/initial" state={{ from: location }} replace />;
-  if (profile?.firstName && isInitial){
-    if(isChatInit){
-      console.log("Login user with initialized config")
-      login(credentials.jid, credentials.token)
-    }
+  if (profile?.firstName && isInitial)
     return <Navigate to="/community" state={{ from: location }} replace />;
-  }
-    
 
   return (
     <Outlet

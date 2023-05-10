@@ -49,18 +49,29 @@ const initChat = () => {
 };
 
 const destroyChat = async () => {
+      hideChat();
       await window.converse.logout();
-      // conversejs
-      // delete element with id 'conversejs' form DOM
-      const conversejs = document.getElementById("conversejs");
-      if (conversejs) {
-            conversejs.remove();
-      }
 };
 
-const login = window.converse.login;
+const loginChat = async () => {
+      const jid = localStorage.getItem("jid");
+      const token = localStorage.getItem("token");
+      showChat();
 
-export { initChat, destroyChat, login };
+      await window.converse.login(jid, token);
+};
+
+const hideChat = () => {
+      const conversejs = document.getElementById("conversejs");
+      if (conversejs) conversejs.style.display = "none";
+};
+
+const showChat = () => {
+      const conversejs = document.getElementById("conversejs");
+      if (conversejs) conversejs.style.display = "block";
+};
+
+export { initChat, destroyChat, loginChat, hideChat, showChat };
 
 // 2.3. Logout user:
 // await window.converse.logout()
