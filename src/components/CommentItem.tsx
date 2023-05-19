@@ -137,12 +137,7 @@ const CommentItem: React.FC<CommentProps> = (comment) => {
         ))}
         <div className="d-flex gap-2">
           {comment.imagecmts.map((item, index) => (
-            <Image
-              src={item.url}
-              key={index}
-              width="300px"
-              style={{ display: "inline" }}
-            />
+            <Image src={item.url} key={index} style={{ display: "inline" }} />
           ))}
         </div>
         <Row align="middle">

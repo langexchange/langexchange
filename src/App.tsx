@@ -1,8 +1,8 @@
-import { message } from "antd";
-import { Suspense, useEffect } from "react";
+import { Button, message, notification } from "antd";
+import { Suspense, useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { setLanguages } from "./features/languages/languageSlice";
-import { useAppDispatch } from "./hooks/hooks";
+import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import AppSignedInLayout from "./layouts/AppSignedInLayout";
 import AuthenticationLayout from "./layouts/authentications/AuthenticationLayout";
 import NoSignedInLayout from "./layouts/NoSignedInLayout";
@@ -38,9 +38,44 @@ import WelcomePage from "./pages/welcomes/WelcomePage";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import { useGetLanguagesQuery } from "./services/languages/languageService";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import { selectCredentials } from "./features/auth/authSlice";
 
 const App: React.FC = () => {
   const location = useLocation();
+  const credential = useAppSelector(selectCredentials);
+  const [connection, setConnection] = useState<null | HubConnection>(null);
+  useEffect(() => {
+    const connect = new HubConnectionBuilder()
+      .withUrl("http://localhost:5003/hub/notification")
+      .withAutomaticReconnect()
+      .build();
+    setConnection(connect);
+  }, []);
+
+  useEffect(() => {
+    if (connection) {
+      connection
+        .start()
+        .then(() => {
+          connection.on("ReceiveMessage", (message) => {
+            notification.open({
+              message: "New Notification",
+              description: message,
+            });
+          });
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [connection]);
+
+  const joinGroup = async () => {
+    if (connection) await connection.send("AddToGroup", credential?.userId);
+  };
+
+  useEffect(() => {
+    if (connection?.state === "Connected") joinGroup();
+  }, [connection?.state, credential?.userId]);
 
   const {
     data: languages,

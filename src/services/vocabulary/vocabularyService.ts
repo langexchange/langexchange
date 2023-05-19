@@ -76,6 +76,16 @@ export interface FilterVocabularySet {
   defines: string[];
 }
 
+export interface TrackingVocabularyRequest {
+  id: string;
+  body: {
+    vocabTrackings: {
+      vocabularyId: string;
+      quality: number;
+    }[];
+  };
+}
+
 export const vocabularyApi = createApi({
   reducerPath: "vocabularyApi",
   baseQuery: fetchBaseQuery({
@@ -112,6 +122,12 @@ export const vocabularyApi = createApi({
     getVocabularySet: builder.query<VocabularySetDetail, string>({
       query: (id) => ({
         url: `api/vocabularies/${id}`,
+        method: "GET",
+      }),
+    }),
+    getUserVocabularySets: builder.query<VocabularySetDetail, string>({
+      query: (id) => ({
+        url: `/api/users/${id}/vocabularies`,
         method: "GET",
       }),
     }),
@@ -176,6 +192,13 @@ export const vocabularyApi = createApi({
         method: "GET",
       }),
     }),
+    trackingVocabulary: builder.mutation<undefined, TrackingVocabularyRequest>({
+      query: ({ id, body }) => ({
+        url: `/api/practice-list/vocabularies/${id}/tracking`,
+        method: "PUT",
+        body: body,
+      }),
+    }),
   }),
 });
 
@@ -191,4 +214,6 @@ export const {
   useAddToPracticeMutation,
   useGetPracticeListQuery,
   useGetPracticeSetQuery,
+  useGetUserVocabularySetsQuery,
+  useTrackingVocabularyMutation,
 } = vocabularyApi;

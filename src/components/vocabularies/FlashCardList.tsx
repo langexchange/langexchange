@@ -1,10 +1,14 @@
 import { useState } from "react";
 import FlashCard from "./FlashCard";
-import { Button, Skeleton, Space, Spin } from "antd";
+import { Button, Space, Spin } from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import classes from "./FlashCardList.module.scss";
 import { useTranslation } from "react-i18next";
-import { Vocabulary } from "../../services/vocabulary/vocabularyService";
+import {
+  useTrackingVocabularyMutation,
+  Vocabulary,
+} from "../../services/vocabulary/vocabularyService";
+import { useParams } from "react-router-dom";
 
 interface FlashCardListProps {
   type?: "view" | "practice";
@@ -16,6 +20,10 @@ const FlashCardList: React.FC<FlashCardListProps> = ({
   vocabularies,
 }) => {
   const [t] = useTranslation(["vocabulary"]);
+  const [trackingVocab, { isLoading: isTracking }] =
+    useTrackingVocabularyMutation();
+  const { id: setId } = useParams<{ id: string }>();
+
   const cards =
     vocabularies?.map((item: Vocabulary, index) => {
       return <FlashCard {...item} key={index} />;
@@ -28,12 +36,29 @@ const FlashCardList: React.FC<FlashCardListProps> = ({
   );
 
   const [current, setCurrent] = useState(0);
+
   function previousCard() {
     setCurrent(current - 1);
   }
+
   function nextCard() {
     setCurrent(current + 1);
   }
+
+  const tracking = async (id: string, quality: number) => {
+    nextCard();
+
+    try {
+      await trackingVocab({
+        id: id,
+        body: {
+          vocabTrackings: [{ vocabularyId: setId || "", quality: quality }],
+        },
+      }).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className={classes.container}>
@@ -60,17 +85,48 @@ const FlashCardList: React.FC<FlashCardListProps> = ({
             <Button
               size="large"
               className="btn-outlined-warning"
-              disabled={vocabularies?.length === 0}
+              disabled={
+                vocabularies?.length === 0 ||
+                current >= (vocabularies?.length || 0) - 1
+              }
+              onClick={() =>
+                tracking(
+                  (vocabularies && vocabularies[current].vocabId) || "",
+                  1
+                )
+              }
             >
               {t("Medium")}
             </Button>
-            <Button size="large" danger disabled={vocabularies?.length === 0}>
+            <Button
+              size="large"
+              danger
+              disabled={
+                vocabularies?.length === 0 ||
+                current >= (vocabularies?.length || 0) - 1
+              }
+              onClick={() =>
+                tracking(
+                  (vocabularies && vocabularies[current].vocabId) || "",
+                  0
+                )
+              }
+            >
               {t("Hard")}
             </Button>
             <Button
               size="large"
               className="btn-outlined-success"
-              disabled={vocabularies?.length === 0}
+              disabled={
+                vocabularies?.length === 0 ||
+                current >= (vocabularies?.length || 0) - 1
+              }
+              onClick={() =>
+                tracking(
+                  (vocabularies && vocabularies[current].vocabId) || "",
+                  2
+                )
+              }
             >
               {t("Known")}
             </Button>

@@ -1,7 +1,7 @@
 import { Avatar, Badge, Image, Space, Typography } from "antd";
 import User from "../types/User";
 import { UserOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CSSProperties } from "react";
 
 interface UserItemProps extends User {
@@ -17,7 +17,7 @@ interface UserItemProps extends User {
   style?: CSSProperties;
 }
 
-const UserItem = ({
+const UserItem: React.FC<UserItemProps> = ({
   id,
   fullname,
   size,
@@ -31,7 +31,8 @@ const UserItem = ({
   className,
   style,
   linkToProfile = true,
-}: UserItemProps) => {
+}) => {
+  const navigate = useNavigate();
   return (
     <Space size={12} className={className} style={style}>
       {direction === "right" ? (
@@ -82,15 +83,18 @@ const UserItem = ({
           )}
           <Space direction="vertical">
             {linkToProfile ? (
-              <Link to={`/profile/${id}`} id={id}>
-                <Typography.Text
-                  strong={isStrong}
-                  style={(!isStrong && { fontWeight: 500 }) || {}}
-                  className="hover-underline"
-                >
-                  {fullname}
-                </Typography.Text>
-              </Link>
+              <Typography.Text
+                strong={isStrong}
+                style={(!isStrong && { fontWeight: 500 }) || {}}
+                className="hover-underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  navigate(`/profile/${id}`);
+                }}
+              >
+                {fullname}
+              </Typography.Text>
             ) : (
               <Typography.Text
                 strong={isStrong}

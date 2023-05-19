@@ -1,7 +1,7 @@
 import { message } from "antd";
 import { useEffect } from "react";
 import LoadingPage from "./pages/LoadingPage";
-import { selectCredentials } from "./features/auth/authSlice";
+import { logout, selectCredentials } from "./features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import {
@@ -30,9 +30,9 @@ const ProtectedRoute = () => {
   useEffect(() => {
     if (profile) {
       dispatch(setCredentialProfile(profile));
-      if (isError) {
-        message.error("Something went wrong when fetching profile");
-      }
+    }
+    if (isError) {
+      dispatch(logout());
     }
   }, [profile, isLoading, isFetching]);
 
