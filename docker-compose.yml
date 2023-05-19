@@ -1,19 +1,260 @@
 version: "3.8"
 services:
-  langexchange:
-    image: langexchange
-    build:
-      dockerfile: Dockerfile
-    container_name: langexchange
-    volumes:
-      - .:/langexchange
-      - node_modules:/langexchange/node_modules/
+  # langexchange:
+  #   image: langexchange
+  #   build:
+  #     dockerfile: Dockerfile
+  #   container_name: langexchange
+  #   ports:
+  #     - "443:443"
+  #     - "80:80"
+  #   environment:
+  #     - NODE_ENV=development
+  #     - NGINX_HOST=localhost
+  #   volumes:
+  #     - ./build:/usr/local/src/langex
+  #     - ./certs:/etc/nginx/certs
+  #   command: nginx-debug -g 'daemon off;'
+  
+  lec-chatserver:
+    image: narutosimaha/lec-chatserver
+    user: "ejabberd:"
+    # command: ["/bin/sh", "-c", "/home/ejabberd/conf/script.sh"]
+    environment: 
+      - JWT_KEY=aAa01234567890aAa
+      - DB_TYPE=pgsql
+      - DB_SERVER=langchat-db
+      - DB_PORT=5432
+      - DB_NAME=langchat
+      - DB_USER=langteam
+      - DB_PASSWORD=Aa1234
+      - EJABBERD_HOST=localhost
     ports:
-      - "3000:3000"
+      - "5222:5222"
+      - "5269:5269"
+      - "5280:5280"
+      - "5281:443"
+
+  langchat-db:
+    image: postgres:15.2
     environment:
-      - NODE_ENV=development
-    tty: true
-    stdin_open: true
-    command: sh -c "yarn && yarn start"
+      - POSTGRES_DB=langchat
+      - POSTGRES_USER=langteam
+      - POSTGRES_PASSWORD=Aa1234
+    ports:
+      - 5433:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "langchat", "-U", "langteam" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  langchat-flyway:
+    image: narutosimaha/flyway-langchat
+    # command: -url=jdbc:postgresql://postgres:5432/ejabberd -user=ejabberd -password=ejabberd_password -connectRetries=60 migrate
+    environment:
+      - DATABASE_NAME=langchat
+      - DATABASE_URL=jdbc:postgresql://langchat-db:5432
+      - POSTGRES_USER=langteam
+      - POSTGRES_PASSWORD=Aa1234
+    # volumes:
+    #   - ./lec-db/langchat/sql:/flyway/sql
+    depends_on:
+      - langchat-db
+    
+  langgeneral-db:
+    image: postgres:15.2
+    environment:
+      - POSTGRES_DB=langgeneral
+      - POSTGRES_USER=langteam
+      - POSTGRES_PASSWORD=Aa1234
+    ports:
+      - 5434:5432
+    volumes:
+      - pgdata1:/var/lib/postgresql/data
+    restart: always
+    # healthcheck:
+    #   test: [ "CMD", "pg_isready", "-q", "-d", "langchat", "-U", "langteam" ]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+
+      
+  langgeneral-flyway:
+    image: narutosimaha/flyway-langgeneral
+    # command: -url=jdbc:postgresql://postgres:5432/ejabberd -user=ejabberd -password=ejabberd_password -connectRetries=60 migrate
+    environment:
+      - DATABASE_NAME=langgeneral
+      - DATABASE_URL=jdbc:postgresql://langgeneral-db:5432
+      - POSTGRES_USER=langteam
+      - POSTGRES_PASSWORD=Aa1234
+    # volumes:
+    #   - ./lec-db/langchat/sql:/flyway/sql
+    depends_on:
+      - langgeneral-db
+  
+  lec-chatgw:
+    image: narutosimaha/lec-chatgw
+    # command: ["/bin/sh", "-c", "nginx-debug -g 'daemon off;'"]
+    command: nginx-debug -g 'daemon off;'
+    environment: 
+      - NGINX_HOST=localhost
+      - CHAT_PORT=80
+      - CHAT_HOST=lec-chathelper
+      - CHAT_ENDPOINT=app
+      - CHAT_SERVER_ENDPOINT=chatws
+      - XMPP_WS_PORT=5280
+      - XMPP_WS_HOST=lec-chatserver
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - lec-chatserver
+      - lec-chathelper
+
+  lec-chathelper:
+    image: narutosimaha/lec-chathelper-1
+    command: /bin/sh -c "service celeryd start && httpd -D FOREGROUND"
+    depends_on:
+      - celery-broker
+    environment: 
+      - CREDENTIALS_KEY=secret
+      - HOST=localhost
+      - LANGGENERAL_DB_HOST=langgeneral-db
+      - LANGGENERAL_PASS=Aa1234
+      - LANGGENERAL_DB=langgeneral
+      - LANGGENERAL_USER=langteam
+      - LANGGENERAL_PORT=5432
+      - LANGCHAT_DB=langchat
+      - LANGCHAT_DB_HOST=langchat-db
+      - LANGCHAT_PASS=Aa1234
+      - LANGCHAT_USER=langteam
+      - LANGCHAT_PORT=5432
+      - TZ=Asia/Ho_Chi_Minh
+      - TOKEN_DB_KEY=BCulJ35SlqRnAuxt
+      - IV=EF3XDDnCjMpTJ8Pc
+      - DJANGO_SECRET_KEY=Ref22pTceiaGogZFA732HXR4xPdtDtKmPs6hzXkNCa4mjWgYzx
+      - OLD_SECRET_KEY=Ref22pTceiaGogZFA732HXR4xPdtDtKmPs6hzXkNCa4mjWgYzx
+      - LANGCHAT_HOST=localhost
+      - S3_ACCESS_KEY=AKIA5RKKGIJLRSD5GHDX
+      - S3_SECRET_KEY=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
+      - S3_BUCKET=language-exchanged
+      - XMPP_UPLOAD_KEY=YOqe6JUVReE/iBJPDgSe25JYjD6vnz7b1Y7cRwRB
+      - WEB_SERVER_HOST=lec-chathelper
+      - APP_BROKERS=kafka:9092
+      - CELERY_RESULT_BACKEND=redis://celery-broker:6379/0
+      - CELERY_BROKER_URL=redis://celery-broker:6379/1
+      - LOG_FILE_FROM_ROOT=chat/chatworker/logs/worker.log
+    ports:
+      - "8082:80"
+    volumes:
+      - ./logs:/usr/local/src/lec_chathelper/chat/chatworker/logs
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.2
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+
+  # Topics
+  #   1. Personal info update.
+  #   2. Friend relationship update: friend and unfriend.
+  kafka:
+    image: confluentinc/cp-kafka:7.3.2
+    container_name: broker
+    ports:
+    # To learn about configuring Kafka for access across networks see
+    # https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc/
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+  
+  celery-broker:
+    image: redis
+    ports:
+      - "6379:6379"
+
+#     ##THUONG SERVICE
+  consul:
+    image: consul:${TAG:-latest}
+    command: consul agent -dev -log-level=warn -ui -client=0.0.0.0
+    hostname: consul
+    container_name: le-consul
+    # networks:
+    #     - lang-exchange-network
+    restart: always
+    ports:
+    - "8500:8500"
+
+  le-file-service:
+    image: thuongnguyen158/le-file-service:latest
+    container_name: file-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      S3_BUCKET_NAME: language-exchanged
+      AWS_ACCESS_KEY_ID: AKIA5RKKGIJL6UQB7W4J
+      AWS_SECRET_ACCESS_KEY: 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
+      MINIO_HOST: http://127.0.0.1:9000
+      CONSUL_URL: http://consul:8500
+
+    depends_on:
+      - consul
+    restart: always
+    ports:
+    - "5000:80"
+  ###############
+  # access url to see http://localhost:5002/swagger/index.html
+  le-user-service:
+    image: thuongnguyen158/le-user-service:latest
+    container_name: user-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      CONSUL_URL: http://consul:8500
+      DB_CONNECTION_STRING: Host=langgeneral-db;Port=5432;Database=langgeneral;Username=langteam;Password=Aa1234
+      SECRET_KEY: 'aAa01234567890aAa'
+      NEO4J_DATABASE: neo4j
+      NEO4J_HOST: bolt://54.151.158.181:7687
+        #localhost neo4j
+        # NEO4J_HOST: bolt://localhost:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: t0ps3cr3tt0ps3cr3t
+      CHAT_DOMAIN: localhost
+      MESSAGE_BUS_HOST: kafka:9092
+      HOST_PREFIX: ""
+    
+    depends_on:
+      - consul
+      - kafka
+    restart: always
+    ports:
+      - "5002:80"
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
+  
+  lec-chatfront:
+    image: narutosimaha/lec-chatfront
+    ports:
+      - "8043:443"
+    environment:
+      - NGINX_HOST=localhost
 volumes:
-  node_modules:
+  pgdata:
+  pgdata1:

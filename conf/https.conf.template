@@ -1,0 +1,14 @@
+server {   
+    listen       443 ssl;
+    server_name  ${NGINX_HOST};
+    keepalive_timeout   70;
+    ssl_certificate /etc/nginx/certs/server.crt;
+    ssl_certificate_key /etc/nginx/certs/server.key;
+    
+    location / {
+      root /usr/local/src/langex;
+      add_header Access-Control-Allow-Origin *;
+    }
+}
+
+

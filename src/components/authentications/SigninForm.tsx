@@ -8,8 +8,13 @@ import { Button, Checkbox, Form, Input, notification, Space, Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { initChat, loginChat } from "../../chat";
 import { setCredentials } from "../../features/auth/authSlice";
-import { useAppDispatch } from "../../hooks/hooks";
+import {
+  selectCurrentChatStatus,
+  setChatStatus,
+} from "../../features/chatSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useLoginMutation } from "../../services/auth/authServices";
 
 const SigninForm: React.FC = () => {
@@ -17,6 +22,7 @@ const SigninForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const chatStatus = useAppSelector(selectCurrentChatStatus);
 
   const onFinish = async (values: any) => {
     try {
@@ -26,11 +32,18 @@ const SigninForm: React.FC = () => {
       };
 
       const { token, ...user } = await login(data).unwrap();
+
+      // Chat app get the user name here
+      const jid = `${user.id}@${process.env.REACT_APP_CHAT_HOST}`;
+
       const credentials = { user, token };
-      dispatch(setCredentials({ ...credentials, persist: values.remember }));
+      dispatch(
+        setCredentials({ ...credentials, persist: values.remember, jid })
+      );
       notification.success({
         message: "Login success!",
       });
+      if (chatStatus) loginChat();
       navigate("/initial");
     } catch (err) {
       notification.error({

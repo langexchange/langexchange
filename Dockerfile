@@ -8,9 +8,16 @@ COPY . .
 RUN yarn build
 
 # Stage 2: Serve the built app
-FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-ARG REACT_APP_API_URL_ROOT
-ENV REACT_APP_API_URL_ROOT=$REACT_APP_API_URL_ROOT
-EXPOSE 80
+FROM nginx:1.23.3
+
+COPY ./conf/*.conf.template /etc/nginx/templates/
+COPY ./conf/nginx.conf /etc/nginx/
+COPY ./certs /etc/nginx/certs
+
+COPY --from=build /app/build /usr/local/src/langex
+# ARG REACT_APP_API_URL_ROOT
+# ENV REACT_APP_API_URL_ROOT=$REACT_APP_API_URL_ROOT
+
+EXPOSE 80/tcp
+EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]

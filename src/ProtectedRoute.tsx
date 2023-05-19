@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import LoadingPage from "./pages/LoadingPage";
 import { logout, selectCredentials } from "./features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
@@ -9,13 +9,19 @@ import {
   setCredentialProfile,
 } from "./features/profile/profileSlice";
 import { useGetProfileQuery } from "./services/profile/profileServices";
+import { hideChat, initChat, loginChat, showChat } from "./chat";
+import { selectCurrentChatStatus, setChatStatus } from "./features/chatSlice";
 
 const ProtectedRoute = () => {
+  console.log("Dont know how this function will call");
   const credentials = useAppSelector(selectCredentials);
+  console.log(credentials);
   const currentProfile = useAppSelector(selectCredentalProfile);
   const dispatch = useAppDispatch();
   const location = useLocation();
   const isInitial = location.pathname === "/initial";
+  const [isChatInit, setIsChatInit] = useState(false);
+  const chatStatus = useAppSelector(selectCurrentChatStatus);
 
   const {
     data: profile,
@@ -35,6 +41,14 @@ const ProtectedRoute = () => {
       dispatch(logout());
     }
   }, [profile, isLoading, isFetching]);
+
+  useEffect(() => {
+    if (chatStatus || !window.converse) return;
+    // if (window.location.pathname === "/initial") return;
+
+    initChat();
+    dispatch(setChatStatus(true));
+  }, [window.converse]);
 
   if (isLoading) return <LoadingPage size="large" />;
 
