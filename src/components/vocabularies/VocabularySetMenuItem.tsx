@@ -40,7 +40,10 @@ const VocabularySetMenuItem: React.FC<VocabularySetMenuItemProps> = ({
   const [t] = useTranslation(["vocabulary"]);
   const [removeFromPractice, { isLoading }] = useRemoveFromPracticeMutation();
 
-  const handleRemove = async () => {
+  const handleRemove = async (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+
     if (!id) return;
 
     try {
@@ -73,6 +76,10 @@ const VocabularySetMenuItem: React.FC<VocabularySetMenuItemProps> = ({
             onConfirm={handleRemove}
             okText="Yes"
             cancelText="No"
+            onCancel={(e: any) => {
+              e?.preventDefault();
+              e?.stopPropagation();
+            }}
           >
             <span
               onClick={(e) => {
