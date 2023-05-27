@@ -41,7 +41,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
   const [fileListAlt, setFileListAlt] = useState<UploadFile[]>([]);
   const credentials = useAppSelector(selectCredentials);
   const endPoint =
-    process.env.REACT_APP_API_UPLOAD +
+    process.env.REACT_APP_API_URL_ROOT +
     "api/files/users/" +
     credentials.incId +
     "/types/image";

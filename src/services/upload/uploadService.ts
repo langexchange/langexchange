@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../../stores/store";
 
-const baseUrl = process.env.REACT_APP_API_UPLOAD;
+const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 
 export interface UploadFileRequest {
   type: "image" | "audio" | "video";
