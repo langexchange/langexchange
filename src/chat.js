@@ -21,7 +21,7 @@ const token = "";
 const initChat = () => {
       const jid = localStorage.getItem("jid");
       const token = localStorage.getItem("token");
-      converse.initialize({
+      window.converse.initialize({
             theme: "langexchange",
 
             auto_away: 300,
