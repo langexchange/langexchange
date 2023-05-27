@@ -34,7 +34,6 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/le-web-app:latest
           build-args: |
-            REACT_APP_API_UPLOAD=http://localhost:5000
             REACT_APP_API_URL_ROOT=http://localhost:7777
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
