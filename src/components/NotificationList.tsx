@@ -18,6 +18,11 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 }) => {
   const navigate = useNavigate();
   const onClick = () => {
+    if (notification.type == "friend_notify") {
+      const data = JSON.parse(notification.notifyData);
+      navigate(`/profile/${data.FromId}`);
+      return;
+    }
     if (!notification.postid) return;
     navigate(`/posts/${notification.postid}`);
   };

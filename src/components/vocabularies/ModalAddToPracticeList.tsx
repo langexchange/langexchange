@@ -67,10 +67,7 @@ const ModalAddToPracticeList: React.FC<ModalAddToPracticeListProps> = ({
       refetchPracticeList();
     } catch (error) {
       setAddingId("");
-      message.success(
-        "Sorry, somethings went wrong. Please try again later!",
-        1
-      );
+      message.error("Sorry, somethings went wrong. Please try again later!", 1);
     }
   };
 
