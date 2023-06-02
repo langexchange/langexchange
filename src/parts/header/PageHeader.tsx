@@ -23,6 +23,7 @@ import Icon, {
   SettingOutlined,
   BellOutlined,
   SwapOutlined,
+  FileTextOutlined,
 } from "@ant-design/icons";
 import type { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -163,8 +164,8 @@ const PageHeader: React.FC = () => {
         </NavLink>
       ),
       key: "vocabularies",
-      icon: <VocabularyIcon />,
-      // icon: <FileTextOutlined />,
+      // icon: <VocabularyIcon />,
+      icon: <FileTextOutlined />,
     },
   ];
 

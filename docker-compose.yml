@@ -22,6 +22,8 @@ services:
     # command: ["/bin/sh", "-c", "/home/ejabberd/conf/script.sh"]
     environment: 
       - JWT_KEY=aAa01234567890aAa
+    environment:
+      - JWT_KEY=c9a56074-ac16-11ed-afa1-0242ac1200023b8f9f24-ac17-11ed-afa1-0242ac12000241c27614-ac17-11ed-afa1-0242ac120002
       - DB_TYPE=pgsql
       - DB_SERVER=langchat-db
       - DB_PORT=5432
@@ -120,7 +122,9 @@ services:
     command: /bin/sh -c "service celeryd start && httpd -D FOREGROUND"
     depends_on:
       - celery-broker
-    environment: 
+    volumes:
+      - ./logs:/usr/local/src/lec_chathelper/logs
+    environment:
       - CREDENTIALS_KEY=secret
       - HOST=localhost
       - LANGGENERAL_DB_HOST=database-1.cvisbvujuezh.ap-southeast-1.rds.amazonaws.com
