@@ -81,10 +81,16 @@ const VocabularyExploresPage: React.FC = () => {
 
   const resetFilters = () => setFilters(defaultFilters);
   useEffect(() => {
-    console.log(filters);
-    if (!filters) return;
-    if (filters.terms?.length === 0 && filters.defines?.length === 0) return;
     if (!data) return;
+    console.log(data);
+    console.log(filters);
+    if (
+      (!filters?.terms && !filters?.defines) ||
+      (filters?.terms?.length === 0 && filters?.defines?.length === 0)
+    ) {
+      setDisplayedData(data);
+      return;
+    }
 
     const newData = data?.map((item) => {
       return {

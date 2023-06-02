@@ -36,6 +36,28 @@ const CommunityPage: React.FC = () => {
     setPosts(postList);
   }, [postList]);
 
+  const onSearch = (value: string) => {
+    if (!postList) return;
+    if (!value) {
+      setPosts(postList);
+    }
+    const newData = postList?.filter((item) => {
+      if (
+        item.userInfo.firstName?.toLowerCase().includes(value.toLowerCase()) ||
+        item.userInfo.lastName?.toLowerCase().includes(value.toLowerCase())
+      )
+        return true;
+      if (
+        item.labels.some((label) =>
+          label.toLowerCase().includes(value.toLowerCase())
+        )
+      )
+        return true;
+      return item.text.toLowerCase().includes(value.toLowerCase());
+    });
+    setPosts(newData);
+  };
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -70,6 +92,7 @@ const CommunityPage: React.FC = () => {
           defaultFilters={defaultFilters}
           setFilters={setFilters}
           resetFilters={resetFilters}
+          onSearch={onSearch}
         />
       </Col>
 

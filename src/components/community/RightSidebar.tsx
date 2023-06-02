@@ -5,18 +5,18 @@ import SeclectLanguageInput from "../SeclectLanguageInput";
 import { PostSuggestionQuery } from "../../services/post/postService";
 import SuggestFriendSide from "../SuggestFriendSide";
 
-const onSearch = (value: string) => console.log(value);
-
 interface RightSidebarProps {
   defaultFilters: PostSuggestionQuery;
   setFilters: React.Dispatch<React.SetStateAction<PostSuggestionQuery>>;
   resetFilters: () => void;
+  onSearch?: (value: string) => void;
 }
 
 const RightSidebar: React.FC<RightSidebarProps> = ({
   defaultFilters,
   setFilters,
   resetFilters,
+  onSearch,
 }) => {
   const [t] = useTranslation(["commons"]);
 
