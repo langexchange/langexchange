@@ -20,8 +20,6 @@ services:
     image: narutosimaha/lec-chatserver
     user: "ejabberd:"
     # command: ["/bin/sh", "-c", "/home/ejabberd/conf/script.sh"]
-    environment: 
-      - JWT_KEY=aAa01234567890aAa
     environment:
       - JWT_KEY=c9a56074-ac16-11ed-afa1-0242ac1200023b8f9f24-ac17-11ed-afa1-0242ac12000241c27614-ac17-11ed-afa1-0242ac120002
       - DB_TYPE=pgsql
