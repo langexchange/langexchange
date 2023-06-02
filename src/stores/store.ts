@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
 import chatReducer from "../features/chatSlice";
+import notiReducer from "../features/notiSlice";
 import profileReducer from "../features/profile/profileSlice";
 import languageReducer from "../features/languages/languageSlice";
 import postReducer from "../features/post/postSlice";
@@ -22,6 +23,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     auth: authReducer,
     chat: chatReducer,
+    noti: notiReducer,
     [profileApi.reducerPath]: profileApi.reducer,
     profile: profileReducer,
     [languageApi.reducerPath]: languageApi.reducer,
