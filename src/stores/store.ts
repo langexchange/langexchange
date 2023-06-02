@@ -15,6 +15,7 @@ import { friendApi } from "../services/friend/friendService";
 import { vocabularyApi } from "../services/vocabulary/vocabularyService";
 import { dictionaryApi } from "../services/dictionary/dictionaryService";
 import { notificationsApi } from "../services/notifications/notificationsService";
+import { trackingApi } from "../services/tracking/trackingServices";
 
 export const store = configureStore({
   reducer: {
@@ -33,6 +34,7 @@ export const store = configureStore({
     [vocabularyApi.reducerPath]: vocabularyApi.reducer,
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
     [notificationsApi.reducerPath]: notificationsApi.reducer,
+    [trackingApi.reducerPath]: trackingApi.reducer,
     theme: themeReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -46,7 +48,8 @@ export const store = configureStore({
       friendApi.middleware,
       vocabularyApi.middleware,
       dictionaryApi.middleware,
-      notificationsApi.middleware
+      notificationsApi.middleware,
+      trackingApi.middleware
     ),
 });
 

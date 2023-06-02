@@ -186,8 +186,8 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                     </Button>
                   </>
                 ) : requestList?.some(
-                    (request: any) => request.id === userId
-                  ) ? (
+                  (request: any) => request.id === userId
+                ) ? (
                   <>
                     <Button
                       type="primary"

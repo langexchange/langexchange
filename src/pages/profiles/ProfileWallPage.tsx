@@ -17,6 +17,7 @@ const ProfileWallPage: React.FC = () => {
 
   const {
     data: postList,
+    refetch: refetchListPost,
     isFetching,
     isLoading,
     isError,
@@ -31,6 +32,7 @@ const ProfileWallPage: React.FC = () => {
           setPostId={setPostId}
           showModal={showModal}
           postList={postList}
+          refetchListPost={refetchListPost}
         />
       </Skeleton>
       <PostModal
