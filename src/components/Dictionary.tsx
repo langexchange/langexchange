@@ -37,7 +37,11 @@ const Dictionary: React.FC = () => {
 
   return (
     <>
-      <FloatButton onClick={handleOpen} icon={<DictionaryIcon />} />
+      <FloatButton
+        onClick={handleOpen}
+        icon={<DictionaryIcon />}
+        style={{ bottom: 86, right: 12 }}
+      />
       <Drawer
         title={
           <>
