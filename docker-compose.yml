@@ -121,7 +121,7 @@ services:
     depends_on:
       - celery-broker
     volumes:
-      - ./logs:/usr/local/src/lec_chathelper/logs
+      - ./logs:/usr/local/src/lec_chathelper/logs:rw
     environment:
       - CREDENTIALS_KEY=secret
       - HOST=localhost
@@ -149,7 +149,6 @@ services:
       - APP_BROKERS=kafka:9092
       - CELERY_RESULT_BACKEND=redis://celery-broker:6379/0
       - CELERY_BROKER_URL=redis://celery-broker:6379/1
-      - LOG_FILE_FROM_ROOT=logs/worker.log
     ports:
       - "8082:80"
 
@@ -246,7 +245,7 @@ services:
     command: ["python", "main.py", "-d"]
     environment: 
       - MODEL_NAME=small
-      - BOT_PASSWORD=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc4NzIxMTYsImlhdCI6MTY3Nzg2NzMxNywiaWQiOiJjaGF0Ym90In0.Fw9nVmXw5ASMQQZvtsLjISwrtQq3smPAjqO_fXpTyuQ
+      - BOT_PASSWORD=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc4NzIxMTYsImlhdCI6MTY3Nzg2NzMxNywiaWQiOiJjaGF0Ym90In0.oBO_gjkDcjot2A9guG05_ku51H45l9D8IKPHRs3daWc
       - BOT_JID=chatbot@localhost
       - LANGEX_XMPP_HOSTNAME=lec-chatserver
       - LANGEX_XMPP_PORT=5222
@@ -256,7 +255,7 @@ services:
       - FILE_SERVICE=lec-chatgw
       - MODE=development
     volumes:
-      - model:/app/lec-chatbot/chatbot/models/whisper/model
+      - model:/app/chatbot/models/whisper/model
       - model_cache:/root/.cache/huggingface
 
 #     ##THUONG SERVICE
@@ -297,10 +296,7 @@ services:
       DB_CONNECTION_STRING: Host=database-1.cvisbvujuezh.ap-southeast-1.rds.amazonaws.com;Port=5432;Database=langgeneral;Username=postgres;Password=t0ps3cr3tt0ps3cr3t
       SECRET_KEY: c9a56074-ac16-11ed-afa1-0242ac1200023b8f9f24-ac17-11ed-afa1-0242ac12000241c27614-ac17-11ed-afa1-0242ac120002
       NEO4J_DATABASE: neo4j
-      #azure neo4j
-      # NEO4J_HOST: bolt://20.195.209.186:7687
-      # #aws neo4j
-      NEO4J_HOST: bolt://3.1.50.59:7687
+      NEO4J_HOST: bolt://18.140.71.40:7687
       #localhost neo4j
       # NEO4J_HOST: bolt://localhost:7687
       NEO4J_USER: neo4j
