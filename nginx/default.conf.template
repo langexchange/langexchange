@@ -1,0 +1,9 @@
+server {
+    listen   80 default_server;
+    server_name  ${NGINX_HOST};
+
+    location / {
+      root /usr/local/src/langex;
+      add_header Access-Control-Allow-Origin *;
+    }
+}
