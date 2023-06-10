@@ -10,9 +10,8 @@ RUN yarn build
 # Stage 2: Serve the built app
 FROM nginx:1.23.3
 
-COPY ./conf/*.conf.template /etc/nginx/templates/
-COPY ./conf/nginx.conf /etc/nginx/
-COPY ./certs /etc/nginx/certs
+COPY ./nginx/*.conf.template /etc/nginx/templates/
+COPY ./nginx/nginx.conf /etc/nginx/
 
 COPY --from=build /app/build /usr/local/src/langex
 # ARG REACT_APP_API_URL_ROOT
