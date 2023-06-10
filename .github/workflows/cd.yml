@@ -32,6 +32,10 @@ jobs:
           ### file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/lec-langexchange:latest
+          build-args: |
+            REACT_APP_API_UPLOAD=${{ secrets.REACT_APP_API_UPLOAD }}
+            REACT_APP_API_URL_ROOT=${{ secrets.REACT_APP_API_URL_ROOT }}
+            REACT_APP_CHAT_HOST=${{ secrets.REACT_APP_CHAT_HOST }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
       - name: Move cache
