@@ -31,6 +31,7 @@ export const uploadApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     uploadFile: builder.mutation<UploadFileResponse[], UploadFileRequest>({

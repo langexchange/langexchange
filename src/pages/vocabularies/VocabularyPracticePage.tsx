@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Skeleton } from "antd";
+import { Card, Skeleton, Typography } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import FlashCardList from "../../components/vocabularies/FlashCardList";
 import Dashboard from "../../components/vocabularies/Dashboard";
@@ -33,7 +33,13 @@ const VocabularyPracticePage: React.FC = () => {
       {/*   {t("Dashboard")} */}
       {/* </Card> */}
       <Skeleton loading={isLoading} active>
-        <FlashCardList vocabularies={data?.practiceVocabularies} />
+        {!isLoading && data?.practiceVocabularies.length === 0 ? (
+          <Typography.Title level={3} className="mb-3">
+            Bạn đã hoàn thành bộ từ vựng này!
+          </Typography.Title>
+        ) : (
+          <FlashCardList vocabularies={data?.practiceVocabularies} />
+        )}
       </Skeleton>
       <Dashboard onClose={onClose} open={open} />
     </div>

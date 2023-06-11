@@ -75,7 +75,9 @@ const usePost = (postData: Post): UsePostReturn => {
         postId: post.postId,
         mode: mode,
       }).unwrap();
+      message.success("Successfull!");
     } catch (error) {
+      message.error("Oops, something went wrong");
       throw error;
     }
   };

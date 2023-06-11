@@ -3,8 +3,8 @@ name: Auto build and push image
 on:
   push:
     branches:
-      # - master
       - test-build-image-can-deploy-accross-diff-environment
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -32,9 +32,12 @@ jobs:
           context: .
           ### file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/le-web-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/lec-langexchange:latest
           build-args: |
-            REACT_APP_API_URL_ROOT=http://localhost:7777
+            REACT_APP_API_UPLOAD=${{ secrets.REACT_APP_API_UPLOAD }}
+            REACT_APP_API_URL_ROOT=${{ secrets.REACT_APP_API_URL_ROOT }}
+            REACT_APP_CHAT_HOST=${{ secrets.REACT_APP_CHAT_HOST }}
+            REACT_APP_CHAT_URL=${{ secrets.REACT_APP_CHAT_URL }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
       - name: Move cache

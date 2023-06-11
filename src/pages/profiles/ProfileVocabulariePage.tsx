@@ -1,6 +1,7 @@
 import { Skeleton } from "antd";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import VocabularyStaticChart from "../../components/tracking/VocabularyStaticChart";
 // import VocabularyList from "../../components/partners/VocabularyList";
 import VocabularyModal from "../../components/VocabularyModal";
 import VocabularySetList from "../../components/VocabularySetList";
@@ -29,6 +30,7 @@ const ProfileVocabulariesPage: React.FC = () => {
 
   return (
     <>
+      <VocabularyStaticChart />
       <Skeleton loading={isLoading} active>
         <VocabularySetList
           data={[data] as VocabularySetDetail[]}

@@ -160,8 +160,9 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
             <span>
               <Progress
                 percent={
-                  (vocabularySet.practiceResultDto.currentNumOfVocab /
-                    vocabularySet.practiceResultDto.totalVocabs) *
+                  (1 -
+                    vocabularySet.practiceResultDto.currentNumOfVocab /
+                      vocabularySet.practiceResultDto.totalVocabs) *
                   100
                 }
                 size="small"

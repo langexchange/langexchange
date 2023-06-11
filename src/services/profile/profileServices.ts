@@ -60,6 +60,7 @@ export const profileApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     updateProfile: builder.mutation<null, ProfileRequest>({

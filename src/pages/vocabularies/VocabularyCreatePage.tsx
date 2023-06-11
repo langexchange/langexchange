@@ -89,7 +89,7 @@ const VocabularyCreatePage: React.FC = () => {
       message.success("Create set successfully");
       form.resetFields();
       setFileList([]);
-      setItems(initial);
+      setItems([...initial]);
     } catch (error) {
       message.error("Create set failed");
     }

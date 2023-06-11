@@ -12,22 +12,22 @@ COPY package*.json ./
 COPY yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY . .
+
+ARG REACT_APP_API_URL_ROOT
+ENV REACT_APP_API_URL_ROOT=$REACT_APP_API_URL_ROOT
+
+ARG REACT_APP_API_UPLOAD
+ENV REACT_APP_API_UPLOAD=$REACT_APP_API_UPLOAD
+
+ARG REACT_APP_CHAT_HOST
+ENV REACT_APP_CHAT_HOST=$REACT_APP_CHAT_HOST
+
+ARG REACT_APP_CHAT_URL
+ENV REACT_APP_CHAT_URL=$REACT_APP_CHAT_URL
+
 RUN yarn build
 
 # Stage 2: Serve the built app
-
-# FROM nginx:1.23.3
-
-# COPY ./conf/*.conf.template /etc/nginx/templates/
-# COPY ./conf/nginx.conf /etc/nginx/
-# COPY ./certs /etc/nginx/certs
-
-# COPY --from=build /app/build /usr/local/src/langex
-# # ARG REACT_APP_API_URL_ROOT
-# # ENV REACT_APP_API_URL_ROOT=$REACT_APP_API_URL_ROOT
-
-# EXPOSE 80/tcp
-# EXPOSE 443
 # =======
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html

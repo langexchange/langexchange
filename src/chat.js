@@ -45,6 +45,9 @@ const initChat = () => {
             render_media: true,
             jid: jid,
             password: token,
+            auto_reconnect: true,
+            credentials_url: "http://localhost:5002/api/cookies/credentials",
+            authentication: "login",
       });
 };
 

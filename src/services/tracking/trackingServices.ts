@@ -1,23 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../../stores/store";
 
-const baseUrl = process.env.REACT_APP_API_NOTIFICATION;
+const baseUrl = process.env.REACT_APP_API_URL_ROOT;
 
-export interface Notification {
-  notiid: string;
-  notifyMessage: string;
-  notifiKey: string;
-  notifyData: string;
-  subNotification: string[];
-  type: string;
-  postid: string;
-  commentid: string;
+export interface StaticLearning {
   createdAt: string;
+  currentvocabs: number;
+  month: number;
+  percent: number;
+  totalvocabs: number;
   updatedAt: string;
 }
 
-export const notificationsApi = createApi({
-  reducerPath: "notificationsApi",
+export const trackingApi = createApi({
+  reducerPath: "trackingApi",
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
     prepareHeaders: (headers, { getState }) => {
@@ -30,13 +26,13 @@ export const notificationsApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getNotifications: builder.query<Notification[], undefined>({
+    getStaticLearning: builder.query<StaticLearning[], void>({
       query: () => ({
-        url: `/api/notifications`,
+        url: "/api/statistics/learning-process",
         method: "GET",
       }),
     }),
   }),
 });
 
-export const { useGetNotificationsQuery } = notificationsApi;
+export const { useGetStaticLearningQuery } = trackingApi;

@@ -1,14 +1,19 @@
 import { useState } from "react";
 import FlashCard from "./FlashCard";
 import { Button, Space, Spin } from "antd";
-import { RightOutlined, LeftOutlined } from "@ant-design/icons";
+import {
+  RightOutlined,
+  LeftOutlined,
+  CheckCircleFilled,
+} from "@ant-design/icons";
 import classes from "./FlashCardList.module.scss";
 import { useTranslation } from "react-i18next";
 import {
   useTrackingVocabularyMutation,
   Vocabulary,
 } from "../../services/vocabulary/vocabularyService";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import confirm from "antd/es/modal/confirm";
 
 interface FlashCardListProps {
   type?: "view" | "practice";
@@ -42,11 +47,38 @@ const FlashCardList: React.FC<FlashCardListProps> = ({
   }
 
   function nextCard() {
-    setCurrent(current + 1);
+    if (current >= (vocabularies?.length || 0) - 1) {
+      showConfirm();
+    } else {
+      setCurrent(current + 1);
+    }
   }
+  const navigate = useNavigate();
+
+  const showConfirm = () => {
+    confirm({
+      title: "Bạn đã hoàn thành luyện tập bộ từ vựng này.",
+      content: "Quay trở lại trang dashboard để tiếp tục luyện tập.",
+      okText: "Đi thôi",
+      icon: <CheckCircleFilled style={{ color: "#52c41a" }} />,
+      cancelButtonProps: {
+        style: { display: "none" },
+      },
+      onOk() {
+        navigate("/vocabularies/practice");
+      },
+    });
+  };
 
   const tracking = async (id: string, quality: number) => {
-    nextCard();
+    if (
+      vocabularies?.length === 0 ||
+      current >= (vocabularies?.length || 0) - 1
+    ) {
+      showConfirm();
+    } else {
+      nextCard();
+    }
 
     try {
       await trackingVocab({
@@ -85,10 +117,10 @@ const FlashCardList: React.FC<FlashCardListProps> = ({
             <Button
               size="large"
               className="btn-outlined-warning"
-              disabled={
-                vocabularies?.length === 0 ||
-                current >= (vocabularies?.length || 0) - 1
-              }
+              // disabled={
+              //   vocabularies?.length === 0 ||
+              //   current >= (vocabularies?.length || 0) - 1
+              // }
               onClick={() =>
                 tracking(
                   (vocabularies && vocabularies[current].vocabId) || "",
@@ -101,10 +133,10 @@ const FlashCardList: React.FC<FlashCardListProps> = ({
             <Button
               size="large"
               danger
-              disabled={
-                vocabularies?.length === 0 ||
-                current >= (vocabularies?.length || 0) - 1
-              }
+              // disabled={
+              //   vocabularies?.length === 0 ||
+              //   current >= (vocabularies?.length || 0) - 1
+              // }
               onClick={() =>
                 tracking(
                   (vocabularies && vocabularies[current].vocabId) || "",
@@ -117,10 +149,10 @@ const FlashCardList: React.FC<FlashCardListProps> = ({
             <Button
               size="large"
               className="btn-outlined-success"
-              disabled={
-                vocabularies?.length === 0 ||
-                current >= (vocabularies?.length || 0) - 1
-              }
+              // disabled={
+              //   vocabularies?.length === 0 ||
+              //   current >= (vocabularies?.length || 0) - 1
+              // }
               onClick={() =>
                 tracking(
                   (vocabularies && vocabularies[current].vocabId) || "",
@@ -135,7 +167,9 @@ const FlashCardList: React.FC<FlashCardListProps> = ({
         <Button
           onClick={nextCard}
           size="large"
-          disabled={current >= (vocabularies?.length || 0) - 1}
+          disabled={
+            type !== "practice" && current >= (vocabularies?.length || 0) - 1
+          }
           icon={<RightOutlined />}
           className={classes.button}
         />

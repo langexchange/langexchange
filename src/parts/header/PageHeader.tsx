@@ -23,12 +23,13 @@ import Icon, {
   SettingOutlined,
   BellOutlined,
   SwapOutlined,
+  FileTextOutlined,
 } from "@ant-design/icons";
 import type { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NotificationList from "../../components/NotificationList";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
@@ -40,6 +41,8 @@ import {
 import { toggleTheme } from "../../features/themes/themeSlice";
 import LocaleSelect from "../../components/LocaleSelect";
 import { destroyChat } from "../../chat";
+import { useGetNotificationsQuery } from "../../services/notifications/notificationsService";
+import { selectReadNotification, setReadList } from "../../features/notiSlice";
 const { Header } = Layout;
 
 const VocabularySvg = () => (
@@ -82,11 +85,25 @@ const PageHeader: React.FC = () => {
   const { t } = useTranslation(["commons"]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [allRead, setAllRead] = useState(false);
+  const [allRead, setAllRead] = useState(0);
   const activeKey: string = window.location.pathname.split("/")[1];
   const [open, setOpen] = useState(false);
   const currentUserProfile = useAppSelector(selectCredentalProfile);
   const credentials = useAppSelector(selectCredentials);
+  const readList = useAppSelector(selectReadNotification);
+  const {
+    data: notifications,
+    isLoading: isLoadingNofitications,
+    refetch: refetchNotifications,
+    isFetching,
+  } = useGetNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const handleMarkAllAsRead = () => {
+    setAllRead(notifications?.length || 0);
+    dispatch(setReadList(notifications?.map((item) => item.notiid) || []));
+  };
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     if (e.key === "sign-out") {
@@ -99,6 +116,15 @@ const PageHeader: React.FC = () => {
       dispatch(toggleTheme());
     }
   };
+
+  useEffect(() => {
+    if (notifications && notifications?.length > 0) {
+      const unreadList = notifications?.filter(
+        (item) => !readList.includes(item.notiid)
+      );
+      setAllRead(unreadList?.length || 0);
+    }
+  }, [readList, notifications, isFetching, isLoadingNofitications]);
 
   const items: MenuProps["items"] = [
     {
@@ -121,7 +147,10 @@ const PageHeader: React.FC = () => {
     },
     {
       label: (
-        <NavLink className="text-500" to="chat">
+        <NavLink
+          className="text-500"
+          to={process.env.REACT_APP_CHAT_URL || "/"}
+        >
           {t("header-chat")}
         </NavLink>
       ),
@@ -135,8 +164,8 @@ const PageHeader: React.FC = () => {
         </NavLink>
       ),
       key: "vocabularies",
-      icon: <VocabularyIcon />,
-      // icon: <FileTextOutlined />,
+      // icon: <VocabularyIcon />,
+      icon: <FileTextOutlined />,
     },
   ];
 
@@ -197,8 +226,10 @@ const PageHeader: React.FC = () => {
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
+    if (newOpen) refetchNotifications();
   };
 
+  console.log(allRead);
   return (
     <Header className="z-index-1 bg-white d-flex justify-space-between align-items-center pos-sticky t-0 width-full with-header-height with-header-border-bottom">
       <div className="container">
@@ -228,7 +259,13 @@ const PageHeader: React.FC = () => {
             <Space className="toolbars" align="center">
               <Popover
                 content={
-                  <NotificationList allRead={allRead} setAllRead={setAllRead} />
+                  <NotificationList
+                    readList={readList}
+                    allRead={allRead}
+                    setAllRead={setAllRead}
+                    data={notifications}
+                    isLoading={isLoadingNofitications}
+                  />
                 }
                 title={
                   <div className="d-flex align-items-center justify-space-between">
@@ -238,7 +275,9 @@ const PageHeader: React.FC = () => {
                     </Space>
                     <Button
                       type="link"
-                      onClick={() => setAllRead(true)}
+                      onClick={() => {
+                        handleMarkAllAsRead();
+                      }}
                       className="text-300 fz-12"
                     >
                       {t("mark-all-as-read")}
@@ -255,13 +294,13 @@ const PageHeader: React.FC = () => {
                   className="d-flex align-items-center px-4"
                   size="large"
                 >
-                  {allRead ? (
+                  {!allRead ? (
                     <div className="d-flex align-items-center">
                       <BellOutlined style={{ fontSize: "16px" }} />
                     </div>
                   ) : (
                     <Badge
-                      count={99}
+                      count={allRead}
                       overflowCount={10}
                       size="small"
                       offset={[10, 0]}
