@@ -150,6 +150,33 @@ const PageHeader: React.FC = () => {
         <NavLink
           className="text-500"
           to={process.env.REACT_APP_CHAT_URL || "/"}
+          target="_top"
+        >
+          {t("header-chat")}
+        </NavLink>
+      ),
+      key: "chat",
+      icon: <MessageOutlined />,
+    },
+    {
+      label: (
+        <NavLink
+          className="text-500"
+          to={process.env.REACT_APP_CHAT_URL || "/"}
+          target="_blank"
+        >
+          {t("header-chat")}
+        </NavLink>
+      ),
+      key: "chat",
+      icon: <MessageOutlined />,
+    },
+    {
+      label: (
+        <NavLink
+          className="text-500"
+          to={process.env.REACT_APP_CHAT_URL || "/"}
+          target="_parent"
         >
           {t("header-chat")}
         </NavLink>
