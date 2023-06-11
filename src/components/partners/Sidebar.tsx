@@ -8,7 +8,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const Sidebar = () => {
+const Sidebar: React.FC<MenuProps> = (props) => {
   const [t] = useTranslation(["commons"]);
 
   const items: MenuProps["items"] = [
@@ -38,6 +38,7 @@ const Sidebar = () => {
         items={items}
         style={{ border: "none" }}
         selectedKeys={[activeKey]}
+        {...props}
       />
     </Card>
   );

@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, FloatButton, Row } from "antd";
 import { Outlet, useParams } from "react-router-dom";
 import SidebarNavigation from "../../components/profile/SidebarNavigation";
 import { selectCurrentUserId } from "../../features/auth/authSlice";
@@ -14,17 +14,37 @@ const ProfileLayout = () => {
   if (!userId) return <NotFoundPage />;
 
   return (
-    <Row className="full-height-minus-header py-3">
-      <Col span={9} className="d-flex flex-column h-100 overflow-hidden">
+    <Row className="full-height-minus-header py-3" gutter={[0, 28]}>
+      <Col md={9} xs={24} className="d-flex flex-column h-100 overflow-hidden">
         <ProfileCard userId={userId} isCurrentUser={isCurrentUser} />
       </Col>
-      <Col span={15} className="h-100">
-        <Row wrap={false} className="h-100">
-          <Col flex="none">
+      <Col md={15} xs={24} className="h-100">
+        <Col flex="auto" xs={24} sm={0} className="mb-3">
+          <SidebarNavigation
+            canSeeSettings={isCurrentUser}
+            mode="horizontal"
+            toggleable={false}
+            className="justify-content-center"
+          />
+        </Col>
+
+        <Row wrap={false} className="h-100" gutter={[12, 12]}>
+          <Col flex="none" xs={0} sm={20}>
             <SidebarNavigation canSeeSettings={isCurrentUser} />
           </Col>
-          <Col flex="auto" className="auto-hide-scroll scroll-style-1 px-4">
+
+          <Col
+            flex="auto"
+            className="auto-hide-scroll scroll-style-1"
+            id="scroll-back_top"
+          >
             <Outlet />
+            <FloatButton.BackTop
+              target={() =>
+                document.getElementById("scroll-back_top") || window
+              }
+              style={{ bottom: 154, right: 8, height: "48px", width: "48px" }}
+            />
           </Col>
         </Row>
       </Col>

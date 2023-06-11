@@ -1,6 +1,6 @@
 import { useState } from "react";
 import FlashCard from "./FlashCard";
-import { Button, Space, Spin } from "antd";
+import { Button, Col, Row, Space, Spin } from "antd";
 import {
   RightOutlined,
   LeftOutlined,
@@ -103,77 +103,115 @@ const FlashCardList: React.FC<FlashCardListProps> = ({
       ) : (
         ""
       )}
-
-      <Space className={classes.navigation}>
-        <Button
-          onClick={previousCard}
-          size="large"
-          disabled={current === 0}
-          icon={<LeftOutlined />}
-          className={classes.button}
-        />
-        {type === "practice" && (
-          <>
-            <Button
-              size="large"
-              className="btn-outlined-warning"
-              // disabled={
-              //   vocabularies?.length === 0 ||
-              //   current >= (vocabularies?.length || 0) - 1
-              // }
-              onClick={() =>
-                tracking(
-                  (vocabularies && vocabularies[current].vocabId) || "",
-                  1
-                )
-              }
-            >
-              {t("Medium")}
-            </Button>
-            <Button
-              size="large"
-              danger
-              // disabled={
-              //   vocabularies?.length === 0 ||
-              //   current >= (vocabularies?.length || 0) - 1
-              // }
-              onClick={() =>
-                tracking(
-                  (vocabularies && vocabularies[current].vocabId) || "",
-                  0
-                )
-              }
-            >
-              {t("Hard")}
-            </Button>
-            <Button
-              size="large"
-              className="btn-outlined-success"
-              // disabled={
-              //   vocabularies?.length === 0 ||
-              //   current >= (vocabularies?.length || 0) - 1
-              // }
-              onClick={() =>
-                tracking(
-                  (vocabularies && vocabularies[current].vocabId) || "",
-                  2
-                )
-              }
-            >
-              {t("Known")}
-            </Button>
-          </>
-        )}
-        <Button
-          onClick={nextCard}
-          size="large"
-          disabled={
-            type !== "practice" && current >= (vocabularies?.length || 0) - 1
-          }
-          icon={<RightOutlined />}
-          className={classes.button}
-        />
-      </Space>
+      <div className={classes.navigation}>
+        <Row className="mb-2">
+          <Col sm={0} xs={24}>
+            <Space>
+              {type === "practice" && (
+                <>
+                  <Button
+                    className="btn-outlined-warning"
+                    onClick={() =>
+                      tracking(
+                        (vocabularies && vocabularies[current].vocabId) || "",
+                        1
+                      )
+                    }
+                  >
+                    {t("Medium")}
+                  </Button>
+                  <Button
+                    danger
+                    onClick={() =>
+                      tracking(
+                        (vocabularies && vocabularies[current].vocabId) || "",
+                        0
+                      )
+                    }
+                  >
+                    {t("Hard")}
+                  </Button>
+                  <Button
+                    className="btn-outlined-success"
+                    onClick={() =>
+                      tracking(
+                        (vocabularies && vocabularies[current].vocabId) || "",
+                        2
+                      )
+                    }
+                  >
+                    {t("Known")}
+                  </Button>
+                </>
+              )}
+            </Space>
+          </Col>
+        </Row>
+        <Space>
+          <Button
+            onClick={previousCard}
+            size="large"
+            disabled={current === 0}
+            icon={<LeftOutlined />}
+            className={classes.button}
+          />
+          <Row>
+            <Col sm={24} xs={0}>
+              <Space>
+                {type === "practice" && (
+                  <>
+                    <Button
+                      size="large"
+                      className="btn-outlined-warning"
+                      onClick={() =>
+                        tracking(
+                          (vocabularies && vocabularies[current].vocabId) || "",
+                          1
+                        )
+                      }
+                    >
+                      {t("Medium")}
+                    </Button>
+                    <Button
+                      size="large"
+                      danger
+                      onClick={() =>
+                        tracking(
+                          (vocabularies && vocabularies[current].vocabId) || "",
+                          0
+                        )
+                      }
+                    >
+                      {t("Hard")}
+                    </Button>
+                    <Button
+                      size="large"
+                      className="btn-outlined-success"
+                      onClick={() =>
+                        tracking(
+                          (vocabularies && vocabularies[current].vocabId) || "",
+                          2
+                        )
+                      }
+                    >
+                      {t("Known")}
+                    </Button>
+                  </>
+                )}
+              </Space>
+            </Col>
+          </Row>
+          <Button
+            onClick={nextCard}
+            size="large"
+            disabled={
+              type !== "practice" && current >= (vocabularies?.length || 0) - 1
+            }
+            icon={<RightOutlined />}
+            className={classes.button}
+          />
+        </Space>
+      </div>
     </div>
   );
 };

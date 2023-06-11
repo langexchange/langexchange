@@ -47,7 +47,7 @@ const Feedbacks = () => {
   const { t } = useTranslation(["welcome"]);
   return (
     <div className="bg-white py-5">
-      <div className="container">
+      <div className="container-lg">
         <Space direction="vertical" align="center" size={48}>
           <Space direction="vertical" align="center">
             <Title level={2} className="m-0">
@@ -58,7 +58,7 @@ const Feedbacks = () => {
           <div>
             <Row align="middle" gutter={[24, 48]}>
               {feedbackItems.map((item, index) => (
-                <Col span={8} key={index}>
+                <Col md={8} xs={24} sm={12} key={index}>
                   <FeedbackItem {...item} />
                 </Col>
               ))}

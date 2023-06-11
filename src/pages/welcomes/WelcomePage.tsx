@@ -1,3 +1,4 @@
+import { FloatButton } from "antd";
 import Banner from "../../components/welcomes/Banner";
 import FeatureDetails from "../../components/welcomes/FeatureDetails";
 import FeaturesOverview from "../../components/welcomes/FeaturesOverview";
@@ -10,6 +11,7 @@ const WelcomePage = () => {
       <FeaturesOverview />
       <FeatureDetails />
       <Feedbacks />
+      <FloatButton.BackTop />
     </>
   );
 };

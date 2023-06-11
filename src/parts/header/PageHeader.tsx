@@ -24,6 +24,7 @@ import Icon, {
   BellOutlined,
   SwapOutlined,
   FileTextOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
 import type { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -235,10 +236,10 @@ const PageHeader: React.FC = () => {
   };
 
   return (
-    <Header className="z-index-1 bg-white d-flex justify-space-between align-items-center pos-sticky t-0 width-full with-header-height with-header-border-bottom">
-      <div className="container">
+    <Header className="z-index-1 bg-white d-flex justify-space-between align-items-center pos-sticky t-0 width-full with-header-height with-header-border-bottom p-0">
+      <div className="container-lg">
         <Row className="width-full d-flex align-items-center">
-          <Col span={6}>
+          <Col span={6} xs={11} md={6}>
             <div className="logo">
               <NavLink to="/community">
                 <Image
@@ -250,91 +251,102 @@ const PageHeader: React.FC = () => {
               </NavLink>
             </div>
           </Col>
-          <Col span={12} className="text-center">
+          <Col span={12} className="text-center" xs={2} md={12}>
             <Menu
               theme="light"
               mode="horizontal"
               selectedKeys={[activeKey]}
               items={items}
               className="d-block"
+              overflowedIndicator={<MenuOutlined />}
             />
           </Col>
-          <Col span={6} className="d-flex justify-end align-items-center">
-            <Space className="toolbars" align="center">
-              <Popover
-                content={
-                  <NotificationList
-                    readList={readList}
-                    allRead={allRead}
-                    setAllRead={setAllRead}
-                    data={notifications}
-                    isLoading={isLoadingNofitications}
-                  />
-                }
-                title={
-                  <div className="d-flex align-items-center justify-space-between">
-                    <Space size={4} align="center">
-                      <BellOutlined />
-                      {t("notifications")}
-                    </Space>
-                    <Button
-                      type="link"
-                      onClick={() => {
-                        handleMarkAllAsRead();
-                      }}
-                      className="text-300 fz-12"
-                    >
-                      {t("mark-all-as-read")}
-                    </Button>
-                  </div>
-                }
-                trigger="click"
-                open={open}
-                onOpenChange={handleOpenChange}
-                placement="bottomRight"
-              >
-                <Button
-                  type="text"
-                  className="d-flex align-items-center px-4"
-                  size="large"
-                >
-                  {!allRead ? (
-                    <div className="d-flex align-items-center">
-                      <BellOutlined style={{ fontSize: "16px" }} />
+          <Col span={6} xs={11} md={6}>
+            <Row className="toolbars" align="middle" justify="end">
+              <Col>
+                <Popover
+                  content={
+                    <NotificationList
+                      readList={readList}
+                      allRead={allRead}
+                      setAllRead={setAllRead}
+                      data={notifications}
+                      isLoading={isLoadingNofitications}
+                    />
+                  }
+                  title={
+                    <div className="d-flex align-items-center justify-space-between">
+                      <Space size={4} align="center">
+                        <BellOutlined />
+                        {t("notifications")}
+                      </Space>
+                      <Button
+                        type="link"
+                        onClick={() => {
+                          handleMarkAllAsRead();
+                        }}
+                        className="text-300 fz-12"
+                      >
+                        {t("mark-all-as-read")}
+                      </Button>
                     </div>
-                  ) : (
-                    <Badge
-                      count={allRead}
-                      overflowCount={10}
-                      size="small"
-                      offset={[10, 0]}
-                    >
+                  }
+                  trigger="click"
+                  open={open}
+                  onOpenChange={handleOpenChange}
+                  placement="bottom"
+                >
+                  <Button
+                    type="text"
+                    className="d-flex align-items-center"
+                  // size=""
+                  >
+                    {!allRead ? (
                       <div className="d-flex align-items-center">
                         <BellOutlined style={{ fontSize: "16px" }} />
                       </div>
-                    </Badge>
-                  )}
-                </Button>
-              </Popover>
-              <Dropdown
-                menu={menuDropdown}
-                trigger={["click"]}
-                arrow
-                placement="bottom"
-              >
-                <Button
-                  type="text"
-                  className="d-flex align-items-center px-4"
-                  size="large"
+                    ) : (
+                      <Badge
+                        count={allRead}
+                        overflowCount={10}
+                        size="small"
+                        offset={[2, 0]}
+                      >
+                        <div className="d-flex align-items-center">
+                          <BellOutlined style={{ fontSize: "16px" }} />
+                        </div>
+                      </Badge>
+                    )}
+                  </Button>
+                </Popover>
+              </Col>
+              <Col>
+                <Dropdown
+                  menu={menuDropdown}
+                  trigger={["click"]}
+                  arrow
+                  placement="bottomLeft"
                 >
-                  <Avatar
-                    src={currentUserProfile?.avatar || undefined}
-                    icon={<UserOutlined />}
-                  />
-                </Button>
-              </Dropdown>
-              <LocaleSelect />
-            </Space>
+                  <Button
+                    type="text"
+                    className="d-flex align-items-center"
+                    size="large"
+                  >
+                    <Avatar
+                      src={currentUserProfile?.avatar || undefined}
+                      icon={<UserOutlined />}
+                    />
+                  </Button>
+                </Dropdown>
+              </Col>
+              <Col xs={1} style={{ minWidth: "36px" }}>
+                <LocaleSelect
+                  className="d-flex px-0"
+                  style={{ marginLeft: "-12px" }}
+                  showArrow={false}
+                />
+              </Col>
+            </Row>
           </Col>
         </Row>
       </div>

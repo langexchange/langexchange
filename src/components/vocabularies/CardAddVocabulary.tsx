@@ -88,7 +88,7 @@ const CardAddVocabulary: React.FC<any> = memo(function CardAddVocabulary({
             className="mb-2"
           />
         )}
-        <Row gutter={8} align="middle">
+        <Row gutter={[8, 8]} align="middle">
           <Col flex={1}>
             <Input
               size="large"

@@ -31,29 +31,44 @@
 
 .ant-tabs.tab-bar-with-content-scroll {
   .ant-tabs-content-holder {
-    overflow: hidden;
-
-    &:hover {
-      overflow-y: scroll;
-      overflow-y: overlay !important;
-    }
+    overflow-y: scroll;
 
     &::-webkit-scrollbar-track {
-      border-radius: 8px;
+      border-radius: 4px;
       background-color: transparent;
       z-index: 100;
     }
 
     &::-webkit-scrollbar {
-      width: 8px;
+      width: 4px;
       background-color: transparent;
       z-index: 100;
     }
 
     &::-webkit-scrollbar-thumb {
-      border-radius: 8px;
-      background-color: #8c8c8c;
+      border-radius: 4px;
+      background-color: transparent;
       z-index: 100;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-track {
+        border-radius: 4px;
+        background-color: transparent;
+        z-index: 100;
+      }
+
+      &::-webkit-scrollbar {
+        width: 4px;
+        background-color: transparent;
+        z-index: 100;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: #cfcfcf;
+        z-index: 100;
+      }
     }
   }
 }
@@ -66,30 +81,45 @@
 
 .ant-card.card-custome-scroll {
   .ant-card-body {
-    overflow: hidden;
     height: 100%;
-
-    &:hover {
-      overflow-y: scroll;
-      overflow-y: overlay !important;
-    }
+    overflow-y: scroll;
 
     &::-webkit-scrollbar-track {
-      border-radius: 8px;
+      border-radius: 4px;
       background-color: transparent;
       z-index: 100;
     }
 
     &::-webkit-scrollbar {
-      width: 8px;
+      width: 4px;
       background-color: transparent;
       z-index: 100;
     }
 
     &::-webkit-scrollbar-thumb {
-      border-radius: 8px;
-      background-color: #8c8c8c;
+      border-radius: 4px;
+      background-color: transparent;
       z-index: 100;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-track {
+        border-radius: 4px;
+        background-color: transparent;
+        z-index: 100;
+      }
+
+      &::-webkit-scrollbar {
+        width: 4px;
+        background-color: transparent;
+        z-index: 100;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: #cfcfcf;
+        z-index: 100;
+      }
     }
   }
 }
@@ -106,30 +136,45 @@
     }
 
     .ant-modal-body {
-      overflow: hidden;
-
-      &:hover {
-        overflow-y: scroll;
-        overflow-y: overlay !important;
-      }
+      overflow-y: scroll;
+      margin-left: 4px;
 
       &::-webkit-scrollbar-track {
-        border-radius: 8px;
+        border-radius: 4px;
         background-color: transparent;
         z-index: 100;
       }
 
       &::-webkit-scrollbar {
-        display: block;
-        width: 8px;
+        width: 4px;
         background-color: transparent;
         z-index: 100;
       }
 
       &::-webkit-scrollbar-thumb {
-        border-radius: 8px;
-        background-color: #8c8c8c;
+        border-radius: 4px;
+        background-color: transparent;
         z-index: 100;
+      }
+
+      &:hover {
+        &::-webkit-scrollbar-track {
+          border-radius: 4px;
+          background-color: transparent;
+          z-index: 100;
+        }
+
+        &::-webkit-scrollbar {
+          width: 4px;
+          background-color: transparent;
+          z-index: 100;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          border-radius: 4px;
+          background-color: #cfcfcf;
+          z-index: 100;
+        }
       }
     }
   }

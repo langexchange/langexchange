@@ -8,6 +8,7 @@ interface ContactItemProps {
   descriptions: string;
   type: string;
   text_button: string;
+  link: string;
 }
 
 const ContactItem: React.FC<ContactItemProps> = ({
@@ -16,6 +17,7 @@ const ContactItem: React.FC<ContactItemProps> = ({
   descriptions,
   type,
   text_button,
+  link,
 }) => {
   return (
     <Card>
@@ -27,7 +29,13 @@ const ContactItem: React.FC<ContactItemProps> = ({
         <Paragraph type="secondary" className="text-justify">
           {descriptions}
         </Paragraph>
-        <Button className={`btn-${type}`} type="primary" size="large">
+        <Button
+          className={`btn-${type}`}
+          type="primary"
+          size="large"
+          href={link}
+          target="_blank"
+        >
           {text_button}
         </Button>
       </Space>

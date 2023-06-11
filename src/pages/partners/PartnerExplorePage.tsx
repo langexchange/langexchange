@@ -1,4 +1,4 @@
-import { Col, Divider, Skeleton } from "antd";
+import { Col, Divider, FloatButton, Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ContentTitleWithSearch from "../../components/partners/ContentTitleWithSearch";
@@ -53,17 +53,23 @@ const PartnerExplorePage: React.FC = () => {
   };
 
   return (
-    <Col
-      span={18}
-      className="auto-hide-scroll scroll-style-1 height-full pb-5 overflow-x-hidden"
+    <div
+      className="auto-hide-scroll scroll-style-1 height-full pb-5 overflow-x-hidden "
+      id="partner_explore"
     >
       <ContentTitleWithSearch title={t("You may know")} onSearch={onSearch} />
       <FilterLine defaultFilters={defaultFilters} setFilters={setFilters} />
       <Divider plain />
-      <Skeleton loading={isLoading} active>
-        <ExplorePartnerList colSpan={6} partnerList={data} />
-      </Skeleton>
-    </Col>
+      <div className="mx-2">
+        <Skeleton loading={isLoading} active>
+          <ExplorePartnerList colSpan={6} partnerList={data} />
+        </Skeleton>
+      </div>
+      <FloatButton.BackTop
+        target={() => document.getElementById("partner_explore") || window}
+        style={{ bottom: 154, right: 8, height: "48px", width: "48px" }}
+      />
+    </div>
   );
 };
 

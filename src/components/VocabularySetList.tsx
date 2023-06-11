@@ -24,9 +24,9 @@ const VocabularySetList: React.FC<VocabularySetListProps> = ({
 }) => {
   return (
     <ResponsiveMasonry
-      columnsCountBreakPoints={{ 350: 1, 750: 2, 900: columnsCount }}
+      columnsCountBreakPoints={{ 200: 1, 500: 2, 850: 3, 1200: columnsCount }}
     >
-      <Masonry gutter="16px" columnsCount={columnsCount}>
+      <Masonry gutter="16px">
         {data?.map((ofUser) => {
           return ofUser?.vocabularyPackageDtos.map((item) => (
             <VocabularyCard

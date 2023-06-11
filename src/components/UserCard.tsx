@@ -202,7 +202,7 @@ const UserCard: React.FC<UserCardProps> = ({ type, refetch, ...profile }) => {
         actions={actions}
         style={{ flexDirection: "column" }}
         bodyStyle={{ flex: 1 }}
-        className="d-flex"
+        className="d-flex h-100"
         size="small"
       >
         <div

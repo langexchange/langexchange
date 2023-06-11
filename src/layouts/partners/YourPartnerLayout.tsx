@@ -4,6 +4,7 @@ import {
   Col,
   Divider,
   Input,
+  Layout,
   Row,
   Skeleton,
   Space,
@@ -46,14 +47,23 @@ const YourPartnerLayout: React.FC = () => {
   };
 
   return (
-    <Row
-      justify="space-between"
+    <Layout
       className="pos-relative full-height-minus-header py-3"
-      gutter={0}
+      style={{
+        background: "inherit",
+      }}
     >
-      <Col
-        span={6}
-        className="pos-relative height-full d-flex flex-column overflow-hidden"
+      <Layout.Sider
+        theme="light"
+        width={300}
+        style={{
+          height: "fit-content",
+          background: "transparent",
+        }}
+        breakpoint="lg"
+        collapsedWidth="0"
+        collapsible={true}
+        trigger={null}
       >
         <Card
           size="small"
@@ -91,9 +101,13 @@ const YourPartnerLayout: React.FC = () => {
             </Skeleton>
           </div>
         </Card>
-      </Col>
-      <Outlet context={{ userList: data, refetch: refetch }} />
-    </Row>
+      </Layout.Sider>
+      <Layout.Content>
+        <Outlet
+          context={{ userList: userList, refetch: refetch, onSearch: onSearch }}
+        />
+      </Layout.Content>
+    </Layout>
   );
 };
 
