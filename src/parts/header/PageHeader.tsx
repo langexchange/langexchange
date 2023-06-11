@@ -43,6 +43,7 @@ import LocaleSelect from "../../components/LocaleSelect";
 import { destroyChat } from "../../chat";
 import { useGetNotificationsQuery } from "../../services/notifications/notificationsService";
 import { selectReadNotification, setReadList } from "../../features/notiSlice";
+import { useClearCookieMutation } from "../../services/auth/authServices";
 const { Header } = Layout;
 
 const VocabularySvg = () => (
@@ -91,6 +92,8 @@ const PageHeader: React.FC = () => {
   const currentUserProfile = useAppSelector(selectCredentalProfile);
   const credentials = useAppSelector(selectCredentials);
   const readList = useAppSelector(selectReadNotification);
+  const [clearCookie] = useClearCookieMutation();
+
   const {
     data: notifications,
     isLoading: isLoadingNofitications,
@@ -111,6 +114,7 @@ const PageHeader: React.FC = () => {
       destroyChat();
       localStorage.clear();
       dispatch(setCredentialProfile(null));
+      clearCookie(undefined);
       navigate("/");
     } else if (e.key === "toggle-theme") {
       dispatch(toggleTheme());
@@ -230,7 +234,6 @@ const PageHeader: React.FC = () => {
     if (newOpen) refetchNotifications();
   };
 
-  console.log(allRead);
   return (
     <Header className="z-index-1 bg-white d-flex justify-space-between align-items-center pos-sticky t-0 width-full with-header-height with-header-border-bottom">
       <div className="container">

@@ -19,6 +19,7 @@ const token = "";
 // await window.converse.logout()
 //
 const initChat = () => {
+      console.log("INIT CHAT");
       const jid = localStorage.getItem("jid");
       const token = localStorage.getItem("token");
       window.converse.initialize({
@@ -52,11 +53,13 @@ const initChat = () => {
 };
 
 const destroyChat = async () => {
+      console.log("DESTROY CHAT");
       hideChat();
       await window.converse.logout();
 };
 
 const loginChat = async () => {
+      console.log("LOGIN CHAT");
       const jid = localStorage.getItem("jid");
       const token = localStorage.getItem("token");
       showChat();
