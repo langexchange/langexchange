@@ -21,6 +21,7 @@
   box-sizing: content-box;
 }
 
+// responsive here
 /* when card is clicked adding .side class */
 .side {
   transform: rotateY(-180deg);
@@ -76,4 +77,40 @@
   width: 350px;
   text-align: center;
   margin: 20px auto;
+}
+
+@media (max-width: 900px) {
+  .card {
+    min-width: 100%;
+    width: 100%;
+    min-height: 300px;
+    padding: 50px 20px 90px;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 1000px) {
+  .card {
+    .front,
+    .back {
+      font-size: 28px;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .card {
+    .front,
+    .back {
+      font-size: 22px;
+    }
+  }
+}
+@media (max-width: 600px) {
+  .card {
+    .front,
+    .back {
+      font-size: 18px;
+    }
+  }
 }

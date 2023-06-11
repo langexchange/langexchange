@@ -74,6 +74,7 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
     refetch,
   } = useGetProfileQuery(userId, {
     skip: isCurrentUser,
+    refetchOnMountOrArgChange: true,
   });
 
   const {
@@ -161,7 +162,7 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
               </Typography.Title>
             </Link>
             {!isCurrentUser && (
-              <Space>
+              <Space wrap={true} className="justify-content-center">
                 {profile?.isFriend ? (
                   <>
                     <Button
@@ -226,7 +227,7 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                 )}
               </Space>
             )}
-            <Space size={6}>
+            <Space size={8} wrap={true} className="justify-content-center">
               <Space align="center">
                 <span style={{ color: "black", fontSize: "20px" }}>
                   {profile?.country && getUnicodeFlagIcon(profile.country)}
@@ -235,12 +236,6 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                   {t(`${profile?.country}`, { ns: "countries" })}
                 </Typography.Text>
               </Space>
-              <span
-                className="secondary-color text-500"
-                style={{ fontSize: "18px" }}
-              >
-                &#183;
-              </span>
               <Space align="center">
                 <Typography.Text type="secondary">
                   <FormOutlined size={20} />
@@ -252,12 +247,6 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                   <Typography.Text>{t("posts")}</Typography.Text>
                 </span>
               </Space>
-              <span
-                className="secondary-color text-500"
-                style={{ fontSize: "18px" }}
-              >
-                &#183;
-              </span>
               <Space align="center">
                 <Typography.Text type="secondary">
                   <TeamOutlined size={20} />
@@ -282,14 +271,18 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
           </Tag>
         </div>
         {profile?.nativeLanguage && (
-          <Card type="inner" size="small" className="w-50 ma">
-            <div className="d-flex flex-column align-items-center justify-space-between gap-2">
-              <Typography.Text strong>
-                {t(`${profile.nativeLanguage.name}`)}
-              </Typography.Text>
-              <Rate disabled value={profile?.nativeLanguage.level} />
-            </div>
-          </Card>
+          <Row justify="center">
+            <Col xs={24} sm={12}>
+              <Card type="inner" size="small">
+                <div className="d-flex flex-column align-items-center justify-space-between gap-2">
+                  <Typography.Text strong>
+                    {t(`${profile.nativeLanguage.name}`)}
+                  </Typography.Text>
+                  <Rate disabled value={profile?.nativeLanguage.level} />
+                </div>
+              </Card>
+            </Col>
+          </Row>
         )}
         <div className="mb-2 mt-3">
           <Tag color="#87d068">
@@ -298,7 +291,7 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
         </div>
         <Row gutter={[12, 12]} justify="center">
           {profile?.targetLanguages?.map((language) => (
-            <Col key={language.id} span={12}>
+            <Col key={language.id} xs={24} sm={12}>
               <Card type="inner" size="small">
                 <div className="d-flex flex-column align-items-center justify-space-between gap-2">
                   <Typography.Text strong>

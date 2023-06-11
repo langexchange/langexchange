@@ -1,4 +1,4 @@
-import { Input, Typography } from "antd";
+import { Col, Input, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 
 interface ContentTitleWithSearchProps {
@@ -12,14 +12,20 @@ const ContentTitleWithSearch: React.FC<ContentTitleWithSearchProps> = ({
 }) => {
   const [t] = useTranslation(["commons"]);
   return (
-    <div className="d-flex justify-space-between ">
-      <Typography.Title level={3}>{title}</Typography.Title>
-      <Input.Search
-        placeholder={t("type-to-search").toString()}
-        onSearch={onSearch}
-        style={{ width: 400 }}
-      />
-    </div>
+    <Row justify="space-between" align="top" className="mb-3">
+      <Col>
+        <Typography.Title level={3} className="m-0">
+          {title}
+        </Typography.Title>
+      </Col>
+      <Col>
+        <Input.Search
+          placeholder={t("type-to-search").toString()}
+          onSearch={onSearch}
+          style={{ width: "min(400px, 80vw)" }}
+        />
+      </Col>
+    </Row>
   );
 };
 

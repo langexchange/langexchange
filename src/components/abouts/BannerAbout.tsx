@@ -7,11 +7,16 @@ const BannerAbout: React.FC = () => {
   const [t] = useTranslation("about");
   return (
     <div className="bg-white">
-      <div className="container py-5">
+      <div className="container-lg py-5">
         <Row align="middle" gutter={12}>
-          <Col span={12} className="d-flex justify-center">
+          <Col md={12} xs={24} className="d-flex justify-center">
             <Space direction="vertical" size={16} align="center">
-              <Space direction="vertical" size={0} align="center">
+              <Space
+                direction="vertical"
+                size={0}
+                align="center"
+                className="text-center"
+              >
                 <Title level={2} className="m-0">
                   <span className="color-blue-logo">Lang</span>
                   <span className="color-red-logo">Exchange</span>{" "}
@@ -29,7 +34,7 @@ const BannerAbout: React.FC = () => {
               </Paragraph>
             </Space>
           </Col>
-          <Col span={12} className="d-flex justify-center">
+          <Col md={12} xs={24} className="d-flex justify-center">
             <Image
               src="https://static.vecteezy.com/system/resources/previews/002/792/531/original/design-of-improve-behavior-literacy-in-managing-finances-people-saving-in-piggy-bank-for-financial-education-illustration-can-be-for-websites-posters-banners-mobile-apps-web-social-media-free-vector.jpg"
               alt="Team's memebers"

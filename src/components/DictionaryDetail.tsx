@@ -21,7 +21,7 @@ const DictionaryDetail: React.FC<DictionaryDetailProps> = ({ data }) => {
           src={DictionaryImage}
           alt="Dictionary"
           preview={false}
-          width={500}
+          width="min(500px, 100vw)"
           className="mt-3"
         />
       </div>

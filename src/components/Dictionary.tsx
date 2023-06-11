@@ -40,7 +40,7 @@ const Dictionary: React.FC = () => {
       <FloatButton
         onClick={handleOpen}
         icon={<DictionaryIcon />}
-        style={{ bottom: 86, right: 12 }}
+        style={{ bottom: 86, right: 8, height: "48px", width: "48px" }}
       />
       <Drawer
         title={
@@ -50,7 +50,7 @@ const Dictionary: React.FC = () => {
           </>
         }
         placement="left"
-        width={800}
+        width="min(100vw, 800px)"
         onClose={() => setOpen(false)}
         open={open}
         extra={
@@ -64,7 +64,9 @@ const Dictionary: React.FC = () => {
                 inputRef.current?.input?.blur();
               }
             }}
-            style={{ minWidth: "350px" }}
+            style={{
+              minWidth: "min(50vw, 350px)",
+            }}
           />
         }
       >

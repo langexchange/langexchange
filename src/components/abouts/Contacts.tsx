@@ -17,6 +17,7 @@ const Contacts = () => {
       descriptions: t("general-inquiries-description"),
       type: "primary",
       text_button: t("contact-us"),
+      link: "mailto:langexchangehcm@gmail.com",
     },
     {
       image: MailSupportIcon,
@@ -24,6 +25,7 @@ const Contacts = () => {
       descriptions: t("customer-support-description"),
       type: "warning",
       text_button: t("email-support"),
+      link: "mailto:langexchangehcm@gmail.com",
     },
     {
       image: HandshakeIcon,
@@ -31,11 +33,12 @@ const Contacts = () => {
       descriptions: t("cooperate-with-us-description"),
       type: "success",
       text_button: t("get-details"),
+      link: "https://github.com/langexchange",
     },
   ];
   return (
     <div className="bg-white">
-      <div className="container py-5">
+      <div className="container-lg py-5">
         <Space
           direction="vertical"
           align="center"
@@ -49,7 +52,7 @@ const Contacts = () => {
           <div>
             <Row align="middle" gutter={[24, 48]}>
               {contactItems.map((item, index) => (
-                <Col span={8} key={index}>
+                <Col md={8} xs={24} key={index}>
                   <ContactItem {...item} />
                 </Col>
               ))}

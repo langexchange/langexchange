@@ -4,6 +4,7 @@ import {
   CompassOutlined,
   StarOutlined,
   PlusOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
 import { Link, NavLink } from "react-router-dom";
 import type { MenuProps } from "antd";
@@ -38,10 +39,10 @@ const VocabularyHeader: React.FC = () => {
   const activeKey: string = window.location.pathname.split("/")[2];
 
   return (
-    <Layout.Header className="z-index-1 bg-white justify-space-between pos-sticky t-0 width-full with-header-height with-header-border-bottom">
-      <div className="container">
-        <Row className="height-full" align="middle" style={{}}>
-          <Col span={6}>
+    <Layout.Header className="z-index-1 bg-white justify-space-between pos-sticky t-0 width-full with-header-height with-header-border-bottom px-0">
+      <div className="container-lg">
+        <Row className="height-full" align="middle" justify="space-between">
+          <Col sm={6} xs={11}>
             <Space>
               <Image src={VocabularyIcon} height={32} width={32} />
               <Typography.Title
@@ -53,20 +54,51 @@ const VocabularyHeader: React.FC = () => {
               </Typography.Title>
             </Space>
           </Col>
-          <Col span={12} className="text-center">
+          <Col sm={12} className="text-center" xs={2}>
             <Menu
               theme="light"
               mode="horizontal"
-              // defaultSelectedKeys={["community"]}
               selectedKeys={[activeKey || "explores"]}
               items={items}
               className="d-block height-full"
+              overflowedIndicator={<MenuOutlined />}
             />
           </Col>
-          <Col span={6} className="text-right">
-            <Link to="/vocabularies/create">
-              <Button type="primary" icon={<PlusOutlined />}>
-                {t("Create vocabulary set")}
+          <Col sm={0} className="text-right" xs={11}>
+            <Link
+              to="/vocabularies/create"
+              style={{ maxWidth: "100%" }}
+              className="d-flex align-items-center justify-content-end"
+            >
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                style={{
+                  display: "block",
+                  maxWidth: "60%",
+                }}
+                className="me-0"
+              />
+            </Link>
+          </Col>
+          <Col sm={6} className="text-right" xs={0}>
+            <Link
+              to="/vocabularies/create"
+              style={{ maxWidth: "100%" }}
+              className="d-flex align-items-center justify-content-end"
+            >
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                style={{
+                  display: "block",
+                  maxWidth: "100%",
+                }}
+                className="me-0"
+              >
+                <Typography.Text style={{ color: "white" }} ellipsis={true}>
+                  {t("Create vocabulary set")}
+                </Typography.Text>
               </Button>
             </Link>
           </Col>

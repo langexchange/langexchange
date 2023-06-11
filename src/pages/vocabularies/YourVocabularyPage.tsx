@@ -31,7 +31,7 @@ const YourVocabularyPage: React.FC = () => {
 
   return (
     <div className="pt-4 pb-5">
-      <Space className="w-100 justify-content-between">
+      <Space className="w-100 justify-content-between" wrap={true}>
         <Typography.Title level={3} className="m-0">
           {t("Your vocabulary", { ns: "vocabulary" })}
         </Typography.Title>

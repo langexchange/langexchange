@@ -35,7 +35,7 @@ const AppSignedInLayout: React.FC = () => {
       <Layout style={{ background: backgroundColor }}>
         <PageHeader />
         {isVocabulary && <VocabularyHeader />}
-        <Content className="container">
+        <Content className="container-lg">
           <Outlet />
         </Content>
       </Layout>

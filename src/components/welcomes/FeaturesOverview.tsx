@@ -36,7 +36,7 @@ const FeaturesOverview = () => {
 
   return (
     <div className="has-background-color py-5">
-      <div className="container">
+      <div className="container-lg text-center">
         <Space direction="vertical" align="center" size={48}>
           <Space direction="vertical" align="center">
             <Title level={2} className="m-0">
@@ -47,7 +47,7 @@ const FeaturesOverview = () => {
           <div>
             <Row align="middle" gutter={[24, 48]}>
               {featuresItems.map((item, index) => (
-                <Col span={12} key={index}>
+                <Col md={12} key={index} sm={24}>
                   <FeatureItem {...item} />
                 </Col>
               ))}

@@ -73,7 +73,7 @@ const VocabularyDetailPage: React.FC = () => {
             </Button>
           )}
         </div>
-        <div className="ma mb-3" style={{ width: "fit-content" }}>
+        <div className="ma mb-3">
           <Skeleton active loading={isLoading}>
             <FlashCardList
               type="view"
@@ -82,7 +82,7 @@ const VocabularyDetailPage: React.FC = () => {
           </Skeleton>
           <br />
           <Card size="small">
-            <div className="d-flex align-items-center justify-space-between">
+            <div className="d-flex align-items-center justify-space-between flex-wrap gap-3">
               <Skeleton active loading={isLoading}>
                 <UserItem
                   id={data?.userInfo?.id || ""}
@@ -93,8 +93,8 @@ const VocabularyDetailPage: React.FC = () => {
                   avatar={data?.userInfo.avatar || undefined}
                   description={new Date(
                     data?.vocabularyPackageDtos[0]?.updatedAt?.toString() ||
-                      data?.vocabularyPackageDtos[0]?.createdAt?.toString() ||
-                      ""
+                    data?.vocabularyPackageDtos[0]?.createdAt?.toString() ||
+                    ""
                   ).toLocaleString()}
                   size="small"
                   isStrong={true}

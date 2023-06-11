@@ -31,12 +31,13 @@ const FilterLine: React.FC<FilterLineProps> = ({
       initialValues={defaultFilters}
       onFinish={onFinish}
     >
-      <Row gutter={12}>
-        <Col flex="auto">
+      <Row gutter={[12, 12]} wrap={true}>
+        <Col>
           <Form.Item
-            label={t("Native").toString()}
+            // label={t("Native").toString()}
             className="m-0"
             name="nativeLangs"
+            style={{ minWidth: 150 }}
           >
             <SeclectLanguageInput
               allowClear
@@ -49,11 +50,12 @@ const FilterLine: React.FC<FilterLineProps> = ({
             />
           </Form.Item>
         </Col>
-        <Col flex="auto">
+        <Col>
           <Form.Item
-            label={t("Target").toString()}
+            // label={t("Target").toString()}
             className="m-0"
             name="targetLangs"
+            style={{ minWidth: 150 }}
           >
             <SeclectLanguageInput
               allowClear
@@ -66,8 +68,13 @@ const FilterLine: React.FC<FilterLineProps> = ({
             />
           </Form.Item>
         </Col>
-        <Col flex="auto">
-          <Form.Item label={t("Country")} className="m-0" name="countryCodes">
+        <Col>
+          <Form.Item
+            // label={t("Country")}
+            className="m-0"
+            name="countryCodes"
+            style={{ minWidth: 150 }}
+          >
             <CountrySelectInput
               mode="multiple"
               placeholder={t("Country").toString()}

@@ -1,5 +1,5 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card } from "antd";
+import { Avatar, Button, Card, Col, Row, Typography } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../hooks/hooks";
@@ -30,26 +30,31 @@ const PostInput: React.FC<PostInputProps> = ({ refetch }) => {
   return (
     <>
       <Card hoverable size="small" onClick={showModal}>
-        <div className="d-flex justify-space-between align-items-center py-1">
-          <div className="me-2">
+        <Row gutter={12} wrap={false} align="middle">
+          <Col flex="none">
             <Avatar
               size={40}
               src={currentUserProfile?.avatar}
               icon={<UserOutlined />}
             />
-          </div>
-          <Button
-            block
-            size="large"
-            className="text-left has-background-color"
-            type="text"
-            shape="round"
-          >
-            <span className="text-300 color-secondary">
-              {t("post-input-holder")}
-            </span>
-          </Button>
-        </div>
+          </Col>
+          <Col flex="auto">
+            <Button
+              block
+              size="large"
+              className="text-left has-background-color"
+              type="text"
+              shape="round"
+            >
+              <Typography.Text
+                className="text-300 color-secondary fz-16"
+                ellipsis={true}
+              >
+                {t("post-input-holder")}
+              </Typography.Text>
+            </Button>
+          </Col>
+        </Row>
       </Card>
       <PostFormModal
         isModalOpen={isModalOpen}

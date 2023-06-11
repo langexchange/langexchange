@@ -267,7 +267,7 @@ const ProfileSettingsPage: React.FC = () => {
           layout="vertical"
           form={form}
         >
-          <Row gutter={12}>
+          <Row gutter={[12, 12]}>
             <Col span={12}>
               <Form.Item label={t("First name", { ns: "initial" })}>
                 <Input
@@ -338,7 +338,7 @@ const ProfileSettingsPage: React.FC = () => {
               <>
                 {fields.map(({ key, name, ...restField }, index) => (
                   <Row key={key}>
-                    <Col span={16}>
+                    <Col span={16} xs={10}>
                       <Form.Item {...restField} name={[name, "id"]}>
                         <SeclectLanguageInput
                           placeholder={t("Target Language")}
@@ -347,7 +347,7 @@ const ProfileSettingsPage: React.FC = () => {
                         />
                       </Form.Item>
                     </Col>
-                    <Col span={7} className="text-center px-2">
+                    <Col span={7} className="text-center px-2" xs={12}>
                       <Form.Item
                         initialValue={0}
                         {...restField}
@@ -356,7 +356,7 @@ const ProfileSettingsPage: React.FC = () => {
                         <Rate />
                       </Form.Item>
                     </Col>
-                    <Col span={1}>
+                    <Col span={1} xs={2}>
                       <Button
                         icon={<MinusCircleOutlined />}
                         onClick={() => remove(name)}
@@ -415,6 +415,7 @@ const ProfileSettingsPage: React.FC = () => {
               name="introduction"
               defaultValue={profile.introduction}
               ref={bioRef}
+              autoSize={true}
             />
           </Form.Item>
 

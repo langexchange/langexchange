@@ -1,4 +1,4 @@
-import { Col, Row, Skeleton } from "antd";
+import { Col, FloatButton, Row, Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import PostList from "../../components/community/PostList";
 import RightSidebar from "../../components/community/RightSidebar";
@@ -68,7 +68,8 @@ const CommunityPage: React.FC = () => {
 
   return (
     <Row
-      className="mx-auto full-height-minus-header mx-auto auto-hide-scroll scroll-style-1 "
+      className="full-height-minus-header auto-hide-scroll scroll-style-1 "
+      id="middle_community"
       gutter={24}
     >
       <Col xs={0} md={0} lg={7} xl={6} className="py-3 position-sticky top-0">
@@ -102,6 +103,10 @@ const CommunityPage: React.FC = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         refetchListPost={refetch}
+      />
+      <FloatButton.BackTop
+        target={() => document.getElementById("middle_community") || window}
+        style={{ bottom: 154, right: 8, height: "48px", width: "48px" }}
       />
     </Row>
   );

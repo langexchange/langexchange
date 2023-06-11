@@ -17,11 +17,11 @@ const SubcribeForm = () => {
 
   return (
     <div className="bg-white">
-      <Row align="middle" className="container py-5">
-        <Col span={12} className="d-flex justify-center">
+      <Row align="middle" className="container-lg py-5" gutter={[12, 12]}>
+        <Col md={12} xs={24} className="d-flex justify-center">
           <Image src={SubcribeFormImage} alt="LangExchange subcribe" />
         </Col>
-        <Col span={12}>
+        <Col md={12} xs={24}>
           <Space
             size={40}
             direction="vertical"

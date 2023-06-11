@@ -49,7 +49,7 @@ const FilterLine: React.FC<FilterLineProps> = ({
             />
           </Form.Item>
         </Col>
-        <Col flex="auto">
+        <Col flex="none">
           <Form.Item className="text-center m-0">
             <Space>
               <Button type="primary" htmlType="submit">
