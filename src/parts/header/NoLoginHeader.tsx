@@ -23,16 +23,16 @@ const NoLoginHeader: React.FC = () => {
         <Space
           onClick={(e) => {
             e.preventDefault();
-            e.stopPropagation();
           }}
+          className="fix-bugggggggs"
         >
           <LocaleSelect />
-          <Link to="/sign-in">
+          <NavLink to="/sign-in">
             <Button type="primary">{t("sign-in")}</Button>
-          </Link>
-          <Link to="/sign-up">
+          </NavLink>
+          <NavLink to="/sign-up">
             <Button>{t("sign-up")}</Button>
-          </Link>
+          </NavLink>
         </Space>
       ),
       key: "toolbar",
