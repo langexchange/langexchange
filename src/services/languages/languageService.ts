@@ -16,6 +16,7 @@ export const languageApi = createApi({
   reducerPath: "languageApi ",
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getLanguages: builder.query<GetLanguagesResponse, undefined>({

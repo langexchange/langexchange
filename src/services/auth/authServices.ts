@@ -38,6 +38,7 @@ export const authApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, AuthRequest>({

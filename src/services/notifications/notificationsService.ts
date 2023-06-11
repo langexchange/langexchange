@@ -27,6 +27,7 @@ export const notificationsApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getNotifications: builder.query<Notification[], undefined>({

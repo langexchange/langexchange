@@ -21,6 +21,7 @@ export const friendApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getFriends: builder.query({
