@@ -97,6 +97,7 @@ export const vocabularyApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     createVocabularySet: builder.mutation<

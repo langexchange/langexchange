@@ -62,6 +62,7 @@ export const commentApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getComments: builder.query<Comment[], string | null>({

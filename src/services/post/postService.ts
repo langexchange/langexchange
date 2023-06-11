@@ -86,6 +86,7 @@ export const postApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getAllPostOfUser: builder.query<Post[], string | null>({
