@@ -1,6 +1,11 @@
 version: "3.8"
 services:
+
+  ############## Instance: chatserver-chatgw
   # Domain: langexchange.gleeze.com 
+  ## sudo docker network create lec-frontend
+  ## vim .appproxy_env
+  ## docker run -d --rm --name lec-appproxy --network lec-frontend -p 8500:80 --env-file /home/ec2-user/.appproxy_env  narutosimaha/lec-appproxy nginx-debug -g 'daemon off;'
   lec-appproxy: 
     image: narutosimaha/lec-appproxy
     ports:
@@ -16,8 +21,9 @@ services:
     depends_on:
       - lec-langexchange
       - lec-chatfront
-    
 
+
+  ## docker run -d --rm --name lec-langexchange --network lec-frontend narutosimaha/lec-langexchange nginx-debug -g 'daemon off;'
   lec-langexchange:
     image: narutosimaha/lec-langexchange
     ports:
@@ -26,6 +32,17 @@ services:
       - NODE_ENV=development
       - NGINX_HOST=lec-langexchange
     command: nginx-debug -g 'daemon off;'
+    
+
+  ## docker run -d --rm --name lec-chatfront --network lec-frontend narutosimaha/lec-chatfront nginx-debug -g 'daemon off;'
+  lec-chatfront:
+    image: narutosimaha/lec-chatfront
+    command: ["nginx-debug", "-g", "daemon off;"]
+    ports:
+      - "8043:80"
+    environment:
+      - NGINX_HOST=lec-chatfront
+
 
   ############## Instance: chatserver-chatgw
   ## sudo docker network create chatserver-chatgw
@@ -237,13 +254,7 @@ services:
       JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
   
 
-  lec-chatfront:
-    image: narutosimaha/lec-chatfront
-    command: ["nginx-debug", "-g", "daemon off;"]
-    ports:
-      - "8043:80"
-    environment:
-      - NGINX_HOST=lec-chatfront
+  
   
 
   lec-chatbot:
