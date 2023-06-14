@@ -17,6 +17,15 @@ services:
       - lec-langexchange
       - lec-chatfront
     
+  
+  lec-chatfront:
+    image: narutosimaha/lec-chatfront
+    command: ["nginx-debug", "-g", "daemon off;"]
+    ports:
+      - "8043:80"
+    environment:
+      - NGINX_HOST=lec-chatfront
+      
 
   lec-langexchange:
     image: narutosimaha/lec-langexchange
@@ -89,6 +98,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  
 
   langchat-flyway:
     image: narutosimaha/flyway-langchat
@@ -235,15 +245,6 @@ services:
       # KAFKA_BROKERCONNECT: "101.99.31.28:9093"
       # KAFKA_BROKERCONNECT: "172.20.10.232:9092"
       JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
-  
-
-  lec-chatfront:
-    image: narutosimaha/lec-chatfront
-    command: ["nginx-debug", "-g", "daemon off;"]
-    ports:
-      - "8043:80"
-    environment:
-      - NGINX_HOST=lec-chatfront
   
 
   lec-chatbot:

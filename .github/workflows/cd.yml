@@ -31,7 +31,7 @@ jobs:
           context: .
           ### file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/lec-langexchange:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/lec-langexchange:dev
           build-args: |
             REACT_APP_API_UPLOAD=${{ secrets.REACT_APP_API_UPLOAD }}
             REACT_APP_API_URL_ROOT=${{ secrets.REACT_APP_API_URL_ROOT }}
