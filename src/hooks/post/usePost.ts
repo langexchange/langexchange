@@ -54,7 +54,6 @@ const usePost = (postData: Post): UsePostReturn => {
         mode: mode as 0 | 1,
       }).unwrap();
 
-      await new Promise((resolve) => setTimeout(resolve, 3000));
       const numOfInteract = await getNumOfInteract(post.postId).unwrap();
       setPost((prev) => ({
         ...prev,

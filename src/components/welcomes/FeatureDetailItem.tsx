@@ -18,16 +18,21 @@ export const FeatureDetailItem = ({
   const contentLeft: boolean = index % 2 === 0;
   return (
     <div className={contentLeft ? "bg-white" : "has-background-color"}>
-      <div className="container">
+      <div className="container-lg">
         <Row align="middle" className="py-5" justify="space-between">
-          <Col span={12} order={(contentLeft && 1) || 2}>
+          <Col md={12} xs={24} order={(contentLeft && 1) || 2}>
             <Space
               size={40}
               direction="vertical"
               align={contentLeft ? "start" : "end"}
             >
               <div style={styles.title_container}>
-                <Title level={2}>{title}</Title>
+                <Title
+                  level={2}
+                  className={`text-${contentLeft ? "left" : "right"}`}
+                >
+                  {title}
+                </Title>
                 <span
                   style={
                     (contentLeft && styles.underline_red) ||
@@ -40,7 +45,7 @@ export const FeatureDetailItem = ({
                 style={{
                   textAlign: contentLeft ? "left" : "right",
                   float: contentLeft ? "left" : "right",
-                  width: "70%",
+                  width: "100%",
                   lineHeight: "28px",
                 }}
                 className="text-300"
@@ -50,7 +55,8 @@ export const FeatureDetailItem = ({
             </Space>
           </Col>
           <Col
-            span={12}
+            md={12}
+            xs={24}
             className="d-flex justify-center"
             order={(contentLeft && 2) || 1}
           >

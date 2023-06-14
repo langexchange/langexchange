@@ -7,6 +7,7 @@ import VocabularySet from "../../types/VocabularySet";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import ProfileWallPage from "../profiles/ProfileWallPage";
+import ProfileVocabulariesPage from "../../pages/profiles/ProfileVocabulariePage";
 
 const PartnerDetailPage: React.FC = () => {
   const [t] = useTranslation(["commons"]);
@@ -35,12 +36,7 @@ const PartnerDetailPage: React.FC = () => {
       key: "vocabularies",
       children: (
         <div className="px-3">
-          <VocabularyList
-            colSpan={24}
-            editable={false}
-            setVocabularySet={setVocabularySet}
-            showModal={showModalVocabulary}
-          />
+          <ProfileVocabulariesPage />
         </div>
       ),
     },
@@ -48,7 +44,7 @@ const PartnerDetailPage: React.FC = () => {
 
   return (
     <>
-      <Col span={18} className="height-full pos-relative">
+      <div className="height-full pos-relative">
         <Row className="height-full pos-relative">
           <Col span={10} className="height-full pos-relative">
             <ProfileCard userId={userId} />
@@ -63,7 +59,7 @@ const PartnerDetailPage: React.FC = () => {
             />
           </Col>
         </Row>
-      </Col>
+      </div>
       <VocabularyModal
         vocabularySet={vocabularySet}
         isModalVocabularyOpen={isModalVocabularyOpen}

@@ -8,13 +8,8 @@ import { Button, Checkbox, Form, Input, notification, Space, Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { initChat, loginChat } from "../../chat";
 import { setCredentials } from "../../features/auth/authSlice";
-import {
-  selectCurrentChatStatus,
-  setChatStatus,
-} from "../../features/chatSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch } from "../../hooks/hooks";
 import { useLoginMutation } from "../../services/auth/authServices";
 
 const SigninForm: React.FC = () => {
@@ -22,7 +17,6 @@ const SigninForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
-  const chatStatus = useAppSelector(selectCurrentChatStatus);
 
   const onFinish = async (values: any) => {
     try {
@@ -43,7 +37,6 @@ const SigninForm: React.FC = () => {
       notification.success({
         message: "Login success!",
       });
-      if (chatStatus) loginChat();
       navigate("/initial");
     } catch (err) {
       notification.error({

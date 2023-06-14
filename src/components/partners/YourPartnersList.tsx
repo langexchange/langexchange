@@ -1,4 +1,5 @@
 import { Col, Row, RowProps } from "antd";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import UserCard from "../UserCard";
 
 interface YourPartnersListProps {
@@ -15,14 +16,21 @@ const YourParnersList: React.FC<YourPartnersListProps> = ({
   refetch,
 }) => {
   return (
-    <div>
-      <Row gutter={gutter}>
-        {userList?.map((item: any, index: number) => (
-          <Col span={colSpan} key={userList.id || index}>
-            <UserCard {...item} type="partner" refetch={refetch} />
-          </Col>
-        ))}
-      </Row>
+    <div className="pos-relative">
+      <ResponsiveMasonry
+        columnsCountBreakPoints={{ 350: 1, 450: 2, 700: 3, 1350: 4 }}
+      >
+        <Masonry gutter="12px">
+          {userList?.map((item: any, index: number) => (
+            <UserCard
+              {...item}
+              type="partner"
+              refetch={refetch}
+              key={item.id || index}
+            />
+          )) || []}
+        </Masonry>
+      </ResponsiveMasonry>
     </div>
   );
 };

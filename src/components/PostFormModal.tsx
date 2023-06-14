@@ -6,7 +6,7 @@ import UploadAudio from "./UploadAudio";
 import UploadImage from "./UploadImage";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import type { InputRef } from "antd";
+import { Col, InputRef, Row } from "antd";
 import { useTranslation } from "react-i18next";
 import { selectCredentials } from "../features/auth/authSlice";
 import { useAppSelector } from "../hooks/hooks";
@@ -63,6 +63,7 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
   const [t] = useTranslation(["commons"]);
   const inputRef = useRef<InputRef>(null);
   const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const [post, setPost] = useState(initialPost);
   const [tags, setTags] = useState(initialTags);
   const credentials = useAppSelector(selectCredentials);
@@ -119,6 +120,7 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
     setPost((prev) => ({ ...prev, [key]: value }));
 
   const handleOpenChange = (newOpen: boolean) => setOpen(newOpen);
+  const handleOpenChange1 = (newOpen: boolean) => setOpen1(newOpen);
 
   const handleSelectEmoji = (values: any) =>
     handlePostValueChange("text", post.text + values.native);
@@ -190,41 +192,46 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
     <Skeleton loading={isPostDetailLoading} active>
       <Modal
         title={
-          <div className="d-flex align-items-center gap-3">
-            <span className="fz-18">
-              {editPostId ? "Edit post" : t("New post")}
-            </span>
-            <SeclectLanguageInput
-              showArrow={true}
-              showSearch={true}
-              size="small"
-              placeholder={
-                <span className="text-300 fz-14" style={{ color: "#bfbfbf" }}>
-                  {t("languages")}
-                </span>
-              }
-              dropdownMatchSelectWidth={false}
-              value={post.langId || null}
-              onChange={(value: string) =>
-                handlePostValueChange("langId", value)
-              }
-              allLanguages={false}
-              exceptLanguages={[]}
-            />
-            <TagsInput
-              tags={tags || []}
-              setTags={setTags}
-              tagColor="magenta"
-              placeholder={t("Add topic").toString()}
-              borderStyle="dashed"
-              placeholderStyle={{
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#bfbfbf",
-              }}
-              limit={1}
-            />
-          </div>
+          <Row gutter={12}>
+            <Col>
+              <span className="fz-18">
+                {editPostId ? "Edit post" : t("New post")}
+              </span>
+            </Col>
+            <Col>
+              <SeclectLanguageInput
+                showArrow={true}
+                showSearch={true}
+                size="small"
+                placeholder={
+                  <span className="text-300 fz-14" style={{ color: "#bfbfbf" }}>
+                    {t("languages")}
+                  </span>
+                }
+                dropdownMatchSelectWidth={false}
+                value={post.langId || null}
+                onChange={(value: string) =>
+                  handlePostValueChange("langId", value)
+                }
+                allLanguages={false}
+                exceptLanguages={[]}
+                className="me-2"
+              />
+              <TagsInput
+                tags={tags || []}
+                setTags={setTags}
+                tagColor="magenta"
+                placeholder={t("Add topic").toString()}
+                borderStyle="dashed"
+                placeholderStyle={{
+                  fontSize: "14px",
+                  fontWeight: 300,
+                  color: "#bfbfbf",
+                }}
+                limit={1}
+              />
+            </Col>
+          </Row>
         }
         open={isModalOpen}
         onOk={handleOk}
@@ -243,100 +250,197 @@ const PostFormModal: React.FC<PostFormModalProps> = ({
           onChange={(e) => handlePostValueChange("text", e.target.value)}
           value={post.text}
         />
-        <div className="pos-relative text-right mb-3">
-          <UploadAudio
-            fileList={[...audioFileList, ...videoFileList]}
-            onRemove={(file) => {
-              if (file?.type?.includes("video")) {
-                const index = videoFileList.indexOf(file);
-                const newFileList = videoFileList.slice();
-                newFileList.splice(index, 1);
-                setVideoFileList(newFileList);
-              } else if (file?.type?.includes("audio")) {
-                const index = audioFileList.indexOf(file);
-                const newFileList = audioFileList.slice();
-                newFileList.splice(index, 1);
-                setAudioFileList(newFileList);
-              }
-            }}
-            beforeUpload={(file) => {
-              const isRightFormat =
-                file.type.includes("video") || file.type.includes("audio");
-              if (!isRightFormat) {
-                message.error(`${file.name} is not a audio/video file`);
-                return Upload.LIST_IGNORE;
-              }
+        <Row>
+          <Col xs={0} sm={24}>
+            <div className="pos-relative text-right mb-3">
+              <UploadAudio
+                fileList={[...audioFileList, ...videoFileList]}
+                onRemove={(file) => {
+                  if (file?.type?.includes("video")) {
+                    const index = videoFileList.indexOf(file);
+                    const newFileList = videoFileList.slice();
+                    newFileList.splice(index, 1);
+                    setVideoFileList(newFileList);
+                  } else if (file?.type?.includes("audio")) {
+                    const index = audioFileList.indexOf(file);
+                    const newFileList = audioFileList.slice();
+                    newFileList.splice(index, 1);
+                    setAudioFileList(newFileList);
+                  }
+                }}
+                beforeUpload={(file) => {
+                  const isRightFormat =
+                    file.type.includes("video") || file.type.includes("audio");
+                  if (!isRightFormat) {
+                    message.error(`${file.name} is not a audio/video file`);
+                    return Upload.LIST_IGNORE;
+                  }
 
-              if (file.type.includes("video")) {
-                setVideoFileList([...videoFileList, file]);
-              } else if (file.type.includes("audio")) {
-                setAudioFileList([...audioFileList, file]);
-              }
+                  if (file.type.includes("video")) {
+                    setVideoFileList([...videoFileList, file]);
+                  } else if (file.type.includes("audio")) {
+                    setAudioFileList([...audioFileList, file]);
+                  }
 
-              return false;
-            }}
-          />
-          <Popover
-            content={
-              <div>
-                <Picker
-                  data={data}
-                  onEmojiSelect={handleSelectEmoji}
-                  theme="light"
+                  return false;
+                }}
+              />
+              <Popover
+                content={
+                  <div>
+                    <Picker
+                      data={data}
+                      onEmojiSelect={handleSelectEmoji}
+                      theme="light"
+                    />
+                  </div>
+                }
+                title="Title"
+                trigger="click"
+                open={open}
+                onOpenChange={handleOpenChange}
+                className="pos-absolute"
+              >
+                <Button
+                  type="text"
+                  shape="circle"
+                  style={{ top: 0, right: "70px", zIndex: 2 }}
+                  className="btn-text-warning"
+                  icon={<SmileOutlined style={{ fontSize: "16px" }} />}
+                />
+              </Popover>
+              <Space
+                className="pos-absolute"
+                align="center"
+                style={{
+                  left: 0,
+                  top: "4px",
+                }}
+              >
+                <Switch
+                  checkedChildren="Public"
+                  unCheckedChildren="Private"
+                  defaultChecked
+                  checked={post.isPublic}
+                  onChange={(checked: boolean) =>
+                    handlePostValueChange("isPublic", checked)
+                  }
+                />
+                <Switch
+                  checkedChildren="Correct on"
+                  unCheckedChildren="Correct off"
+                  defaultChecked
+                  checked={!post.isTurnOffCorrection}
+                  onChange={(checked: boolean) => {
+                    handlePostValueChange("isTurnOffCorrection", !checked);
+                  }}
+                />
+                <Switch
+                  checkedChildren="Share on"
+                  unCheckedChildren="Share off"
+                  defaultChecked
+                  checked={!post.isTurnOffShare}
+                  onChange={(checked: boolean) =>
+                    handlePostValueChange("isTurnOffShare", !checked)
+                  }
+                />
+              </Space>
+            </div>
+          </Col>
+          <Col xs={24} sm={0}>
+            <div className="">
+              <Space align="center" className="w-100 justify-space-between">
+                <Space align="center">
+                  <Switch
+                    checkedChildren="Public"
+                    unCheckedChildren="Private"
+                    defaultChecked
+                    checked={post.isPublic}
+                    onChange={(checked: boolean) =>
+                      handlePostValueChange("isPublic", checked)
+                    }
+                  />
+                  <Switch
+                    checkedChildren="Correct on"
+                    unCheckedChildren="Correct off"
+                    defaultChecked
+                    checked={!post.isTurnOffCorrection}
+                    onChange={(checked: boolean) => {
+                      handlePostValueChange("isTurnOffCorrection", !checked);
+                    }}
+                  />
+                  <Switch
+                    checkedChildren="Share on"
+                    unCheckedChildren="Share off"
+                    defaultChecked
+                    checked={!post.isTurnOffShare}
+                    onChange={(checked: boolean) =>
+                      handlePostValueChange("isTurnOffShare", !checked)
+                    }
+                  />
+                </Space>
+                <Popover
+                  content={
+                    <div>
+                      <Picker
+                        data={data}
+                        onEmojiSelect={handleSelectEmoji}
+                        theme="light"
+                      />
+                    </div>
+                  }
+                  trigger="click"
+                  open={open1}
+                  onOpenChange={handleOpenChange1}
+                  className="p-0"
+                >
+                  <Button
+                    type="text"
+                    shape="circle"
+                    className="btn-text-warning"
+                    icon={<SmileOutlined style={{ fontSize: "16px" }} />}
+                  />
+                </Popover>
+              </Space>
+              <div className="text-center">
+                <UploadAudio
+                  fileList={[...audioFileList, ...videoFileList]}
+                  onRemove={(file) => {
+                    if (file?.type?.includes("video")) {
+                      const index = videoFileList.indexOf(file);
+                      const newFileList = videoFileList.slice();
+                      newFileList.splice(index, 1);
+                      setVideoFileList(newFileList);
+                    } else if (file?.type?.includes("audio")) {
+                      const index = audioFileList.indexOf(file);
+                      const newFileList = audioFileList.slice();
+                      newFileList.splice(index, 1);
+                      setAudioFileList(newFileList);
+                    }
+                  }}
+                  beforeUpload={(file) => {
+                    const isRightFormat =
+                      file.type.includes("video") ||
+                      file.type.includes("audio");
+                    if (!isRightFormat) {
+                      message.error(`${file.name} is not a audio/video file`);
+                      return Upload.LIST_IGNORE;
+                    }
+
+                    if (file.type.includes("video")) {
+                      setVideoFileList([...videoFileList, file]);
+                    } else if (file.type.includes("audio")) {
+                      setAudioFileList([...audioFileList, file]);
+                    }
+
+                    return false;
+                  }}
                 />
               </div>
-            }
-            title="Title"
-            trigger="click"
-            open={open}
-            onOpenChange={handleOpenChange}
-            className="pos-absolute"
-          >
-            <Button
-              type="text"
-              shape="circle"
-              style={{ top: 0, right: "70px", zIndex: 2 }}
-              className="btn-text-warning"
-              icon={<SmileOutlined style={{ fontSize: "16px" }} />}
-            />
-          </Popover>
-          <Space
-            className="pos-absolute"
-            align="center"
-            style={{
-              left: 0,
-              top: "4px",
-            }}
-          >
-            <Switch
-              checkedChildren="Public"
-              unCheckedChildren="Private"
-              defaultChecked
-              checked={post.isPublic}
-              onChange={(checked: boolean) =>
-                handlePostValueChange("isPublic", checked)
-              }
-            />
-            <Switch
-              checkedChildren="Correct on"
-              unCheckedChildren="Correct off"
-              defaultChecked
-              checked={!post.isTurnOffCorrection}
-              onChange={(checked: boolean) => {
-                handlePostValueChange("isTurnOffCorrection", !checked);
-              }}
-            />
-            <Switch
-              checkedChildren="Share on"
-              unCheckedChildren="Share off"
-              defaultChecked
-              checked={!post.isTurnOffShare}
-              onChange={(checked: boolean) =>
-                handlePostValueChange("isTurnOffShare", !checked)
-              }
-            />
-          </Space>
-        </div>
+            </div>
+          </Col>
+        </Row>
+
         <UploadImage
           fileList={imageFileList}
           onRemove={(file) => {

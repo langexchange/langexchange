@@ -38,6 +38,7 @@ export const authApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, AuthRequest>({
@@ -60,6 +61,12 @@ export const authApi = createApi({
         method: "POST",
       }),
     }),
+    clearCookie: builder.mutation<undefined, undefined>({
+      query: () => ({
+        url: "/api/cookies",
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -67,4 +74,5 @@ export const {
   useRegisterMutation,
   useLoginMutation,
   useForgotPasswordMutation,
+  useClearCookieMutation,
 } = authApi;

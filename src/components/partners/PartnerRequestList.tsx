@@ -15,7 +15,7 @@ const PartnerRequestList: React.FC<PartnerRequestListProps> = ({
 }) => {
   return (
     <ResponsiveMasonry
-      columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3, 1200: 24 / colSpan }}
+      columnsCountBreakPoints={{ 350: 1, 440: 2, 550: 3, 1200: 24 / colSpan }}
     >
       <Masonry gutter="12px">
         {partnerList.map((item, index) => (

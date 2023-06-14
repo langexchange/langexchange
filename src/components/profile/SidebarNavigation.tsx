@@ -10,12 +10,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-interface SidebarNavigationProps {
+interface SidebarNavigationProps extends MenuProps {
   canSeeSettings?: boolean;
+  toggleable?: boolean;
 }
 
 const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   canSeeSettings = false,
+  toggleable = true,
+  ...props
 }) => {
   const [t] = useTranslation(["commons"]);
   const activeKey = window.location.pathname.split("/")[3] || "wall";
@@ -57,7 +60,6 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   return (
     <Card
       size="small"
-      style={{ width: "fit-content" }}
       className="h-100 d-flex flex-column"
       bodyStyle={{
         flex: 1,
@@ -72,10 +74,13 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         items={canSeeSettings ? items : items.slice(0, 2)}
         inlineCollapsed={collapsed}
         style={{ flex: 1 }}
+        {...props}
       />
-      <Button type="text" onClick={toggleCollapsed}>
-        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      </Button>
+      {toggleable ? (
+        <Button type="text" onClick={toggleCollapsed}>
+          {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        </Button>
+      ) : null}
     </Card>
   );
 };

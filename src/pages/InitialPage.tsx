@@ -300,7 +300,7 @@ const InitialPage: React.FC = () => {
         className="pt-5"
       >
         <LocaleSelect className="float-right me-5" />
-        <div className="container py-5">
+        <div className="container-lg py-5">
           <div className="text-center mb-3">
             <Typography.Title level={2} style={{ margin: 0 }}>
               {t("Welcome to")} <span className="color-blue-logo">Lang</span>

@@ -1,4 +1,4 @@
-import { Input, Skeleton, Divider } from "antd";
+import { Input, Skeleton, Divider, FloatButton, Space, Row, Col } from "antd";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import FilterLine from "../../components/vocabularies/FilterLine";
@@ -119,19 +119,26 @@ const VocabularyExploresPage: React.FC = () => {
 
   return (
     <div className="pt-4 pb-5">
-      <div className="d-flex gap-3">
-        <Input.Search
-          placeholder={t("type-to-search").toString()}
-          allowClear
-          onSearch={onSearch}
-          style={{ width: 500 }}
-        />
-        <FilterLine resetFilters={resetFilters} setFilters={setFilters} />
-      </div>
-      <Divider />
+      <Row align="middle" justify="space-between" wrap={true} gutter={24}>
+        <Col className="mb-2" style={{ maxWidth: "40%", minWidth: "300px" }}>
+          <Input.Search
+            placeholder={t("type-to-search").toString()}
+            allowClear
+            onSearch={onSearch}
+            style={{ width: 500, maxWidth: "100%" }}
+          />
+        </Col>
+        <Col className="mb-2" flex="auto">
+          <FilterLine resetFilters={resetFilters} setFilters={setFilters} />
+        </Col>
+      </Row>
+      <Divider className="mt-1" />
       <Skeleton loading={isLoading} active>
         <VocabularySetList data={displayedData} />
       </Skeleton>
+      <FloatButton.BackTop
+        style={{ bottom: 154, right: 8, height: "48px", width: "48px" }}
+      />
     </div>
   );
 };

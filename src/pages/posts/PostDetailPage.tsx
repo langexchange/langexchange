@@ -164,7 +164,7 @@ const PostDetailPage: React.FC = () => {
         className="pt-2 pb-5 "
         style={{ minHeight: "calc(100vh - 56px)" }}
       >
-        <Col span={12}>
+        <Col xl={12} xs={24} md={16}>
           <Card size="small" bodyStyle={{ padding: "12px 0" }} bordered={false}>
             <Skeleton
               loading={isPostDetailLoading || isPostDetailFetching}

@@ -11,11 +11,15 @@ const Banner = () => {
 
   return (
     <div className="bg-white">
-      <Row className="container py-5" align="middle">
-        <Col span={12} className="d-flex justify-center">
+      <Row
+        className="container-lg py-5 m-auto"
+        align="middle"
+        gutter={[12, 12]}
+      >
+        <Col md={12} xs={24} className="d-flex justify-center">
           <Image src={BannerImage} alt="Welcome banner" width="100%" />
         </Col>
-        <Col span={12} className="d-flex justify-center">
+        <Col md={12} xs={24} className="d-flex justify-center text-center">
           <Space direction="vertical" size={16} align="center">
             <Space direction="vertical" size={0} align="center">
               <Title level={2} style={{ margin: 0 }}>

@@ -13,6 +13,11 @@ const profileSlice = createSlice({
   initialState,
   reducers: {
     setCredentialProfile: (state, { payload }) => {
+      if (!payload) {
+        state.credentialProfile = {} as ProfileState["credentialProfile"];
+        return;
+      }
+
       state.credentialProfile = {
         ...state.credentialProfile,
         ...payload,

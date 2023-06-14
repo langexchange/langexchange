@@ -26,10 +26,7 @@ const PartnerRequestsPage = () => {
   };
 
   return (
-    <Col
-      span={18}
-      className="auto-hide-scroll scroll-style-1 height-full pb-5 overflow-x-hidden"
-    >
+    <div className="auto-hide-scroll scroll-style-1 height-full pb-5 overflow-x-hidden">
       <ContentTitleWithSearch
         title={t("Partner request").toString()}
         onSearch={onSearch}
@@ -41,7 +38,7 @@ const PartnerRequestsPage = () => {
           refetch={refetch}
         />
       </Skeleton>
-    </Col>
+    </div>
   );
 };
 

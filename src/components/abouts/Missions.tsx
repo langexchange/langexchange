@@ -36,7 +36,7 @@ const Missions = () => {
 
   return (
     <div className="has-background-color">
-      <div className="container py-5">
+      <div className="container-lg py-5 text-center">
         <Space direction="vertical" align="center" size={48}>
           <Title level={2} className="m-0">
             <span className="color-blue-logo">Lang</span>
@@ -45,7 +45,7 @@ const Missions = () => {
           <div>
             <Row align="middle" gutter={[24, 48]}>
               {missionItems.map((item, index) => (
-                <Col span={12} key={index}>
+                <Col md={12} xs={24} key={index}>
                   <MissionItem {...item} />
                 </Col>
               ))}

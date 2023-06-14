@@ -1,11 +1,17 @@
+import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import VocabularyStaticChart from "../../components/tracking/VocabularyStaticChart";
 
 const VocabularyPracticeOverviewPage = () => {
   const [t] = useTranslation(["vocabulary"]);
   return (
-    <div style={{ fontSize: "36px" }} className="color-secondary text-300">
-      <div className="mb-4">{t("message-to-let-user-choose-set")}</div>
+    <div className="w-100 text-center">
+      <span
+        className="mb-4 text-300 secondary-color"
+        style={{ fontSize: "24px", wordWrap: "break-word" }}
+      >
+        {t("message-to-let-user-choose-set")}
+      </span>
       <VocabularyStaticChart />
     </div>
   );

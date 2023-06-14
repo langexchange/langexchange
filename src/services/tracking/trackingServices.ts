@@ -23,6 +23,7 @@ export const trackingApi = createApi({
       }
       return headers;
     },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getStaticLearning: builder.query<StaticLearning[], void>({

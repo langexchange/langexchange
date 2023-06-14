@@ -1,19 +1,32 @@
-import { Col, Row } from "antd";
+import { Col, Layout, Row } from "antd";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/partners/Sidebar";
 
 const PartnerLayout = () => {
   return (
-    <Row
-      gutter={24}
+    <Layout
+      style={{ background: "inherit" }}
       className="full-height-minus-header py-3"
-      justify="space-between"
     >
-      <Col span={6}>
+      <Layout.Sider
+        style={{ height: "fit-content", background: "transparent" }}
+        breakpoint="lg"
+        collapsedWidth="0"
+        theme="light"
+        zeroWidthTriggerStyle={{ top: "80px" }}
+        trigger={null}
+      >
         <Sidebar />
-      </Col>
-      <Outlet />
-    </Row>
+      </Layout.Sider>
+      <Layout.Content className="px-3">
+        <Row className="w-100 mb-2">
+          <Col lg={0} xs={24}>
+            <Sidebar mode="horizontal" />
+          </Col>
+        </Row>
+        <Outlet />
+      </Layout.Content>
+    </Layout>
   );
 };
 
