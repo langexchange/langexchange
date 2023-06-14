@@ -19,16 +19,16 @@ services:
     
   
   lec-chatfront:
-    image: narutosimaha/lec-chatfront
+    image: narutosimaha/lec-chatfront:dev
     command: ["nginx-debug", "-g", "daemon off;"]
     ports:
       - "8043:80"
     environment:
       - NGINX_HOST=lec-chatfront
-      
+
 
   lec-langexchange:
-    image: narutosimaha/lec-langexchange
+    image: narutosimaha/lec-langexchange:dev
     ports:
       - "8003:80"
     environment:
@@ -42,7 +42,7 @@ services:
   ## vim ejabberd-prod.yml
   ## sudo docker run -d --rm --name lec-chatserver -p 5222:5222 -p 5269:5269 -p 5280:5280 -p 5281:443 --network chatserver-chatgw --env-file /home/ec2-user/.ejabberd_env -v /home/ec2-user/ejabberd-prod.yml:/home/ejabberd/conf/ejabberd.yml  narutosimaha/lec-chatserver
   lec-chatserver:
-    image: narutosimaha/lec-chatserver
+    image: narutosimaha/lec-chatserver:dev
     user: "ejabberd:"
     # command: ["/bin/sh", "-c", "/home/ejabberd/conf/script.sh"]
     environment:
@@ -104,14 +104,15 @@ services:
     image: narutosimaha/flyway-langchat
     # command: -url=jdbc:postgresql://postgres:5432/ejabberd -user=ejabberd -password=ejabberd_password -connectRetries=60 migrate
     environment:
-      - DATABASE_NAME=postgres
-      - DATABASE_URL=jdbc:postgresql://lec-chatdb1.cfsw6aebcwen.ap-southeast-2.rds.amazonaws.com:5432
+      - DATABASE_NAME=langchat
+      - DATABASE_URL=jdbc:postgresql://localhost:5432
       - POSTGRES_USER=langteam
-      - POSTGRES_PASSWORD=0905353523vV!
+      - POSTGRES_PASSWORD=Aa1234
     # volumes:
     #   - ./lec-db/langchat/sql:/flyway/sql
     depends_on:
       - langchat-db
+    
     
   langgeneral-db:
     image: postgres:15.2
